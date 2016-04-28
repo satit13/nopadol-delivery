@@ -1,0 +1,77 @@
+<?page title="DO-Form" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window  mode="modal" title="DO-ใบส่งสินค้า" border="normal" onCreate="showDO()" height="100%" width="800px" closable="true">
+<label id="lbldono" value="${applicationScope['dodocno']}" visible="false" />
+<jasperreport id="reportdo" height="100%"/>
+<zscript>
+<![CDATA[
+
+import java.sql.*;
+import java.io.*;
+import java.lang.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+//import javax.servlet.http.Cookie;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse; 
+import net.sf.jasperreports.engine.DefaultJasperReportsContext;
+import net.sf.jasperreports.extensions.ExtensionsEnvironment;
+import net.sf.jasperreports.engine.JasperReportsContext;
+import net.sf.jasperreports.engine.JRRuntimeException;
+import net.sf.jasperreports.engine.JRDataset;
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
+
+import org.zkoss.util.media.AMedia;
+import org.zkoss.zul.*;
+import condb.Database;
+
+Connection con=null;
+PreparedStatement st=null;
+PreparedStatement st1=null;
+void showDO() {
+	String vDocno;
+	String vQry;
+	String vQryEMP;
+	String vQry2;
+	
+	ResultSet rs = null;
+	
+		try{
+			//vDocno=lbldono.getValue().trim();
+			
+			vDocno=lbldono.getValue();
+			
+			System.out.println(vDocno);
+		
+			Map params = new HashMap();
+			params.put("docnoParam", vDocno);
+			params.put("ivParam", vDocno);
+			params.put("empParam", vDocno);
+				
+			con = Database.getConnection();
+			st = con.prepareStatement("select * from sm_do.ft_doview('"+vDocno+"');");
+			rs = st.executeQuery();	
+			reportdo.setParameters(params);		
+			
+			reportdo.setSrc(session.getWebApp().getRealPath("/rp/dofrm_fds103.jasper"));
+			reportdo.setDatasource(new JRResultSetDataSource(rs));	
+			reportdo.setDataConnection(Database.getConnection());
+			reportdo.setType("pdf");
+			
+			}  		
+			catch(SQLException e){
+					System.out.println(e);
+				}
+		 
+		} 	
+]]>
+</zscript>
+</window>
+</zk>

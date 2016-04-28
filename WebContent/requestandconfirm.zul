@@ -1,0 +1,45 @@
+<?page title="Request DO Confirm SCV" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Confirm" border="normal">
+<groupbox> 
+	<listbox >
+	<listhead>
+		<listheader label="Confirm" />
+		<listheader label="เลขที่ใบสั่งขาย" />
+		<listheader label="ลูกค้า" />
+		<listheader label="วันที่นัด" />
+		<listheader label="เวลาที่นัด" />
+		<listheader label="Confirm วันนัด" />
+		<listheader label="Confirm เวลานัด" />
+		<listheader label="กลุ่มสินค้า" />
+		<listheader label="มูลค่าสินค้า" />
+	</listhead>
+	<listitem>		
+		<listcell ><checkbox /></listcell>
+		<listcell label="SCV5512-02245" />
+		<listcell label="ABCD" />
+		<listcell label="" />
+		<listcell label="" />
+		<listcell label="" />
+		<listcell label="" />
+		<listcell label="" />
+		<listcell label="" />
+		
+	</listitem>
+	<listitem>
+		<listcell ><checkbox /></listcell>
+		<listcell label="SCV5512-02250" />
+		<listcell label="สรุพล  สมบัติเจริญ" />
+		<listcell label="" />
+		<listcell label="" />
+		<listcell label="" />
+		<listcell label="" />
+		<listcell label="" />
+		<listcell label="" />
+	</listitem>
+</listbox>
+<button label="ยืนยันการจัดส่งสินค้า" onClick="" />
+<button label="ปิด" onClick="" />
+</groupbox>
+</window>
+</zk>

@@ -1,0 +1,162 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<div height="100%" style="border:1px solid black;overflow:auto;" >
+<grid>
+		<columns>
+			<column label="DS102 รายงานคำนวณระยะทางการส่งสินค้า ตามทะเบียนรถ"/>
+		</columns>
+		<rows>
+			<row>
+			<x:table>
+				<x:tr>
+					<x:td>ตั้งแต่วันที่ :</x:td>
+					<x:td><datebox id="dtstart" format="dd/MM/yyyy" onCreate="self.setValue(new Date());"/></x:td>
+					<x:td>ถึงวันที่ : </x:td>
+					<x:td><datebox id="dtstop" format="dd/MM/yyyy" onCreate="self.setValue(new Date());"/></x:td>
+					<x:td>
+					<button label="ดูรายงาน" onClick="viewds102();" />
+					<button label="ออก" onClick="goHome();" />
+					</x:td>					
+				</x:tr>
+			</x:table>	
+			</row>
+		</rows>
+	</grid>
+	<jasperreport id="ds102rp" height="85%"/>
+	<zscript>	
+	<![CDATA[
+	         
+import java.sql.*;
+import java.io.*;
+import java.lang.*;
+import java.util.Date;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+//import javax.servlet.http.Cookie;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse; 
+import net.sf.jasperreports.engine.DefaultJasperReportsContext;
+import net.sf.jasperreports.extensions.ExtensionsEnvironment;
+import net.sf.jasperreports.engine.JasperReportsContext;
+import net.sf.jasperreports.engine.JRRuntimeException;
+import net.sf.jasperreports.engine.JRDataset;
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
+
+import org.zkoss.util.media.AMedia;
+import org.zkoss.zul.*;
+import condb.Database;
+import java.text.SimpleDateFormat;
+
+Connection con=null;
+SimpleDateFormat dtfm = new SimpleDateFormat("yyyy/MM/dd");
+public void viewds102(){
+
+	String getstartdate;
+	String getstopdate;
+	String startdate;
+	String stopdate;
+	String rpQry;
+	Date dtmstart;
+	Date dtmstop;
+	ResultSet rs102 = null;
+	PreparedStatement st=null;
+	try{
+		
+		getstartdate = dtstart.getText();
+		getstopdate = dtstop.getText();
+		startdate = dtnormal(getstartdate);
+		stopdate = dtnormal(getstopdate);
+		 dtmstart = dtstart.getValue();
+		 dtmstop = dtstop.getValue();
+		//dtmstart = dtfm.parse(startdate);
+		//dtmstop = dtfm.parse(stopdate);
+		System.out.println(dtmstart);	
+
+				Map params = new HashMap();
+				params.put("date1", startdate);
+				params.put("date2", stopdate);
+
+				con = Database.getConnection();
+				ds102rp.setParameters(params);
+				rpQry= "select * from sm_do.ft_doanalyze('"+startdate+"','"+stopdate+"')"+
+						" order by carlicence,datesend,docno,invoiceno,arname,driver_name,measurestart,measurestop,distance,timesend,timereturn,during,transportlocation";
+				st = con.prepareStatement(rpQry);
+				rs102 = st.executeQuery();
+				
+				ds102rp.setSrc(session.getWebApp().getRealPath("/rp/DS102_2.jasper"));
+				ds102rp.setDatasource(new JRResultSetDataSource(rs102));
+				//ds102rp.setDataConnection(Database.getConnection());
+				ds102rp.setType("pdf");
+		
+		
+		
+	}catch(Exception ex){
+		ex.printStackTrace();
+	}
+}
+public String dtdmy(String vgetdate){	
+	
+	String vrsDate;
+	String vDate;
+	String vYear;
+	String vMonth;
+	String strResultYear;
+	String strgetDate;
+	
+	strgetDate = vgetdate;
+	vYear = strgetDate.substring(6);
+	vMonth = strgetDate.substring(3,5);	
+	vDate = strgetDate.substring(0,2);
+	Integer xInt1 = Integer.parseInt(vYear);
+	System.out.println("xY="+xInt1);
+   		if (xInt1 > 2500){
+   			Integer bInt= xInt1-543;
+   			strResultYear= Integer.toString(bInt);
+   		}else {
+   			strResultYear= Integer.toString(xInt1);
+   		}
+			vrsDate=vDate.concat("/".concat(vMonth.concat("/".concat(strResultYear)))); 
+		return (vrsDate); 
+	}
+
+public String dtnormal(String vgetdate){	
+	
+	String vrsDate;
+	String vDate;
+	String vYear;
+	String vMonth;
+	String strResultYear;
+	String strgetDate;
+	
+	strgetDate = vgetdate;
+	vYear = strgetDate.substring(6);
+	vMonth = strgetDate.substring(3,5);	
+	vDate = strgetDate.substring(0,2);
+	Integer xInt1 = Integer.parseInt(vYear);
+	System.out.println("xY="+xInt1);
+   		if (xInt1 > 2500){
+   			Integer bInt= xInt1-543;
+   			strResultYear= Integer.toString(bInt);
+   		}else {
+   			strResultYear= Integer.toString(xInt1);
+   		}
+			vrsDate=strResultYear.concat("/".concat(vMonth.concat("/".concat(vDate)))); 
+		return (vrsDate); 
+	}
+
+	         
+		void goHome(){
+			Executions.sendRedirect("home.zul");
+		}
+]]>
+</zscript>
+</div>
+
+</zk>

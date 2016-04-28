@@ -1,0 +1,152 @@
+<?page title="Portal" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Portal" border="normal">
+<portallayout>
+<portalchildren style="padding: 5px" width="50%">
+<panel title="5 DR-Request" border="normal" collapsible="true" closable="true" maximizable="true" style="margin-bottom:10px">
+<panelchildren onCreate="showDRpt();">
+	<listbox id="lsdr" mold="paging" pageSize="5">
+	<listhead>
+		<listheader label="เลขที่เอกสาร" />
+		<listheader label="วันนัดรับ" />
+		<listheader label="เวลานัดรับ" />
+		<listheader label="สถานที่" />
+		<listheader label="ผู้รับสินค้า" />
+		<listheader label="โทร." />
+	</listhead>	
+	</listbox>
+
+</panelchildren>
+</panel>
+<panel title="DO-Process" border="normal" collapsible="true" closable="true" maximizable="true" >
+<panelchildren>
+	<chart id="piechart3d" title="Oveview Dummy" width="500" height="250"
+        type="pie" threeD="true" fgAlpha="128">
+    	<zscript><![CDATA[
+        PieModel piemodel = new SimplePieModel();
+        piemodel.setValue("สายตะวันออก", new Double(12.5));
+        piemodel.setValue("ในเมือง", new Double(50.2));
+        piemodel.setValue("สายตะวันตก", new Double(20.5));
+        piemodel.setValue("สายเหนือ", new Double(15.5));
+        piechart3d.setModel(piemodel);
+    	]]></zscript>
+	</chart>
+</panelchildren>
+</panel>
+</portalchildren>
+<!-- Column II -->
+<portalchildren style="padding: 5px" width="50%">
+<panel title="5 DR-Confirmed" border="normal" collapsible="true" closable="true" maximizable="true" style="margin-bottom:10px">
+<panelchildren onCreate="viewCFdr();">
+	<listbox id="lsdrcf" mold="paging" pageSize="5">
+	<listhead>
+		<listheader label="เลขที่เอกสาร" />
+		<listheader label="วันนัดรับ" />
+		<listheader label="เวลานัดรับ" />
+		<listheader label="สถานที่" />
+		<listheader label="ผู้รับสินค้า" />
+		<listheader label="โทร." />
+	</listhead>	
+	</listbox>
+</panelchildren>
+</panel>
+<panel title="DO-Success" border="normal" collapsible="true" closable="true" maximizable="true" >
+	<panelchildren>
+		<chart id="bar3d" title="Overview Dummy" width="500" height="250"
+        type="bar" threeD="true" fgAlpha="128">
+    <zscript><![CDATA[
+        CategoryModel catmodel = new SimpleCategoryModel();
+        catmodel.setValue("2011", "Q1", new Integer(20));
+        catmodel.setValue("2011", "Q2", new Integer(35));
+        catmodel.setValue("2011", "Q3", new Integer(40));
+        catmodel.setValue("2011", "Q4", new Integer(55));
+        catmodel.setValue("2012", "Q1", new Integer(40));
+        catmodel.setValue("2012", "Q2", new Integer(60));
+        catmodel.setValue("2012", "Q3", new Integer(70));
+        catmodel.setValue("2012", "Q4", new Integer(90));
+        bar3d.setModel(catmodel);
+    ]]></zscript>
+</chart>
+	</panelchildren>
+</panel>
+</portalchildren>
+</portallayout>
+<zscript>
+<![CDATA[
+	import java.io.*;
+	import java.lang.*;
+	import java.sql.*;
+	import org.zkoss.zk.ui.Component;
+	import org.zkoss.zk.ui.event.CreateEvent;
+	import org.zkoss.zk.ui.event.Event;
+	import org.zkoss.zk.ui.event.ForwardEvent;
+	import org.zkoss.zk.ui.Executions;
+	import java.text.SimpleDateFormat;
+	import java.util.Date;
+	import java.util.Calendar;
+	import org.zkoss.zk.ui.event.EventListener;
+	import condb.Database;
+	import condb.Mssqldb;
+	
+	Connection con=null;
+	Statement st=null;
+	public void showDRpt(){
+		String strQry;
+		try{
+			con = Database.getConnection();
+			st = con.createStatement();
+			strQry="select * from sm_do.ft_confirmview('0');";
+			st.executeQuery(strQry);
+			ResultSet rs = st.getResultSet();
+			while(lsdr.getItemCount()>0){
+				lsdr.removeItemAt(0);
+			}
+			while(rs.next()){
+				Listitem li=new Listitem();
+				li.appendChild(new Listcell(rs.getString("sono")));
+				li.appendChild(new Listcell(rs.getString("duedate")));
+				li.appendChild(new Listcell(rs.getString("duetime")));			
+				li.appendChild(new Listcell(rs.getString("placedetail")));
+				li.appendChild(new Listcell(rs.getString("receivename")));
+				li.appendChild(new Listcell(rs.getString("receivetel")));
+				lsdr.appendChild(li);
+			}
+		}catch(SQLException ex){
+			ex.getMessage();
+		}
+	}
+	
+	public void viewCFdr(){
+		String strQry;
+		try{
+			con = Database.getConnection();
+			st = con.createStatement();
+			strQry="select * from sm_do.ft_confirmview('1');";
+			st.executeQuery(strQry);
+			ResultSet rs = st.getResultSet();
+			while(lsdrcf.getItemCount()>0){
+				lsdrcf.removeItemAt(0);
+			}
+			while(rs.next()){
+				Listitem lif = new Listitem();
+				lif.appendChild(new Listcell(rs.getString("sono")));
+				lif.appendChild(new Listcell(rs.getString("confirmdate")));
+				lif.appendChild(new Listcell(rs.getString("confirmtime")));
+				lif.appendChild(new Listcell(rs.getString("placedetail")));// สถานที่ส่ง
+				lif.appendChild(new Listcell(rs.getString("receivename")));
+				lif.appendChild(new Listcell(rs.getString("receivetel")));
+				lsdrcf.appendChild(lif);				
+			}
+			
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	]]>
+
+
+
+</zscript>
+</window>
+</zk>

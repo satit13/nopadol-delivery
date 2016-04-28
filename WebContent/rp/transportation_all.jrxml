@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="transportation_all" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2757fce2-0032-4b93-b1e9-548f6ac4e9a5">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="begindate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[2013/05/10]]></defaultValueExpression>
+	</parameter>
+	<parameter name="enddate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[2013/05/18]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from
+(
+
+SELECT * FROM sm_do.ft_transportation_report('2013/06/01','2013/06/08', 's01')
+union SELECT * FROM sm_do.ft_transportation_report('2013/06/01','2013/06/08', 's02')
+) as a
+order by a.empcode,a.datesend,a.docno;]]>
+	</queryString>
+	<field name="docno" class="java.lang.String"/>
+	<field name="docdate" class="java.sql.Date"/>
+	<field name="datesend" class="java.sql.Date"/>
+	<field name="timesend" class="java.lang.String"/>
+	<field name="datereturn" class="java.sql.Date"/>
+	<field name="timereturn" class="java.lang.String"/>
+	<field name="measurestart" class="java.math.BigDecimal"/>
+	<field name="measurestop" class="java.math.BigDecimal"/>
+	<field name="measureway" class="java.math.BigDecimal"/>
+	<field name="do_remark" class="java.lang.String"/>
+	<field name="carlicence" class="java.lang.String"/>
+	<field name="sendresult" class="java.lang.String"/>
+	<field name="sendresultstatus" class="java.lang.String"/>
+	<field name="empcode" class="java.lang.String"/>
+	<field name="empname" class="java.lang.String"/>
+	<field name="emp_positioncode" class="java.lang.String"/>
+	<field name="emp_position" class="java.lang.String"/>
+	<field name="transportation" class="java.math.BigDecimal"/>
+	<field name="mydescription" class="java.lang.String"/>
+	<field name="branch" class="java.lang.String"/>
+	<variable name="SumAllTransport" class="java.lang.Number" calculation="Sum">
+		<variableExpression><![CDATA[$F{transportation}]]></variableExpression>
+	</variable>
+	<variable name="sumtrangroup" class="java.lang.Number" resetType="Group" resetGroup="emp" calculation="Sum">
+		<variableExpression><![CDATA[$F{transportation}]]></variableExpression>
+	</variable>
+	<group name="emp">
+		<groupExpression><![CDATA[$F{empcode}]]></groupExpression>
+		<groupHeader>
+			<band height="17">
+				<textField>
+					<reportElement uuid="bef49602-f8c2-407d-9c3b-6eaf00a72d03" x="71" y="3" width="269" height="10"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{empname}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="2c92f764-2cb1-47d5-956c-13ea0caa7fa0" x="14" y="3" width="50" height="10"/>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{empcode}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="1" y="0" width="1" height="16"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="556" y="-4" width="1" height="20"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement uuid="a3dbd4c2-0d4e-41df-9a93-d9a993d6b637" x="1" y="16" width="153" height="1"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="19">
+				<line>
+					<reportElement uuid="a3dbd4c2-0d4e-41df-9a93-d9a993d6b637" x="4" y="-1" width="552" height="1"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement uuid="a3dbd4c2-0d4e-41df-9a93-d9a993d6b637" x="1" y="18" width="554" height="1"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="556" y="0" width="1" height="18"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="469" y="0" width="1" height="19"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement uuid="6571639c-bf2e-4bb1-bda9-7fd61513fbb9" x="399" y="2" width="64" height="17"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[รวมค่าเที่ยว]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="1" y="-1" width="1" height="19"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="26286300-5c0b-453a-a20a-6b2d33ff6a6a" x="469" y="2" width="82" height="17"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumtrangroup}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="53" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="925a25f2-7e8a-4bb4-8ca7-081077fac2d9" x="0" y="1" width="556" height="51"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="6571639c-bf2e-4bb1-bda9-7fd61513fbb9" x="201" y="11" width="350" height="22"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DS101 รายงานสรุปค่าเที่ยวจัดส่งทั้งหมด]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="f49ffb10-8dd7-46a2-8519-6d09a66c80c8" x="4" y="11" width="79" height="27"/>
+				<imageExpression><![CDATA["/var/lib/tomcat7/webapps/npdo/rp/logonp.gif"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="28" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="8d3213dd-3953-4855-b510-c23d23db8948" x="2" y="0" width="554" height="27"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="6d968075-2be7-40dc-b065-efc91ae705d2" x="174" y="3" width="82" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{begindate}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="53783d65-cb0b-430d-998a-cb0c37f29fe0" x="285" y="3" width="89" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{enddate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6571639c-bf2e-4bb1-bda9-7fd61513fbb9" x="111" y="3" width="65" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ตั้งแต่วันที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8db52e91-0bce-4ab5-9da5-6cf0135018b2" x="258" y="3" width="24" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ถึง]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="b87dbd20-19ab-43c5-a523-a2c45192781b" x="499" y="4" width="29" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="50497c9d-09c0-4d94-9d4c-f49a39df52e2" x="531" y="4" width="22" height="19"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="14e75786-b842-4450-b75c-c1285c962882" x="501" y="9" width="50" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ค่าเที่ยว]]></text>
+			</staticText>
+			<elementGroup/>
+			<staticText>
+				<reportElement uuid="d39ca56c-37da-4060-824b-5d941687480f" x="165" y="11" width="36" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[วันที่ส่ง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="dced52ac-8bdf-4999-91e7-f520586f5bf9" x="224" y="9" width="56" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ทะเบียนรถ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2893d4da-6991-49aa-9c1d-a870da3cb58b" x="360" y="9" width="64" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[เลขที่เอกสาร]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6571639c-bf2e-4bb1-bda9-7fd61513fbb9" x="4" y="11" width="64" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[รหัสพนักงาน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8db52e91-0bce-4ab5-9da5-6cf0135018b2" x="71" y="11" width="78" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ชื่อพนักงาน]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="a3dbd4c2-0d4e-41df-9a93-d9a993d6b637" x="1" y="6" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="1" y="6" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="556" y="6" width="1" height="27"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="a3dbd4c2-0d4e-41df-9a93-d9a993d6b637" x="1" y="32" width="554" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="64" y="7" width="1" height="24"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="154" y="7" width="1" height="24"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="214" y="6" width="1" height="26"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="282" y="6" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="2893d4da-6991-49aa-9c1d-a870da3cb58b" x="284" y="9" width="56" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ ตำแหน่ง]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="427" y="7" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="354" y="6" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="469" y="7" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="a0727658-33f8-4299-b742-2770de3ed663" x="434" y="9" width="34" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[สาขา]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement uuid="08c7ddab-ed0d-49fd-824a-ddfd0d2e90aa" x="469" y="3" width="82" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{transportation}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="26538a2b-f3df-4cb7-a275-dc48686268c0" x="157" y="3" width="55" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{datesend}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7d231c46-4d7c-43aa-bc62-ea619a0a2871" x="220" y="3" width="60" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{carlicence}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c46834b5-fe43-49a3-928a-9da9456d3e2d" x="360" y="3" width="64" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{docno}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="a3dbd4c2-0d4e-41df-9a93-d9a993d6b637" x="155" y="-1" width="400" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="1" y="0" width="1" height="19"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement uuid="4d0c416c-7154-4916-897d-5440c460a6eb" x="289" y="3" width="65" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_position}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="556" y="-3" width="1" height="23"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="154" y="0" width="1" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="a3dbd4c2-0d4e-41df-9a93-d9a993d6b637" x="2" y="19" width="553" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="428" y="0" width="1" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="85ff8489-a52b-4505-b44f-5b5d30469ae0" x="469" y="0" width="1" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement uuid="60aca0c2-6be6-4c20-96aa-ef5169f942e1" x="436" y="4" width="29" height="13"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branch}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="11" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="12" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="156" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement uuid="86b54638-652e-4eef-b5e4-2aeba9e90e94" x="455" y="11" width="96" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SumAllTransport}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6571639c-bf2e-4bb1-bda9-7fd61513fbb9" x="324" y="11" width="110" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[รวมค่าเที่ยวทั้งหมด]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8f1dcf3c-0117-45ae-a9f3-3c1db21d9550" x="27" y="110" width="109" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[(                              )]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8f1dcf3c-0117-45ae-a9f3-3c1db21d9550" x="424" y="110" width="109" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[(                              )]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d9c38d5-0698-4779-8020-85bee3a45b8d" x="36" y="58" width="100" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[ผู้จัดทำรายการ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2de08f7f-802e-437c-8eca-e4dd2e2e3eb6" x="201" y="93" width="153" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[--------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2de08f7f-802e-437c-8eca-e4dd2e2e3eb6" x="10" y="93" width="139" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[--------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="85570e24-77be-41ad-b942-8b87dd5602fb" x="220" y="61" width="100" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[ผู้ตรวจสอบ/บัญชี]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2de08f7f-802e-437c-8eca-e4dd2e2e3eb6" x="409" y="93" width="129" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[--------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8f1dcf3c-0117-45ae-a9f3-3c1db21d9550" x="177" y="110" width="183" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[(                              )]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7430c20d-1d74-4684-b87a-7117e334a9e2" x="424" y="61" width="100" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[ผู้ตรวจสอบค่าเที่ยว]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,94 @@
+<?page title="DR-Confirmed" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wdrcf" title="DR-Confirmed" border="normal">
+<div align="left">
+<button label="New" image="/img/new.png" onClick="mnewDR()" />
+<button label="ออก" image="/img/close.png" onClick="wdrcf.detach();" />
+</div>
+<listbox id="lscfdr" onCreate="viewCFdr();" mold="paging" pageSize="10" onSelect="viewcfDR();" height="500px">
+	<listhead>
+		<listheader label="เลขที่เอกสาร"  />
+		<listheader label="วันที่นัดรับ"  />
+		<listheader label="เวลานัดรับ"  />
+		<listheader label="เส้นทาง"  />
+		<listheader label="สถานที่"  />
+		<listheader label="ผู้รับสินค้า"  />
+		<listheader label="เบอร์ติดต่อ"  />
+		<listheader label="ความสำคัญ"  />
+		<listheader label="เพิ่มเติม"  />
+		<listheader label="status" visible="false" />
+	</listhead>	
+</listbox>
+
+<zscript>
+ <![CDATA[
+      	import java.io.*;
+    	import java.lang.*;
+    	import java.sql.*;
+    	import org.zkoss.zk.ui.Component;
+    	import org.zkoss.zk.ui.event.CreateEvent;
+    	import org.zkoss.zk.ui.event.Event;
+    	import org.zkoss.zk.ui.event.ForwardEvent;
+    	import org.zkoss.zk.ui.Executions;
+    	import condb.Database;
+    	import condb.Mssqldb;
+    	Connection con=null;
+    	Statement st=null;
+    	
+    	public void viewCFdr(){
+    		String strQry;
+    		try{
+    			con = Database.getConnection();
+    			st = con.createStatement();
+    			strQry="select * from sm_do.ft_confirmview('1');";
+    			st.executeQuery(strQry);
+    			ResultSet rs = st.getResultSet();
+    			while(lscfdr.getItemCount()>0){
+    				lscfdr.removeItemAt(0);
+    			}
+    			while(rs.next()){
+    				Listitem li = new Listitem();
+    				li.appendChild(new Listcell(rs.getString("sono")));
+    				li.appendChild(new Listcell(rs.getString("confirmdate")));
+    				li.appendChild(new Listcell(rs.getString("confirmtime")));
+    				li.appendChild(new Listcell(rs.getString("routedetail")));// เส้นทาง
+    				li.appendChild(new Listcell(rs.getString("placedetail")));// สถานที่ส่ง
+    				li.appendChild(new Listcell(rs.getString("receivename")));
+    				li.appendChild(new Listcell(rs.getString("receivetel")));
+    				li.appendChild(new Listcell(rs.getString("prioritydetail")));
+    				li.appendChild(new Listcell(rs.getString("transportlocation")));
+    				lscfdr.appendChild(li);
+    				
+    			}
+    			
+    		}catch(SQLException ex){
+    			ex.printStackTrace();
+    		}
+    	}
+    	public void viewcfDR(){
+    		Listitem li = new Listitem();
+    		String strcfSONO;
+    		try{
+    			li = lscfdr.getSelectedItem();
+    			Listcell lc = (Listcell) li.getChildren().get(0);
+    			strcfSONO = lc.getLabel();	
+    			application.setAttribute("drstatus","0");
+    	  	  	application.setAttribute("sodocno",strcfSONO);	
+    	  	   final Window win = (Window) Executions.createComponents("drmanage.zul",null, null);    	  		
+    	  	  		win.setMaximizable(true);
+    	 				//win.doModal();
+    	
+    		}catch(Exception ex){
+    			ex.getMessage();
+    		}
+    	}
+    	public void mnewDR(){
+    		application.setAttribute("drstatus","2");
+      	  	application.setAttribute("sodocno","");	
+    		 Executions.createComponents("drmanage.zul",null, null);    	  		
+    	  	// 	win.setMaximizable(true);
+    	}
+ ]]>
+</zscript>
+</window>
+</zk>

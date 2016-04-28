@@ -1,0 +1,526 @@
+<?page title="NP-Delivery 2013" contentType="text/html;charset=UTF-8"?>
+<zk>
+<html>
+<link rel="shortcut icon" href="http://localhost:8080/Delivery/favicon.ico" />
+</html>
+<style>
+	.hdnrt{
+		background: #D5D5D5;
+		font-weight:bold;
+				
+	}
+	.hmenu{
+		relative; top: -30px; padding-left: 20px;
+	}
+	.lbl{
+		font-size:20px;
+		font-wieght:bold;
+		color:#FF7800;
+		/*
+		color:#0071AB;	
+		*/
+	}
+	.tbtn{
+		font-size:11px;
+		font-weight:bold;
+		color:#007CAA;
+		}
+</style>
+<script type="text/javascript" src="/js/maskedinput.js" />
+<script type="text/javascript" src="/js/watermarkinput.js" />
+<div width="100%" height="100%" style="border:1px solid black;overflow:auto;" apply="drcom.MyComposer">
+<borderlayout onCreate="chkValidate();">
+<north height="30px" sclass="hdnrt">
+<div>
+<div style="float:right; font-size:6px;">
+ <label value="Loin name :" />
+ <label id="lblusername" style="color:#0084FF;"/>
+ </div>
+<div style="float:right; font-size:6px;">
+ <label sclass="" value="v.20130508" visible="false"/>
+ <label id="lblulevel" visible="false" />
+ </div>
+
+
+<menubar>
+
+	<menuitem label="DR-Request" image="/img/drmn.png">	
+		<attribute name="onClick">
+			setDrMenu();
+	</attribute>
+	</menuitem>
+	<menuitem label="DO-Management" image="/img/domn.png" >
+		<attribute name="onClick">
+			Integer vintlv;
+			vintlv=Integer.parseInt(vulevel);
+			if(vintlv==0){
+				alert("คุณไม่มีสิทธิ์เข้าหน้าจอนี้.");
+				}
+				else{
+					setDoMenu();
+				}
+	</attribute>	
+	</menuitem>
+	<menu label="Report" image="/img/report.png">
+		<menupopup>
+			<menuitem label="DS100:รายงานสรุปค่าเที่ยวตามช่วงวันที่" image="/img/book.png">
+				<attribute name="onClick">
+					Integer vintlv;
+					vintlv=Integer.parseInt(vulevel);
+					if(vintlv==0){
+						alert("คุณไม่มีสิทธิ์เข้าหน้าจอนี้.");
+						}
+						else{
+							ctrall.setSrc("/rp/transportrp.zul");
+							ctrall.setVisible(true);
+							ctrdr.setVisible(false);
+							ctrdo.setVisible(false);
+						}
+				</attribute>
+			</menuitem>
+			<menuitem label="DS101:รายงานสรุปค่าเที่ยวจัดส่งทั้งหมด" image="/img/book.png" >
+				<attribute name="onClick">
+					Integer vintlv;
+					vintlv=Integer.parseInt(vulevel);
+					if(vintlv==0){
+						alert("คุณไม่มีสิทธิ์เข้าหน้าจอนี้.");
+						}
+						else{
+							ctrall.setSrc("/rp/rptransportall.zul");
+							ctrall.setVisible(true);
+							ctrdr.setVisible(false);
+							ctrdo.setVisible(false);
+						}
+				</attribute>
+			</menuitem>
+			<menuitem label="DS102:รายงานคำนวณระยะทางการส่งสินค้าตามทะเบียนรถ" image="/img/book.png">
+				<attribute name="onClick">
+					Integer vintlv;
+					vintlv=Integer.parseInt(vulevel);
+					if(vintlv==0){
+						alert("คุณไม่มีสิทธิ์เข้าหน้าจอนี้.");
+						}
+						else{
+							ctrall.setSrc("/rp/printds102.zul");
+							ctrall.setVisible(true);
+							ctrdr.setVisible(false);
+							ctrdo.setVisible(false);
+						}
+				</attribute>
+			
+			</menuitem>
+			<menuitem label="DS201:รายงานสรุปค่าจัดส่งสินค้า" image="/img/book.png">
+					<attribute name="onClick">
+					Integer vintlv;
+					vintlv=Integer.parseInt(vulevel);
+					if(vintlv==0){
+						alert("คุณไม่มีสิทธิ์เข้าหน้าจอนี้.");
+						}
+						else{
+							ctrall.setSrc("/rp/ds201report.zul");
+							ctrall.setVisible(true);
+							ctrdr.setVisible(false);
+							ctrdo.setVisible(false);
+						}
+				</attribute>
+			</menuitem>
+			
+			<menuitem label="DS202:รายงานการเก็บค่าบริการจัดส่งแยกตามสาขา" image="/img/book.png" >
+				<attribute name="onClick">
+					Integer vintlv;
+					vintlv=Integer.parseInt(vulevel);
+					if(vintlv==0){
+						alert("คุณไม่มีสิทธิ์เข้าหน้าจอนี้.");
+						}
+						else{
+							ctrall.setSrc("/rp/printds202.zul");
+							ctrall.setVisible(true);
+							ctrdr.setVisible(false);
+							ctrdo.setVisible(false);
+						}
+				</attribute>
+			</menuitem>			
+			<menuitem label="KPI-SV1:รายงานการส่งมอบสินค้าตรงเวลา(ตามวันนัดส่ง)" image="/img/book.png" >
+				<attribute name="onClick">
+					Integer vintlv;
+					vintlv=Integer.parseInt(vulevel);
+					if(vintlv==0){
+						alert("คุณไม่มีสิทธิ์เข้าหน้าจอนี้.");
+						}
+						else{
+							ctrall.setSrc("/rp/printrpsv1.zul");
+							ctrall.setVisible(true);
+							ctrdr.setVisible(false);
+							ctrdo.setVisible(false);
+						}
+				</attribute>
+			</menuitem>
+			<menuitem label="KPI-SV1(Detail):รายงานรายละเอียดการส่งมอบสินค้าตรงเวลา(ตามวันนัดส่ง)" image="/img/book.png" >
+				<attribute name="onClick">
+					Integer vintlv;
+					vintlv=Integer.parseInt(vulevel);
+					if(vintlv==0){
+						alert("คุณไม่มีสิทธิ์เข้าหน้าจอนี้.");
+						}
+						else{
+							ctrall.setSrc("/rp/reportsv1detail.zul");
+							ctrall.setVisible(true);
+							ctrdr.setVisible(false);
+							ctrdo.setVisible(false);
+						}
+				</attribute>
+			</menuitem>
+		</menupopup>
+	</menu>
+	<menuitem label="Configuration" image="/img/conf.png" >
+		<attribute name="onClick">
+		setConfig();
+		</attribute>	
+	</menuitem>
+	<menuitem label="Help" image="/img/help.png" >
+		<attribute name="onClick">
+			setHelp();
+		</attribute>
+	</menuitem>
+	<menuitem label="แจ้งปัญหา" image="/img/email.png" >
+			<attribute name="onClick">
+			setSendBug();
+			</attribute>
+	</menuitem>
+	<menuitem label="Logout" image="/img/logout.png" >
+			<attribute name="onClick">
+				setULogout();
+			</attribute>
+	</menuitem>
+	<menuitem />
+	<menuitem image="/img/user.png" id="menuuser"/>	
+</menubar>
+
+
+
+
+<!-- 
+<menuitem src="/img/drdologo.png" style="padding-left: 20px;"/>
+<hbox sclass="hmenu">
+<toolbarbutton image="/img/drmn.png" label="DR-Request" sclass="tbtn">
+	<attribute name="onClick">
+			setDrMenu();
+	</attribute>
+</toolbarbutton>
+<label value="|" />
+<toolbarbutton image="/img/domn.png" label="DO-Management" sclass="tbtn" >
+	<attribute name="onClick">
+		Integer vintlv;
+		vintlv=Integer.parseInt(vulevel);
+		if(vintlv==0){
+			alert("คุณไม่มีสิทธิ์เข้าหน้าจอนี้.");
+			}
+			else{
+				setDoMenu();
+			}
+	</attribute>
+</toolbarbutton>
+<label value="|" />
+<toolbarbutton image="/img/report.png" label="Report" sclass="tbtn">
+	
+</toolbarbutton>
+<menupopup id="editPopup">
+        <menuitem label="View" />
+        <menuitem label="Edit" />
+        <menuitem label="Delete" />
+    </menupopup>
+<label value="|" />
+<toolbarbutton image="/img/conf.png" label="Configuration" sclass="tbtn">
+	<attribute name="onClick">
+		setConfig();
+	</attribute>
+</toolbarbutton>
+<label value="|" />
+<toolbarbutton image="/img/help.png" label="Help" sclass="tbtn">
+	<attribute name="onClick">
+		setHelp();
+	</attribute>
+</toolbarbutton>
+<label value="|" />
+<toolbarbutton image="/img/email.png" label="แจ้งปัญหา" sclass="tbtn">
+	<attribute name="onClick">
+		setSendBug();
+	</attribute>
+</toolbarbutton>
+<label value="|" />
+<toolbarbutton image="/img/logout.png" label="Logout" sclass="tbtn">
+	<attribute name="onClick">
+		setULogout();
+	</attribute>
+</toolbarbutton>
+</hbox>
+</hbox>
+ -->
+ </div>
+</north>
+<west id="lwest" collapsible="true" visible="false">
+<vbox>
+<groupbox id="gbdr" visible="false" style="border:0px;">
+<vbox >
+<toolbarbutton  label="จัดทำเอกสารจัดส่ง" width="120px" src="/img/drimg.png">
+		<attribute name="onClick">
+			application.setAttribute("drstatus","0");
+	  	  	application.setAttribute("sodocno","");
+			ctrdr.setSrc("drmanage.zul");
+		</attribute>
+</toolbarbutton >
+<toolbarbutton  label="เอกสารรอการยืนยัน" onClick="" width="120px" src="/img/drimg.png" >
+	<attribute name="onClick">
+		ctrdr.setSrc("listdr.zul");
+	</attribute>
+</toolbarbutton >
+<toolbarbutton label="เอกสารยืนยันแล้ว" onClick="" width="120px" src="/img/drimg.png">
+	<attribute name="onClick">
+		ctrdr.setSrc("drfirmed.zul");
+	</attribute>
+</toolbarbutton >
+</vbox>
+</groupbox>
+<groupbox id="gbdo" visible="false" width="120px">
+	<vbox>
+		<toolbarbutton  label="จัดทำใบขนส่ง" width="120px" src="/img/doimg.png">
+			<attribute name="onClick">
+				setDoManage();
+			</attribute>
+		</toolbarbutton>
+		<toolbarbutton  label="รายการขนส่ง" width="120px" src="/img/doimg.png">
+			<attribute name="onClick">
+				ctrdo.setSrc("donotconfirmview.zul");
+			</attribute>
+		</toolbarbutton>
+		<toolbarbutton  label="ขนส่งเสร็จแล้ว" width="120px" src="/img/doimg.png">
+			<attribute name="onClick">
+				ctrdo.setSrc("docompleteview.zul");
+			</attribute>
+		</toolbarbutton>
+	</vbox>
+</groupbox>
+
+<groupbox id="gbconfig" visible="false">
+<vbox>
+<toolbarbutton  label="สถานที่ขนส่ง" width="120px" src="/img/delivery.png">
+	<attribute name="onClick">
+			ctrall.setSrc("sub/place.zul");
+				ctrall.setVisible(true);
+				ctrdr.setVisible(false);
+				ctrdo.setVisible(false);
+		</attribute>
+</toolbarbutton>
+<toolbarbutton  label="เส้นทางขนส่ง" width="120px" src="/img/delivery.png" >
+		<attribute name="onClick">
+			ctrall.setSrc("sub/routeway.zul");
+				ctrall.setVisible(true);
+				ctrdr.setVisible(false);
+				ctrdo.setVisible(false);
+		</attribute>
+</toolbarbutton >
+<toolbarbutton  label="รถขนส่ง" width="120px" src="/img/delivery.png">
+	<attribute name="onClick">
+			ctrall.setSrc("sub/car.zul");
+				ctrall.setVisible(true);
+				ctrdr.setVisible(false);
+				ctrdo.setVisible(false);
+		</attribute>
+</toolbarbutton>
+<toolbarbutton  label="พนักงานขนส่ง" width="120px" src="/img/delivery.png">
+	<attribute name="onClick">
+			ctrall.setSrc("sub/employee.zul");
+				ctrall.setVisible(true);
+				ctrdr.setVisible(false);
+				ctrdo.setVisible(false);
+		</attribute>
+</toolbarbutton >
+</vbox>
+</groupbox>
+</vbox>
+ </west>
+	<center autoscroll="true" flex="true" >
+	<div style="background-image: URL(./img/dohomebg.png); background-repeat:no-repeat; background-position:top;">
+		<include id="ctrdr" visible="false" />
+		<include id="ctrdo" visible="false" />
+		<include id="ctrall" visible="false" height="98%"/>
+	</div>
+	</center>
+	
+</borderlayout>
+<zscript>
+<![CDATA[
+    import java.io.*;
+    import java.lang.*;
+    import javax.servlet.http.Cookie;
+	import javax.servlet.http.HttpServletRequest;
+	import javax.servlet.http.HttpServletResponse; 
+	import javax.servlet.http.HttpSession;
+	import org.zkoss.zk.ui.Executions;
+	
+	String vuser;
+	String vcode;
+	String vulevel;
+    
+	public void chkValidate(){
+		try{
+			Cookie [] ck = ((HttpServletRequest)Executions.getCurrent().getNativeRequest()).getCookies();
+			for (Cookie cookie : ck) {
+				if (cookie.getName().equals("ckuser")) {
+					vuser =cookie.getValue();
+				}
+			}
+			for (Cookie ckps : ck) {
+				if (ckps.getName().equals("ckucode")) {
+					vcode =ckps.getValue();
+				}
+			}
+			for (Cookie ckpf : ck) {
+				if (ckpf.getName().equals("ckulevel")) {
+					vulevel = ckpf.getValue();
+					// System.out.println("level="+vulevel);
+				}
+			}
+			if(vuser==null || vuser=="" || vulevel==null || vulevel==""){
+				//System.out.println("cookie = "+cookies);
+				Executions.sendRedirect("index.zul");		
+			} else
+			{	
+				menuuser.setLabel("Login User : "+vuser);
+				lblusername.setValue(vuser);
+				lblulevel.setValue(vulevel);
+				if(vulevel.equals("0")){
+					lwest.setVisible(false);
+					setDrMenu();
+				}else{
+					lwest.setVisible(false);
+				}
+				
+				//do somthing
+			}
+			
+			}catch (Exception e){}
+	}
+    public void setDrMenu(){
+    	gbdr.setVisible(true);
+    	gbconfig.setVisible(false);
+    	gbdo.setVisible(false);
+    	lwest.setTitle("DR-Menu");
+    	ctrdr.setSrc("viewalldr.zul");
+    	ctrall.setVisible(false);
+		ctrdr.setVisible(true);
+		ctrdo.setVisible(false);
+    }
+    public void setConfig(){
+    	lwest.setTitle("System Config");
+    	gbconfig.setVisible(true);
+    	gbdr.setVisible(false);
+    	gbdo.setVisible(false);
+    	ctrall.setSrc("sysconfig.zul");
+    	ctrall.setVisible(true);
+		ctrdr.setVisible(false);
+		ctrdo.setVisible(false);
+    }
+    public void setpotal(){
+    	ctrall.setSrc("dashboard.zul");
+    	ctrall.setVisible(true);
+		ctrdr.setVisible(false);
+		ctrdo.setVisible(false);
+    }
+    public void setDoMenu(){
+    	lwest.setTitle("DO-Menu");
+    	gbdo.setVisible(true);
+    	gbdr.setVisible(false);
+    	gbconfig.setVisible(false);
+    	ctrdo.setSrc("doview.zul");
+    	ctrall.setVisible(false);
+		ctrdr.setVisible(false);
+		ctrdo.setVisible(true);
+    	
+    }
+    public void setDoNCF(){
+    	lwest.setTitle("DO-Menu");
+    	gbdo.setVisible(true);
+    	gbdr.setVisible(false);
+    	gbconfig.setVisible(false);
+    	ctrdo.setSrc("donotconfirmview.zul");
+    	ctrall.setVisible(false);
+		ctrdr.setVisible(false);
+		ctrdo.setVisible(true);
+    	
+    }
+    public void setDoCF(){
+    	lwest.setTitle("DO-Menu");
+    	gbdo.setVisible(true);
+    	gbdr.setVisible(false);
+    	gbconfig.setVisible(false);
+    	ctrdo.setSrc("docompleteview.zul");
+    	ctrall.setVisible(false);
+		ctrdr.setVisible(false);
+		ctrdo.setVisible(true);
+    	
+    }
+    public void setDoManage(){
+    	lwest.setTitle("DO-Menu");
+    	gbdo.setVisible(true);
+    	gbdr.setVisible(false);
+    	gbconfig.setVisible(false);
+    	application.setAttribute("dodocnumber", "");
+    	Executions.createComponents("domanage.zul",null,null);
+    	ctrall.setVisible(false);
+		ctrdr.setVisible(false);
+		ctrdo.setVisible(true);
+    }
+    public void setSendBug(){
+    	lwest.setTitle("System Config");
+    	gbconfig.setVisible(true);
+    	gbdr.setVisible(false);
+    	gbdo.setVisible(false);
+    	ctrall.setSrc("/sub/sendbug.zul");
+    	ctrall.setVisible(true);
+		ctrdr.setVisible(false);
+		ctrdo.setVisible(false);
+    }
+    public void setULogout(){
+    	try{
+    		HttpServletResponse response = (HttpServletResponse)Executions.getCurrent().getNativeResponse();
+    		Cookie userCookie = new Cookie("ckuser", "");	    	
+	    	Cookie levelCookie = new Cookie("ckulevel", "");
+	    	Cookie ucodeCookie = new Cookie("ckucode","");
+        	response.addCookie(userCookie); 
+        	response.addCookie(levelCookie);
+        	response.addCookie(ucodeCookie);
+        	Executions.sendRedirect("index.zul");
+    	}catch (Exception e){}
+    	
+    }
+    
+    public void setHelp(){
+    	ctrall.setSrc("/sub/dohelp.zul");
+    	ctrall.setVisible(true);
+		ctrdr.setVisible(false);
+		ctrdo.setVisible(false);
+    }
+    
+    /* 
+    
+    Script 1/2/2013
+    select * from sm_do.ft_confirmview('1'); สำหรับ ทำปฏิทิน
+    select * from sm_do.ft_confirmview('0'); สำหรับรอ confirm
+    confirm select * from sm_do.ft_confirm('w02-scv5601-0236')
+    
+    */
+    
+    /*  Set----------Favicon
+	<link rel="icon" type="image/gif" href="/img/image.gif">
+	<head>
+	<link rel="shortcut icon" href="http://www.yoursite.com/favicon.ico"> 
+	</head>
+	<link rel="shortcut icon" href="http://example.com/myicon.ico" />
+*/
+    
+    
+]]>
+</zscript>
+</div>
+</zk>

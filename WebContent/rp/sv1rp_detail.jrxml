@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sv1-การส่งมอบสินค้าตรงเวลา-แสดงรายละเอียด" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="180f1ad1-290c-4bcf-b29f-b66c17360789">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#EFF7FF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="source_table" uuid="17c43f50-6d0c-415c-bd9b-fa9c0c7aff8a">
+		<parameter name="begindate_t" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="enddate_t" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="overminute_t" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[30]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select * from
+(
+	(select *
+	from sm_do.ft_dotime_analyze($P{begindate_t}, $P{enddate_t},$P{overminute_t})
+	where overduedate>0 and upper(queuebranch)='S01' )
+	union
+	(select *
+	from sm_do.ft_dotime_analyze($P{begindate_t}, $P{enddate_t},$P{overminute_t})
+	where overduedate>0 and upper(queuebranch)='S02' )
+) as a
+
+order by a.queuebranch,a.duestatus
+;]]>
+		</queryString>
+		<field name="overduedate" class="java.lang.Double"/>
+		<field name="duestatus" class="java.lang.String"/>
+		<field name="confirmstatus" class="java.lang.String"/>
+		<field name="queuebranch" class="java.lang.String"/>
+		<field name="sono" class="java.lang.String"/>
+		<field name="arcode" class="java.lang.String"/>
+		<field name="arname" class="java.lang.String"/>
+		<field name="transportlocation" class="java.lang.String"/>
+		<field name="duedate" class="java.sql.Date"/>
+		<field name="duetime" class="java.lang.String"/>
+		<field name="confirmdate" class="java.sql.Date"/>
+		<field name="confirmtime" class="java.lang.String"/>
+		<field name="queueconfirm" class="java.lang.String"/>
+		<field name="duringdue" class="java.lang.String"/>
+		<field name="duringdueday" class="java.lang.Double"/>
+		<field name="duringduehour" class="java.lang.Double"/>
+		<field name="duringdueminute" class="java.lang.Double"/>
+		<field name="duringconfirm" class="java.lang.String"/>
+		<field name="duringconfirmday" class="java.lang.Double"/>
+		<field name="duringconfirmhour" class="java.lang.Double"/>
+		<field name="duringconfirmminute" class="java.lang.Double"/>
+		<field name="invoiceno" class="java.lang.String"/>
+		<field name="datesend" class="java.sql.Date"/>
+		<field name="timesend" class="java.lang.String"/>
+		<field name="datereturn" class="java.sql.Date"/>
+		<field name="timereturn" class="java.lang.String"/>
+		<field name="amount_do" class="java.math.BigDecimal"/>
+		<field name="amount_all" class="java.math.BigDecimal"/>
+		<field name="saletype" class="java.lang.String"/>
+		<field name="mydescription" class="java.lang.String"/>
+		<field name="branch" class="java.lang.String"/>
+		<field name="docno" class="java.lang.String"/>
+		<field name="docdate" class="java.sql.Date"/>
+		<field name="measurestart" class="java.math.BigDecimal"/>
+		<field name="measurestop" class="java.math.BigDecimal"/>
+		<field name="mydescription_h" class="java.lang.String"/>
+		<field name="carlicence" class="java.lang.String"/>
+		<field name="isreturn" class="java.lang.String"/>
+		<field name="sendresult" class="java.lang.String"/>
+		<field name="sendresultstatus" class="java.lang.String"/>
+		<field name="driver_name" class="java.lang.String"/>
+		<field name="duing" class="java.lang.String"/>
+		<field name="distance" class="java.math.BigDecimal"/>
+		<group name="duestatus">
+			<groupExpression><![CDATA[$F{duestatus}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="begindate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="enddate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="overminute" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[30]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select  * from
+(
+	(select *
+	from sm_do.ft_dotime_analyze($P{begindate}, $P{enddate},$P{overminute})
+	where overduedate>0 and upper(queuebranch)='S01' )
+	union
+	(select *
+	from sm_do.ft_dotime_analyze($P{begindate}, $P{enddate},$P{overminute})
+	where overduedate>0 and upper(queuebranch)='S02'  )
+) as a
+
+order by a.queuebranch,a.duestatus  ;]]>
+	</queryString>
+	<field name="overduedate" class="java.lang.Double"/>
+	<field name="duestatus" class="java.lang.String"/>
+	<field name="confirmstatus" class="java.lang.String"/>
+	<field name="queuebranch" class="java.lang.String"/>
+	<field name="sono" class="java.lang.String"/>
+	<field name="arcode" class="java.lang.String"/>
+	<field name="arname" class="java.lang.String"/>
+	<field name="transportlocation" class="java.lang.String"/>
+	<field name="duedate" class="java.sql.Date"/>
+	<field name="duetime" class="java.lang.String"/>
+	<field name="confirmdate" class="java.sql.Date"/>
+	<field name="confirmtime" class="java.lang.String"/>
+	<field name="queueconfirm" class="java.lang.String"/>
+	<field name="duringdue" class="java.lang.String"/>
+	<field name="duringdueday" class="java.lang.Double"/>
+	<field name="duringduehour" class="java.lang.Double"/>
+	<field name="duringdueminute" class="java.lang.Double"/>
+	<field name="duringconfirm" class="java.lang.String"/>
+	<field name="duringconfirmday" class="java.lang.Double"/>
+	<field name="duringconfirmhour" class="java.lang.Double"/>
+	<field name="duringconfirmminute" class="java.lang.Double"/>
+	<field name="invoiceno" class="java.lang.String"/>
+	<field name="datesend" class="java.sql.Date"/>
+	<field name="timesend" class="java.lang.String"/>
+	<field name="datereturn" class="java.sql.Date"/>
+	<field name="timereturn" class="java.lang.String"/>
+	<field name="amount_do" class="java.math.BigDecimal"/>
+	<field name="amount_all" class="java.math.BigDecimal"/>
+	<field name="saletype" class="java.lang.String"/>
+	<field name="mydescription" class="java.lang.String"/>
+	<field name="branch" class="java.lang.String"/>
+	<field name="docno" class="java.lang.String"/>
+	<field name="docdate" class="java.sql.Date"/>
+	<field name="measurestart" class="java.math.BigDecimal"/>
+	<field name="measurestop" class="java.math.BigDecimal"/>
+	<field name="mydescription_h" class="java.lang.String"/>
+	<field name="carlicence" class="java.lang.String"/>
+	<field name="isreturn" class="java.lang.String"/>
+	<field name="sendresult" class="java.lang.String"/>
+	<field name="sendresultstatus" class="java.lang.String"/>
+	<field name="driver_name" class="java.lang.String"/>
+	<field name="duing" class="java.lang.String"/>
+	<field name="distance" class="java.math.BigDecimal"/>
+	<group name="pg">
+		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
+		<groupHeader>
+			<band height="186">
+				<componentElement>
+					<reportElement uuid="b045dda2-e2b0-43c8-8554-3831a022fa26" key="table 2" style="table 2" x="0" y="12" width="555" height="161"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="source_table" uuid="fe1d7687-ca31-434e-8f3b-19bf6023ba4d">
+							<datasetParameter name="begindate_t">
+								<datasetParameterExpression><![CDATA[$P{begindate}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="enddate_t">
+								<datasetParameterExpression><![CDATA[$P{enddate}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="overminute_t">
+								<datasetParameterExpression><![CDATA[$P{overminute}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="35" uuid="c588bc03-486d-40ee-bd7d-f019c8c380a6">
+							<jr:groupHeader groupName="duestatus">
+								<jr:cell style="table 2_TH" height="30" rowSpan="1">
+									<textField>
+										<reportElement uuid="865e7beb-3906-4905-bfa8-828a8ed9cf0c" style="table" mode="Opaque" x="0" y="0" width="35" height="30"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle">
+											<font fontName="Tahoma" size="8" isBold="true"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$F{queuebranch}]]></textFieldExpression>
+									</textField>
+								</jr:cell>
+							</jr:groupHeader>
+							<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="d7dff930-fda2-4174-ad09-bfe5143dccab" style="table_TH" mode="Transparent" x="0" y="0" width="35" height="30" backcolor="#CCCCFF"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" isBold="true"/>
+									</textElement>
+									<text><![CDATA[สาขา]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="table 2_TD" height="30" rowSpan="1">
+								<box>
+									<pen lineWidth="0.0"/>
+									<topPen lineWidth="0.0"/>
+									<leftPen lineWidth="0.0"/>
+									<bottomPen lineWidth="0.0"/>
+									<rightPen lineWidth="0.0"/>
+								</box>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="65" uuid="82f8c970-4122-4105-b591-ddfabebb1d20">
+							<jr:groupHeader groupName="duestatus">
+								<jr:cell style="table 2_TH" height="30" rowSpan="1">
+									<textField>
+										<reportElement uuid="597938e9-eef2-4f8f-9561-2a5230232a8c" style="table" mode="Opaque" x="0" y="0" width="65" height="30"/>
+										<textElement textAlignment="Center" verticalAlignment="Middle">
+											<font fontName="Tahoma" size="8" isBold="true"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$F{duestatus}]]></textFieldExpression>
+									</textField>
+								</jr:cell>
+							</jr:groupHeader>
+							<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="33f7b610-1a21-4404-b152-578d4c3f70f8" style="table_TH" mode="Transparent" x="0" y="0" width="65" height="30" backcolor="#CCCCFF"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" isBold="true"/>
+									</textElement>
+									<text><![CDATA[สถานะ]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="table 2_TD" height="30" rowSpan="1">
+								<box>
+									<pen lineWidth="0.0"/>
+									<topPen lineWidth="0.0"/>
+									<leftPen lineWidth="0.0"/>
+									<bottomPen lineWidth="0.0"/>
+									<rightPen lineWidth="0.0"/>
+								</box>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="82" uuid="321cc448-ebc6-453b-8f0a-aa827b7e3035">
+							<jr:groupHeader groupName="duestatus">
+								<jr:cell style="table_TH" height="30" rowSpan="1">
+									<box>
+										<pen lineWidth="0.0"/>
+										<topPen lineWidth="0.0"/>
+										<leftPen lineWidth="0.0"/>
+										<bottomPen lineWidth="0.0"/>
+										<rightPen lineWidth="0.0"/>
+									</box>
+								</jr:cell>
+							</jr:groupHeader>
+							<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="03fc7a80-e752-4cf6-86fa-2b64925e3c88" style="table_TH" mode="Transparent" x="0" y="0" width="82" height="30" backcolor="#CCCCFF"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" isBold="true"/>
+									</textElement>
+									<text><![CDATA[เลขที่]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="table 2_TD" height="30" rowSpan="1">
+								<textField isBlankWhenNull="true">
+									<reportElement uuid="d50f749c-18fa-4744-a156-05d1fc8d5a16" mode="Transparent" x="0" y="0" width="82" height="18"/>
+									<textElement verticalAlignment="Middle" markup="none">
+										<font fontName="Tahoma" size="8"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{sono}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="111" uuid="3379f8b4-f68a-4bc5-8477-fea015e831fc">
+							<jr:groupHeader groupName="duestatus">
+								<jr:cell style="table_TH" height="30" rowSpan="1">
+									<box>
+										<pen lineWidth="0.0"/>
+										<topPen lineWidth="0.0"/>
+										<leftPen lineWidth="0.0"/>
+										<bottomPen lineWidth="0.0"/>
+										<rightPen lineWidth="0.0"/>
+									</box>
+								</jr:cell>
+							</jr:groupHeader>
+							<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="0ca3a7ef-b19e-4af5-84c0-23be0a2de772" style="table_TH" mode="Transparent" x="0" y="0" width="111" height="30" backcolor="#CCCCFF"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" isBold="true"/>
+									</textElement>
+									<text><![CDATA[ลูกค้า]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="table 2_TD" height="30" rowSpan="1">
+								<textField isBlankWhenNull="true">
+									<reportElement uuid="72cc416a-8db2-492b-87c6-9921101ffaa8" mode="Transparent" x="0" y="0" width="111" height="18" backcolor="#FFFFFF"/>
+									<textElement verticalAlignment="Middle">
+										<font fontName="Tahoma" size="8"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{arname}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="49" uuid="f211d65a-b27f-497e-b384-6e065a11ba4e">
+							<jr:groupHeader groupName="duestatus">
+								<jr:cell style="table_TH" height="30" rowSpan="1">
+									<box rightPadding="0">
+										<pen lineWidth="0.0" lineStyle="Solid"/>
+										<topPen lineWidth="0.0" lineStyle="Solid"/>
+										<leftPen lineWidth="0.0" lineStyle="Solid"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+										<rightPen lineWidth="0.0" lineStyle="Solid"/>
+									</box>
+								</jr:cell>
+							</jr:groupHeader>
+							<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="8ecbbbd6-d1ff-4e6a-b707-ae1ea15ea028" style="table_TH" mode="Transparent" x="0" y="0" width="49" height="30" backcolor="#CCCCFF"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" isBold="true"/>
+									</textElement>
+									<text><![CDATA[วันที่ ขอส่ง]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="table 2_TD" height="30" rowSpan="1">
+								<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+									<reportElement uuid="ac390116-d025-4ca4-8a60-7e7edeb48e83" mode="Transparent" x="0" y="0" width="49" height="18" backcolor="#FFFFFF"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" size="8"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{duedate}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="38" uuid="40176d0b-70e4-41bd-b695-d5b73698bbd3">
+							<jr:groupHeader groupName="duestatus">
+								<jr:cell style="table_TH" height="30" rowSpan="1">
+									<box>
+										<pen lineWidth="0.0"/>
+										<topPen lineWidth="0.0"/>
+										<leftPen lineWidth="0.0"/>
+										<bottomPen lineWidth="0.0"/>
+										<rightPen lineWidth="0.0"/>
+									</box>
+								</jr:cell>
+							</jr:groupHeader>
+							<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="5f98a249-75ff-4585-bb7c-7bc3a0148a68" mode="Transparent" x="0" y="0" width="38" height="30"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" isBold="true"/>
+									</textElement>
+									<text><![CDATA[เวลา ขอส่ง]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="table 2_TD" height="30" rowSpan="1">
+								<textField>
+									<reportElement uuid="cea46d38-ae75-452b-94f0-5f2cdd639a1a" mode="Transparent" x="0" y="0" width="38" height="18"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" size="8"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{duetime}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="49" uuid="a0c70609-ef1b-45d7-92f5-24a5ce608481">
+							<jr:groupHeader groupName="duestatus">
+								<jr:cell style="table_TH" height="30" rowSpan="1">
+									<box>
+										<pen lineWidth="0.0"/>
+										<topPen lineWidth="0.0"/>
+										<leftPen lineWidth="0.0"/>
+										<bottomPen lineWidth="0.0"/>
+										<rightPen lineWidth="0.0"/>
+									</box>
+								</jr:cell>
+							</jr:groupHeader>
+							<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="883fcd0e-41b0-4ae4-8e2d-8c3dc101cc58" mode="Transparent" x="0" y="0" width="49" height="30"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" size="8" isBold="true"/>
+									</textElement>
+									<text><![CDATA[วันที่ส่ง]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="table 2_TD" height="30" rowSpan="1">
+								<textField pattern="dd/MM/yyyy">
+									<reportElement uuid="7d65b7a9-da16-4523-abc2-e36063801f48" mode="Transparent" x="0" y="0" width="49" height="18"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" size="8"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{datesend}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="36" uuid="492f4889-d929-4bfc-9b5f-3a75155b4f27">
+							<jr:groupHeader groupName="duestatus">
+								<jr:cell style="table_TH" height="30" rowSpan="1">
+									<box>
+										<pen lineWidth="0.0"/>
+										<topPen lineWidth="0.0"/>
+										<leftPen lineWidth="0.0"/>
+										<bottomPen lineWidth="0.0"/>
+										<rightPen lineWidth="0.0"/>
+									</box>
+								</jr:cell>
+							</jr:groupHeader>
+							<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="56579975-e552-44af-afd5-dda601eb94df" mode="Transparent" x="0" y="0" width="36" height="30"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" size="8" isBold="true"/>
+									</textElement>
+									<text><![CDATA[เวลาส่ง]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="table 2_TD" height="30" rowSpan="1">
+								<textField>
+									<reportElement uuid="d1aa5f2e-b50d-4875-a463-21cb708483f1" mode="Transparent" x="0" y="0" width="36" height="18"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" size="8"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{timesend}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="71" uuid="db733338-d443-46c6-b256-e063928f4a3d">
+							<jr:groupHeader groupName="duestatus">
+								<jr:cell style="table_TH" height="30" rowSpan="1">
+									<box>
+										<pen lineWidth="0.0"/>
+										<topPen lineWidth="0.0"/>
+										<leftPen lineWidth="0.0"/>
+										<bottomPen lineWidth="0.0"/>
+										<rightPen lineWidth="0.0"/>
+									</box>
+								</jr:cell>
+							</jr:groupHeader>
+							<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="dc738375-29d2-4b4a-bddb-10c054c50a9e" mode="Transparent" x="0" y="0" width="70" height="30"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" size="8" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Datetime over]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="table 2_TD" height="30" rowSpan="1">
+								<textField>
+									<reportElement uuid="5f243a38-565a-403b-a788-64b82feeb5c7" mode="Transparent" x="0" y="0" width="70" height="18"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Tahoma" size="8"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{duringdue}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="16" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="76" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="8f1850a3-7768-4fae-81c5-435a3aa496f7" x="4" y="24" width="534" height="50"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="9502f9d5-9805-41b8-b4bf-1bc9d271817a" x="160" y="52" width="60" height="13"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{begindate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ea579e3d-56fe-4cdc-998b-37ff2042e029" x="399" y="51" width="100" height="13"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{overminute}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="05b9864f-2cc2-4a87-80b5-dfb2baea65c0" x="107" y="52" width="53" height="13"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ตั้งแต่วันที่ :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d9f5fcd9-5276-4d35-9649-9e3e6c70ff8b" x="321" y="51" width="74" height="15"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ส่งภายใน(นาที)]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="867e6b38-e18c-49c4-8d31-e6b01af4092e" x="247" y="52" width="67" height="13"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{enddate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b18ab01e-6e21-4dc8-8272-1d8001829e24" x="223" y="52" width="16" height="15"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ถึง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2481445a-4009-4e50-a368-5afc8d42030d" x="107" y="24" width="392" height="20" isPrintWhenDetailOverflows="true"/>
+				<textElement>
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SV1-การส่งมอบสินค้าตรงเวลา(ตามวันนัดส่ง)-แสดงรายละเอียด]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement uuid="50497c9d-09c0-4d94-9d4c-f49a39df52e2" x="515" y="2" width="40" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b87dbd20-19ab-43c5-a523-a2c45192781b" x="435" y="2" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="1bdc64f7-33be-408e-9ec2-a29e8f11218d" x="4" y="1" width="74" height="20"/>
+				<imageExpression><![CDATA["/var/lib/tomcat7/webapps/npdo/rp/logonp.gif"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<summary>
+		<band height="174"/>
+	</summary>
+</jasperReport>

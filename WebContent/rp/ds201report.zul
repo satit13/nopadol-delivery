@@ -1,0 +1,191 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<div height="100%" style="border:1px solid black;overflow:auto;" >
+<grid>
+		<columns>
+			<column label="DS201-รายงานสรุปค่าจัดส่งสินค้า"/>
+		</columns>
+		<rows>
+			<row>
+			<x:table>
+				<x:tr>
+					<x:td>สาขา</x:td>
+					<x:td><combobox id="cbobranch" width="50px">
+						<comboitem label="s01"/>
+						<comboitem label="s02"/>
+					</combobox></x:td>
+					<x:td>ตั้งแต่วันที่</x:td>
+					<x:td><datebox id="dtstart" format="dd/MM/yyyy" onCreate="self.setValue(new Date());"/></x:td>
+					<x:td>ถึงวันที่</x:td>
+					<x:td><datebox id="dtstop" format="dd/MM/yyyy" onCreate="self.setValue(new Date());"/></x:td>
+					<x:td>อัตรา(บาท:กม)</x:td>
+					<x:td><intbox id="ibxratekm" value="15" width="50px"/></x:td>
+					<x:td>ระยะทางผิด(เกิน 500 กม.)</x:td>
+					<x:td>
+						<radiogroup>
+							<radio id="rdoNO" label="No" checked="true"/>
+							<radio id="rdoYES" label="Yes"/>
+						</radiogroup>
+					</x:td>
+					<x:td><button label="ดูรายงาน" onClick="viewds201()" /></x:td>
+					<x:td><button label="ออก" onClick="goHome();" /></x:td>
+				</x:tr>
+			</x:table>				
+			</row>
+		</rows>
+	</grid>
+	<jasperreport id="ds201rp" height="85%"/>
+<zscript>
+<![CDATA[
+
+import java.sql.*;
+import java.io.*;
+import java.lang.*;
+import java.util.Date;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+//import javax.servlet.http.Cookie;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse; 
+import net.sf.jasperreports.engine.DefaultJasperReportsContext;
+import net.sf.jasperreports.extensions.ExtensionsEnvironment;
+import net.sf.jasperreports.engine.JasperReportsContext;
+import net.sf.jasperreports.engine.JRRuntimeException;
+import net.sf.jasperreports.engine.JRDataset;
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
+
+import org.zkoss.util.media.AMedia;
+import org.zkoss.zul.*;
+import condb.Database;
+import java.text.SimpleDateFormat;
+
+Connection con=null;
+SimpleDateFormat dtfm = new SimpleDateFormat("yyyy/MM/dd");
+
+public void viewds201(){
+	String branchcode;
+	String getstartdate;
+	String getstopdate;
+	String startdate;
+	String stopdate;
+	Integer vratekm;
+	String vdistance;
+	String rpQry;
+	Date dtmstart;
+	Date dtmstop;
+	ResultSet rs = null;
+	PreparedStatement st=null;
+	try{
+		branchcode = cbobranch.getText();
+		getstartdate = dtstart.getText();
+		getstopdate = dtstop.getText();
+		startdate = dtnormal(getstartdate);
+		stopdate = dtnormal(getstopdate);
+		vratekm = ibxratekm.getValue();
+		 dtmstart = dtstart.getValue();
+		 dtmstop = dtstop.getValue();
+		//dtmstart = dtfm.parse(startdate);
+		//dtmstop = dtfm.parse(stopdate);
+		System.out.println(dtmstart);
+		if(rdoYES.isChecked()==true){
+			vdistance = "Y";
+		}else{
+			vdistance = "N";
+		}
+		//--------check validate
+			if(branchcode.length()<=0){
+				alert("กรุณาเลือกสาขาก่อน.");
+				return;
+			}
+			else if(vratekm < 0){
+				alert("อัตราต้องมากกว่า 0 ");
+				return;
+			}else{
+				System.out.println(startdate +"-"+ stopdate);
+				Map params = new HashMap();
+				params.put("branch", branchcode);
+				params.put("begindate", startdate);
+				params.put("enddate", stopdate);
+				params.put("ratekm", vratekm);
+				params.put("distance", vdistance);
+				con = Database.getConnection();
+				ds201rp.setParameters(params);
+				rpQry= "select  upper(ศูนย์ธุรกิจ) as branchx,* from sm_do.ft_shippingvalue("+vratekm+",'"+startdate+"','"+stopdate+"')"+
+					   " where upper(ศูนย์ธุรกิจ)=upper('"+branchcode+"') and  upper(\"ระยะทางผิด(เกิน500กม.)\")='"+vdistance+"';";
+				st = con.prepareStatement(rpQry);
+				rs = st.executeQuery();
+				
+				ds201rp.setSrc(session.getWebApp().getRealPath("/rp/DS201-report.jasper"));
+				ds201rp.setDatasource(new JRResultSetDataSource(rs));
+				ds201rp.setDataConnection(Database.getConnection());
+				ds201rp.setType("pdf");
+			}	
+		
+		
+	}catch(Exception ex){
+		ex.printStackTrace();
+	}
+}
+public String dtdmy(String vgetdate){	
+	
+	String vrsDate;
+	String vDate;
+	String vYear;
+	String vMonth;
+	String strResultYear;
+	String strgetDate;
+	
+	strgetDate = vgetdate;
+	vYear = strgetDate.substring(6);
+	vMonth = strgetDate.substring(3,5);	
+	vDate = strgetDate.substring(0,2);
+	Integer xInt1 = Integer.parseInt(vYear);
+	System.out.println("xY="+xInt1);
+   		if (xInt1 > 2500){
+   			Integer bInt= xInt1-543;
+   			strResultYear= Integer.toString(bInt);
+   		}else {
+   			strResultYear= Integer.toString(xInt1);
+   		}
+			vrsDate=vDate.concat("/".concat(vMonth.concat("/".concat(strResultYear)))); 
+		return (vrsDate); 
+	}
+
+public String dtnormal(String vgetdate){	
+	
+	String vrsDate;
+	String vDate;
+	String vYear;
+	String vMonth;
+	String strResultYear;
+	String strgetDate;
+	
+	strgetDate = vgetdate;
+	vYear = strgetDate.substring(6);
+	vMonth = strgetDate.substring(3,5);	
+	vDate = strgetDate.substring(0,2);
+	Integer xInt1 = Integer.parseInt(vYear);
+	System.out.println("xY="+xInt1);
+   		if (xInt1 > 2500){
+   			Integer bInt= xInt1-543;
+   			strResultYear= Integer.toString(bInt);
+   		}else {
+   			strResultYear= Integer.toString(xInt1);
+   		}
+			vrsDate=strResultYear.concat("/".concat(vMonth.concat("/".concat(vDate)))); 
+		return (vrsDate); 
+	}
+void goHome(){
+	Executions.sendRedirect("home.zul");
+}
+]]>
+</zscript>
+</div>
+</zk>

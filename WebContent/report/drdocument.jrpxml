@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperPrint xmlns="http://jasperreports.sourceforge.net/jasperreports/print" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/print http://jasperreports.sourceforge.net/xsd/jasperprint.xsd" name="drdocument" pageWidth="595" pageHeight="842" topMargin="20" leftMargin="20" bottomMargin="20" rightMargin="20" locale="th_TH" timezone="Asia/Bangkok">
+	<property name="net.sf.jasperreports.export.xml.start.page.index" value="0"/>
+	<property name="net.sf.jasperreports.export.xml.end.page.index" value="0"/>
+	<property name="net.sf.jasperreports.export.xml.page.count" value="1"/>
+	<origin group="branch" band="groupHeader"/>
+	<origin group="branch" band="groupFooter"/>
+	<origin group="sono" band="groupHeader"/>
+	<origin group="sono" band="groupFooter"/>
+	<origin band="background"/>
+	<origin band="title"/>
+	<origin band="pageHeader"/>
+	<origin band="detail"/>
+	<origin band="columnFooter"/>
+	<origin band="pageFooter"/>
+	<origin band="summary"/>
+	<page>
+		<text textAlignment="Right" textHeight="12.0703125" lineSpacingFactor="1.2070312" leadingOffset="-2.0654297">
+			<reportElement uuid="ca96f044-2d55-4925-b2d3-40bbb90126e7" x="475" y="21" width="100" height="17" origin="5" srcId="1"/>
+			<font fontName="Tahoma" isBold="true"/>
+			<textContent><![CDATA[F-DS-101]]></textContent>
+		</text>
+		<text textAlignment="Right" verticalAlignment="Middle" textHeight="14.484375" lineSpacingFactor="1.2070312" leadingOffset="-2.4785156">
+			<reportElement uuid="9a0a5083-6efb-4d8a-bdc9-c954814a864b" x="363" y="39" width="212" height="19" origin="5" srcId="2"/>
+			<font fontName="Tahoma" size="12" isBold="true"/>
+			<textContent><![CDATA[ใบเข้าคิวขนส่ง (QR-Queue)]]></textContent>
+		</text>
+		<line>
+			<reportElement uuid="914448a3-c8c0-4a7f-afa9-2ea1de106988" x="336" y="38" width="239" height="1" origin="5" srcId="3"/>
+		</line>
+		<line>
+			<reportElement uuid="7e5edd85-a38d-42ed-9182-9b1d46b13a10" x="336" y="58" width="239" height="1" origin="5" srcId="4"/>
+		</line>
+		<rectangle radius="0">
+			<reportElement uuid="a0784583-db8e-4894-a661-64bfd2f69ecc" x="20" y="135" width="554" height="14" origin="6" srcId="5"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<rectangle radius="10">
+			<reportElement uuid="4299d487-4a25-49f4-97e2-6122eeb30861" x="259" y="69" width="315" height="61" origin="6" srcId="6"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<rectangle radius="10">
+			<reportElement uuid="a7565866-b0f9-4f47-b61b-79e70d7f4a25" x="21" y="69" width="233" height="61" origin="6" srcId="7"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="2c8d1318-7a3b-4e87-b0ba-24950ab5a4c2" x="27" y="70" width="91" height="20" origin="6" srcId="8"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[เลขที่อ้างอิง]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="c323fd49-e8cf-489c-a4ac-cb459c5d8eae" x="27" y="90" width="91" height="20" origin="6" srcId="9"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[ระดับความสำคัญ]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="1ab1cdfc-4bcc-419a-b848-a8e41b6189ca" x="27" y="110" width="91" height="20" origin="6" srcId="10"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[จำนวนเงินที่ต้องเก็บ]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="12.0703125" lineSpacingFactor="1.2070312" leadingOffset="-2.0654297">
+			<reportElement uuid="dc8e93b9-b541-4de8-981b-921d174a5e61" x="128" y="70" width="126" height="20" origin="6" srcId="11"/>
+			<font fontName="Tahoma" size="10" isBold="true"/>
+			<textContent><![CDATA[w01-scv5606-0418         ]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="12.0703125" lineSpacingFactor="1.2070312" leadingOffset="-2.0654297">
+			<reportElement uuid="f2d0ff19-4a2e-4e52-9cb6-21638917ba2b" x="128" y="90" width="126" height="20" origin="6" srcId="12"/>
+			<font fontName="Tahoma" size="10" isBold="true"/>
+			<textContent><![CDATA[ด่วนมาก]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="14.484375" lineSpacingFactor="1.2070312" leadingOffset="-2.4785156" valueClass="java.math.BigDecimal">
+			<reportElement uuid="aef13335-04f6-48c1-9205-b05d7688d20a" x="128" y="110" width="126" height="20" origin="6" srcId="13"/>
+			<font fontName="Tahoma" size="12" isBold="true"/>
+			<textContent><![CDATA[4750.00]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="e68bcefd-392b-498b-bd58-bc5b10c22e74" x="266" y="70" width="68" height="20" origin="6" srcId="14"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[สาขา]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="181fcea7-4f28-4028-9190-949b5602faf6" x="266" y="90" width="68" height="20" origin="6" srcId="15"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[วันที่เอกสาร]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="21625fd6-3957-49c8-8eab-b59c5f6aa61d" x="266" y="110" width="68" height="20" origin="6" srcId="16"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[วันนัดรับสินค้า]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="14.484375" lineSpacingFactor="1.2070312" leadingOffset="-2.4785156">
+			<reportElement uuid="0cce8981-988d-4542-96ec-a49fc1a3c8e3" x="339" y="70" width="174" height="20" origin="6" srcId="17"/>
+			<font fontName="Tahoma" size="12" isBold="true"/>
+			<textContent><![CDATA[S02                      ]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="57b79f21-2a29-41c9-af32-0f9050788353" x="432" y="110" width="81" height="20" origin="6" srcId="18"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[เวลานัดรับสินค้า]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="8699f771-7369-4bde-b78a-88cb69e0aba5" x="28" y="135" width="90" height="14" origin="6" srcId="19"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[พนักงานขาย :]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="4cc17381-c91f-42e9-855b-5309f295b5a9" x="128" y="135" width="45" height="14" origin="6" srcId="20"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[55104                    ]]></textContent>
+		</text>
+		<text textHeight="12.578125" lineSpacingFactor="1.2578125" leadingOffset="-2.1972656">
+			<reportElement uuid="4ac19b06-cb6c-44d8-b0c3-255982155cb5" x="175" y="135" width="6" height="14" origin="6" srcId="21"/>
+			<font isBold="true"/>
+			<textContent><![CDATA[:]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="8d28ed34-a9bc-47d2-82fe-b5858e90c026" x="182" y="135" width="244" height="14" origin="6" srcId="22"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[อัญชลี มนเทียน                                                                                                                                                                                          ]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="12.0703125" lineSpacingFactor="1.2070312" leadingOffset="-2.0654297" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement uuid="b1633ee3-37d4-40a5-ace8-be0d40930000" x="339" y="110" width="87" height="20" origin="6" srcId="23"/>
+			<font fontName="Tahoma" size="10" isBold="true"/>
+			<textContent><![CDATA[08/06/2556]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="12.0703125" lineSpacingFactor="1.2070312" leadingOffset="-2.0654297">
+			<reportElement uuid="7c662a81-23bc-49b7-bc96-6aba1f6dd51f" x="495" y="110" width="68" height="20" origin="6" srcId="24"/>
+			<font fontName="Tahoma" size="10" isBold="true"/>
+			<textContent><![CDATA[10:00]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="12.0703125" lineSpacingFactor="1.2070312" leadingOffset="-2.0654297" valueClass="java.sql.Timestamp" pattern="dd/MM/yyyy">
+			<reportElement uuid="a698c538-03ef-4b41-b4ae-de25516b35d1" x="339" y="90" width="172" height="20" origin="6" srcId="25"/>
+			<font fontName="Tahoma" size="10" isBold="true"/>
+			<textContent><![CDATA[06/06/2556]]></textContent>
+		</text>
+		<rectangle radius="10">
+			<reportElement uuid="2e61fced-07ab-40a0-9d12-855154043b3b" x="21" y="153" width="554" height="57" origin="7" srcId="26"/>
+		</rectangle>
+		<rectangle radius="0">
+			<reportElement uuid="782fe33d-8323-4b0e-98e4-c71753b9f059" x="20" y="236" width="554" height="22" origin="7" srcId="27"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<rectangle radius="0">
+			<reportElement uuid="a1366852-38f8-4551-adbe-ee49dc5597af" x="20" y="293" width="554" height="25" origin="7" srcId="28"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<rectangle radius="0">
+			<reportElement uuid="2e729442-1af3-446b-9d63-9a7976a46e85" x="20" y="259" width="554" height="31" origin="7" srcId="29"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<rectangle radius="0">
+			<reportElement uuid="782fe33d-8323-4b0e-98e4-c71753b9f059" x="20" y="213" width="554" height="22" origin="7" srcId="30"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="abadc2aa-9529-4bf7-9af2-9ef2268d1d2d" x="28" y="239" width="90" height="18" origin="7" srcId="31"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[สถานที่ขนส่ง]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="58323b73-9697-4391-998f-471960f3fe03" x="28" y="216" width="90" height="19" origin="7" srcId="32"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[เส้นทาง]]></textContent>
+		</text>
+		<text textHeight="14.484375" lineSpacingFactor="1.2070312" leadingOffset="-2.4785156">
+			<reportElement uuid="b737c61c-20d4-4025-842b-7c49eb916efd" x="128" y="239" width="437" height="18" origin="7" srcId="33"/>
+			<font fontName="Tahoma" size="12" isBold="true"/>
+			<textContent><![CDATA[ทากาศ แม่ทา ลำพูน]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="5f19678e-e0c1-40a8-ae92-873d7d1d0976" x="27" y="259" width="91" height="15" origin="7" srcId="34"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[จุดสังเกตที่สำคัญ]]></textContent>
+		</text>
+		<text textHeight="14.484375" lineSpacingFactor="1.2070312" leadingOffset="-2.4785156">
+			<reportElement uuid="96715022-cd60-4da2-b190-03a84ad16b7d" x="128" y="259" width="437" height="31" origin="7" srcId="35"/>
+			<font fontName="Tahoma" size="12" isBold="true"/>
+			<textContent><![CDATA[โรงหล่อแม่ทา ถ.ซุปเปอร์-ลำปาง                                                                                                                                                                           ]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="5005cf29-86d4-419d-81e8-1d8fcf000228" x="28" y="293" width="90" height="15" origin="7" srcId="36"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[หมายเหตุ]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="12.0703125" lineSpacingFactor="1.2070312" leadingOffset="-2.0654297">
+			<reportElement uuid="68bca27d-dac6-4fc0-a11b-379d2293fb03" x="436" y="298" width="34" height="13" origin="7" srcId="37"/>
+			<font fontName="Tahoma" size="10"/>
+			<textContent><![CDATA[แผนที่ :]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="12.0703125" lineSpacingFactor="1.2070312" leadingOffset="-2.0654297">
+			<reportElement uuid="6622ca1c-0fdc-4197-bac1-c044d3aab58c" x="483" y="298" width="24" height="13" origin="7" srcId="38"/>
+			<font fontName="Tahoma" size="10"/>
+			<textContent><![CDATA[แนบ]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="12.0703125" lineSpacingFactor="1.2070312" leadingOffset="-2.0654297">
+			<reportElement uuid="a9192183-a013-4448-bdac-df943530aa4a" x="524" y="298" width="50" height="13" origin="7" srcId="39"/>
+			<font fontName="Tahoma" size="10"/>
+			<textContent><![CDATA[เคยส่งแล้ว]]></textContent>
+		</text>
+		<rectangle radius="0">
+			<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="511" y="300" width="10" height="10" origin="7" srcId="40"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<rectangle radius="0">
+			<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="471" y="300" width="10" height="10" origin="7" srcId="41"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<text textHeight="14.484375" lineSpacingFactor="1.2070312" leadingOffset="-2.4785156">
+			<reportElement uuid="b2eeb998-97a0-463c-ab29-9ba9bc2c5531" x="128" y="295" width="304" height="23" origin="7" srcId="42"/>
+			<font fontName="Tahoma" size="12"/>
+			<textContent><![CDATA[                                                                                                                                                                                                        ]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="14.484375" lineSpacingFactor="1.2070312" leadingOffset="-2.4785156">
+			<reportElement uuid="1870275f-5a19-43ea-98fb-c082fe9da09c" x="128" y="216" width="435" height="20" origin="7" srcId="43"/>
+			<font fontName="Tahoma" size="12" isBold="true"/>
+			<textContent><![CDATA[ลำพูน-ซุปเปอร์                                                                                      ]]></textContent>
+		</text>
+		<text textHeight="14.484375" lineSpacingFactor="1.2070312" leadingOffset="-2.4785156">
+			<reportElement uuid="89c270b0-2512-4594-8518-982cf896962a" x="28" y="157" width="100" height="20" origin="7" srcId="44"/>
+			<font fontName="Tahoma" size="12"/>
+			<textContent><![CDATA[ลูกค้า]]></textContent>
+		</text>
+		<text textHeight="14.484375" lineSpacingFactor="1.2070312" leadingOffset="-2.4785156">
+			<reportElement uuid="f09a384b-27b0-4277-8206-b9cc65584054" x="135" y="157" width="439" height="20" origin="7" srcId="45"/>
+			<font fontName="Tahoma" size="12" isBold="true"/>
+			<textContent><![CDATA[431950              ]]></textContent>
+		</text>
+		<text textHeight="14.484375" lineSpacingFactor="1.2070312" leadingOffset="-2.4785156">
+			<reportElement uuid="0c63073d-aad2-48e3-8bb4-bf53e94fe74d" x="135" y="177" width="439" height="36" origin="7" srcId="46"/>
+			<font fontName="Tahoma" size="12" isBold="true"/>
+			<textContent><![CDATA[บจก.อาร์.เอ.คอน                                                                                                                                                                                         ]]></textContent>
+		</text>
+		<rectangle radius="0">
+			<reportElement uuid="e32e607c-5fd9-4d65-bb65-76368c41a0fe" x="201" y="512" width="373" height="185" origin="8" srcId="47"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<rectangle radius="0">
+			<reportElement uuid="e564477b-919c-4cad-a58e-a3b3b5e42a42" x="20" y="512" width="181" height="185" origin="8" srcId="48"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<rectangle radius="0">
+			<reportElement uuid="6e096ac3-7d71-41d8-89ca-31f51117240e" x="388" y="701" width="186" height="87" origin="8" srcId="49"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<rectangle radius="0">
+			<reportElement uuid="0884a413-74ec-410b-8b95-31aa0317f69a" x="201" y="701" width="187" height="87" origin="8" srcId="50"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<rectangle radius="0">
+			<reportElement uuid="018e5d6c-7e53-4df1-876d-fccba1774c53" x="21" y="701" width="180" height="87" origin="8" srcId="51"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="e39fad9e-2fd1-458b-8f8d-c78ae8b37a33" x="27" y="479" width="312" height="13" origin="8" srcId="52"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[ผู้รับสินค้าหน้างาน : .........................................................................................]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="19d72be5-cffc-482a-91fd-82f3ed397c5e" x="347" y="479" width="216" height="13" origin="8" srcId="53"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[หมายเลขโทรศัพท์ : .......................................................]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="7364bde4-f550-4ae4-979b-fb55b3b31434" x="50" y="496" width="513" height="14" origin="8" srcId="54"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[ส่งปกติ * สินค้าทุกชนิดที่วางชั้นล่างของบ้าน, อาคารพานิชย์คอนโด จะขนลงหน้างานต้องขนไม่ไกลเกิน 10 เมตร]]></textContent>
+		</text>
+		<rectangle radius="0">
+			<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="33" y="495" width="10" height="10" origin="8" srcId="55"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="24b88613-71c5-4088-aada-57712243f14b" x="70" y="519" width="83" height="12" origin="8" srcId="56"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[หน้างาน/พนักงานขาย]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="9a361e6b-9149-4932-bf68-c56020cf163f" x="350" y="519" width="100" height="12" origin="8" srcId="57"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[รายละเอียดสถานที่จัดเก็บ]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="827e95e5-622c-46f5-a459-44a06f9b1a08" x="50" y="542" width="54" height="11" origin="8" srcId="58"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[มีคนช่วยลง]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="827e95e5-622c-46f5-a459-44a06f9b1a08" x="50" y="559" width="54" height="11" origin="8" srcId="59"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[มีสิ่งกีดขวาง]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="827e95e5-622c-46f5-a459-44a06f9b1a08" x="128" y="542" width="54" height="11" origin="8" srcId="60"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[ไม่มีคนช่วยลง]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="827e95e5-622c-46f5-a459-44a06f9b1a08" x="128" y="559" width="54" height="11" origin="8" srcId="61"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[ไม่มีสิ่งกีดขวาง]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="8881af65-43ef-408a-8508-7cc4f9aa5557" x="59" y="581" width="100" height="12" origin="8" srcId="62"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[อุปกรณ์เสริมที่ลูกค้าขอเพิ่ม]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="817645b2-bf63-488e-b6dc-8cd1a91d4cea" x="32" y="606" width="150" height="12" origin="8" srcId="63"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[1.....................................................]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="817645b2-bf63-488e-b6dc-8cd1a91d4cea" x="32" y="627" width="150" height="12" origin="8" srcId="64"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[2.....................................................]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="817645b2-bf63-488e-b6dc-8cd1a91d4cea" x="32" y="648" width="150" height="12" origin="8" srcId="65"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[3.....................................................]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="817645b2-bf63-488e-b6dc-8cd1a91d4cea" x="32" y="669" width="150" height="12" origin="8" srcId="66"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[4.....................................................]]></textContent>
+		</text>
+		<rectangle radius="0">
+			<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="33" y="542" width="10" height="10" origin="8" srcId="67"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<rectangle radius="0">
+			<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="33" y="558" width="10" height="10" origin="8" srcId="68"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<rectangle radius="0">
+			<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="113" y="543" width="10" height="10" origin="8" srcId="69"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<rectangle radius="0">
+			<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="113" y="559" width="10" height="10" origin="8" srcId="70"/>
+			<graphicElement>
+				<pen lineWidth="0.5"/>
+			</graphicElement>
+		</rectangle>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="351684c0-b9dd-4463-bd87-cfdb593783d9" x="228" y="542" width="335" height="11" origin="8" srcId="71"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[ขนขึ้นชั้น 2-7 จอดรถใกล้จุดลำเรียงสินค้าเข้าลิฟท์ได้ง่าย มีลิฟท์ขนของให้]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="0b69572d-80ef-4077-9669-bca0cad78112" x="228" y="559" width="335" height="11" origin="8" srcId="72"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[สินค้า   1...........................................................คิดราคา/ชิ้น......................................]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="0b69572d-80ef-4077-9669-bca0cad78112" x="228" y="579" width="335" height="11" origin="8" srcId="73"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[สินค้า   2...........................................................คิดราคา/ชิ้น......................................]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="0b69572d-80ef-4077-9669-bca0cad78112" x="228" y="597" width="335" height="11" origin="8" srcId="74"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[สินค้า   3...........................................................คิดราคา/ชิ้น......................................]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="23d9342a-bd7c-439d-9adc-9b272df78640" x="228" y="617" width="100" height="12" origin="8" srcId="75"/>
+			<font fontName="Tahoma" size="8" isBold="true"/>
+			<textContent><![CDATA[ขนขึ้นชั้น 2 (เดินขึ้นบันได)]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="0b69572d-80ef-4077-9669-bca0cad78112" x="230" y="633" width="335" height="11" origin="8" srcId="76"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[สินค้า   1...........................................................คิดราคา/ชิ้น......................................]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="0b69572d-80ef-4077-9669-bca0cad78112" x="230" y="653" width="335" height="11" origin="8" srcId="77"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[สินค้า   2...........................................................คิดราคา/ชิ้น......................................]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="0b69572d-80ef-4077-9669-bca0cad78112" x="230" y="671" width="335" height="11" origin="8" srcId="78"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[สินค้า   3...........................................................คิดราคา/ชิ้น......................................]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="abebf072-c3a2-4311-956f-60d170ee3a0d" x="48" y="749" width="112" height="14" origin="8" srcId="79"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[ผู้ทำรายการ]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.0703125" lineSpacingFactor="1.2070312" leadingOffset="-2.0654297">
+			<reportElement uuid="e757d292-e6cc-423a-bb9d-ed8d42fcd5fd" x="33" y="731" width="149" height="18" origin="8" srcId="80"/>
+			<font fontName="Tahoma"/>
+			<textContent><![CDATA[-----------------------------------------]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.0703125" lineSpacingFactor="1.2070312" leadingOffset="-2.0654297">
+			<reportElement uuid="e757d292-e6cc-423a-bb9d-ed8d42fcd5fd" x="214" y="731" width="149" height="18" origin="8" srcId="81"/>
+			<font fontName="Tahoma"/>
+			<textContent><![CDATA[-----------------------------------------]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="12.0703125" lineSpacingFactor="1.2070312" leadingOffset="-2.0654297">
+			<reportElement uuid="e757d292-e6cc-423a-bb9d-ed8d42fcd5fd" x="416" y="731" width="149" height="18" origin="8" srcId="82"/>
+			<font fontName="Tahoma"/>
+			<textContent><![CDATA[-----------------------------------------]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="abebf072-c3a2-4311-956f-60d170ee3a0d" x="235" y="749" width="112" height="14" origin="8" srcId="83"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[ธุรการจัดส่ง]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="abebf072-c3a2-4311-956f-60d170ee3a0d" x="436" y="749" width="112" height="14" origin="8" srcId="84"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[พนักงานจัดส่ง]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="abebf072-c3a2-4311-956f-60d170ee3a0d" x="214" y="763" width="149" height="14" origin="8" srcId="85"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[(                                                )]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="abebf072-c3a2-4311-956f-60d170ee3a0d" x="416" y="763" width="149" height="14" origin="8" srcId="86"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[(                                                )]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="14.484375" lineSpacingFactor="1.2070312" leadingOffset="-2.4785156">
+			<reportElement uuid="46d03e5a-5dac-43c8-9685-976202eddd5d" x="104" y="469" width="224" height="20" origin="8" srcId="87"/>
+			<font fontName="Tahoma" size="12" isBold="true"/>
+			<textContent><![CDATA[คุณหน่อย                                                                                                                                                                                                ]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="14.484375" lineSpacingFactor="1.2070312" leadingOffset="-2.4785156">
+			<reportElement uuid="52b2b166-a8b5-4c3f-873a-34c32b94c7d9" x="422" y="469" width="141" height="23" origin="8" srcId="88"/>
+			<font fontName="Tahoma" size="12" isBold="true"/>
+			<textContent><![CDATA[088-2668191                                       ]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="c25da03b-22e8-4de3-886a-6b1219b79921" x="24" y="806" width="136" height="14" origin="9" srcId="89"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[../report/drdocument.jrxml]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="f58a0ef3-3e80-461b-b5f0-ee8bb79c3185" x="350" y="805" width="33" height="14" origin="9" srcId="90"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[วันที่พิมพ์]]></textContent>
+		</text>
+		<text textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438" valueClass="java.util.Date" pattern="dd/MM/yyyy">
+			<reportElement uuid="f3efda8e-4eb9-43aa-8037-e98309944b5c" x="388" y="805" width="67" height="14" origin="9" srcId="91"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[08/06/2556]]></textContent>
+		</text>
+		<text textAlignment="Right" verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="0d23b342-5a64-47c3-8ba4-465b0d186cc7" x="483" y="805" width="51" height="13" origin="9" srcId="92"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[Page 1 of]]></textContent>
+		</text>
+		<text verticalAlignment="Middle" textHeight="9.65625" lineSpacingFactor="1.2070312" leadingOffset="-1.6523438">
+			<reportElement uuid="8eee4048-c535-468b-bb7e-dbdefb1f1ac3" x="541" y="805" width="33" height="13" origin="9" srcId="93"/>
+			<font fontName="Tahoma" size="8"/>
+			<textContent><![CDATA[ 1]]></textContent>
+		</text>
+	</page>
+</jasperPrint>

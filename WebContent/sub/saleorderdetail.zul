@@ -1,0 +1,85 @@
+<?page title="Sale Order Detail" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<window id="wscv" title="Sale Order Detail" width="800px" border="normal">
+<style>
+	.txtlabel{
+		font-size:10pt;
+		font-weight:bold;
+		color:#005A88;
+</style>
+	<groupbox>
+	<x:table class="txtlabel">
+		<x:tr >
+			<x:td>เลขที่ใบสั่งขาย</x:td>
+			<x:td><textbox width="200px"/></x:td>
+			<x:td>วันที่เอกสาร</x:td>
+			<x:td><datebox format="dd/MM/yyyy"/></x:td>
+		</x:tr>
+			<x:tr>
+			<x:td>รหัสลูกค้า</x:td>
+			<x:td><textbox width="200px"/></x:td>
+			<x:td>ชื่อลูกค้า</x:td>
+			<x:td><textbox width="300px"/></x:td>
+		</x:tr>
+			<x:tr>
+			<x:td>ประเภทการสั่งขาย</x:td>
+			<x:td><textbox width="200px"/></x:td>
+			<x:td>เงื่อนไขการส่งมอบ</x:td>
+			<x:td><textbox width="200px"/></x:td>
+		</x:tr>
+			<x:tr>
+			<x:td>รวมมูลค่าสินค้า</x:td>
+			<x:td><doublebox width="200px"/></x:td>
+			<x:td>ภาษีมูลค่าเพิ่ม</x:td>
+			<x:td><doublebox width="200px"/></x:td>
+		</x:tr>
+			<x:tr>
+			<x:td>มูลค่าสุทธิ</x:td>
+			<x:td><doublebox width="200px"/></x:td>
+			<x:td>มูลค่ารวมภาษี</x:td>
+			<x:td><doublebox width="200px"/></x:td>
+		</x:tr>
+	</x:table>
+	</groupbox>
+	<groupbox>
+	<listbox id="lsitem">
+		<listhead>
+			<listheader label="รหัสสินค้า" />
+			<listheader label="ชื่อสินค้า" />
+			<listheader label="คลัง" />
+			<listheader label="ที่เก็บ" />
+			<listheader label="หน่วยนับ" />
+			<listheader label="จำนวน" />
+			<listheader label="ราคาขาย/หน่วย" />
+			<listheader label="ส่วนลด(บาท)" />
+			<listheader label="จำนวนเงิน" />
+		</listhead>
+		<listitem>
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+		</listitem>
+		<listitem>
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+			<listcell label="" />
+		</listitem>
+	</listbox>
+	</groupbox>
+	<div align="right">
+		<button label="Close" onClick="" />
+	</div>
+</window>
+</zk>

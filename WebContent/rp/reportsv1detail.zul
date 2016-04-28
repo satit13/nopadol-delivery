@@ -1,0 +1,175 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<div height="100%" style="border:1px solid black;overflow:auto;" >
+<grid>
+		<columns>
+			<column label="รายงานรายละเอียด -การส่งมอบสินค้าตรงเวลา(ตามวันนัดส่ง)-SV1"/>
+		</columns>
+		<rows>
+			<row>
+			<x:table>
+				<x:tr>
+					<x:td>ตั้งแต่วันที่</x:td>
+					<x:td><datebox id="dtstart" format="dd/MM/yyyy" onCreate="self.setValue(new Date());"/></x:td>
+					<x:td>ถึงวันที่</x:td>
+					<x:td><datebox id="dtstop" format="dd/MM/yyyy" onCreate="self.setValue(new Date());"/></x:td>
+					<x:td>ส่งภายใน :</x:td>
+					<x:td><intbox id="ibxminute" value="30" width="50px"/></x:td>
+					<x:td>นาที</x:td>
+					<x:td><button label="ดูรายงาน" onClick="viewds201()" /></x:td>
+					<x:td><button label="ออก" onClick="goHome();" /></x:td>
+				</x:tr>
+			</x:table>				
+			</row>
+		</rows>
+	</grid>
+	<jasperreport id="dsrpsv1detail" height="85%"/>
+<zscript>
+<![CDATA[
+
+import java.sql.*;
+import java.io.*;
+import java.lang.*;
+import java.util.Date;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+//import javax.servlet.http.Cookie;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse; 
+import net.sf.jasperreports.engine.DefaultJasperReportsContext;
+import net.sf.jasperreports.extensions.ExtensionsEnvironment;
+import net.sf.jasperreports.engine.JasperReportsContext;
+import net.sf.jasperreports.engine.JRRuntimeException;
+import net.sf.jasperreports.engine.JRDataset;
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
+
+import org.zkoss.util.media.AMedia;
+import org.zkoss.zul.*;
+import condb.Database;
+import java.text.SimpleDateFormat;
+
+Connection con=null;
+SimpleDateFormat dtfm = new SimpleDateFormat("yyyy/MM/dd");
+
+public void viewds201(){
+		String getstartdate;
+	String getstopdate;
+	String startdate;
+	String stopdate;
+	Integer vminute;
+	String vdistance;
+	String rpQry;
+	Date dtmstart;
+	Date dtmstop;
+	ResultSet rs = null;
+	PreparedStatement st=null;
+	try{
+		getstartdate = dtstart.getText();
+		getstopdate = dtstop.getText();
+		startdate = dtdmy(getstartdate);
+		stopdate = dtdmy(getstopdate);
+		vminute = ibxminute.getValue();
+		 dtmstart = dtstart.getValue();
+		 dtmstop = dtstop.getValue();
+		//dtmstart = dtfm.parse(startdate); w01-scv5607-0119 พิมพ์ทองพัฒนา
+		//dtmstop = dtfm.parse(stopdate);
+		System.out.println(dtmstart);
+		//--------check validate
+		 if(vminute < 0){
+				alert("ต้องกำหนดเวลามากกว่า 0 นาที.");
+				return;
+			}else{
+				System.out.println(startdate +"-"+ stopdate);
+				Map params = new HashMap();
+				params.put("begindate", startdate);
+				params.put("enddate", stopdate);
+				params.put("overminute", vminute);
+				con = Database.getConnection();
+				dsrpsv1detail.setParameters(params);
+				rpQry= "select  * from ( "+
+								"(select * "+
+								"from sm_do.ft_dotime_analyze('"+startdate+"', '"+stopdate+"','"+vminute+"') "+
+								"where overduedate>0 and upper(queuebranch)='S01' ) "+
+								"union "+
+								"(select * "+
+								"from sm_do.ft_dotime_analyze('"+startdate+"', '"+stopdate+"','"+vminute+"') "+
+								"where overduedate>0 and upper(queuebranch)='S02'  ) "+
+								") as a "+
+								"order by a.queuebranch,a.duestatus;";
+				st = con.prepareStatement(rpQry);
+				rs = st.executeQuery();
+				
+				dsrpsv1detail.setSrc(session.getWebApp().getRealPath("/rp/sv1rp_detail.jasper"));
+				dsrpsv1detail.setDatasource(new JRResultSetDataSource(rs));
+				dsrpsv1detail.setDataConnection(Database.getConnection());
+				dsrpsv1detail.setType("pdf");
+			}	
+		
+		
+	}catch(Exception ex){
+		ex.printStackTrace();
+	}
+}
+public String dtdmy(String vgetdate){	
+	
+	String vrsDate;
+	String vDate;
+	String vYear;
+	String vMonth;
+	String strResultYear;
+	String strgetDate;
+	
+	strgetDate = vgetdate;
+	vYear = strgetDate.substring(6);
+	vMonth = strgetDate.substring(3,5);	
+	vDate = strgetDate.substring(0,2);
+	Integer xInt1 = Integer.parseInt(vYear);
+	System.out.println("xY="+xInt1);
+   		if (xInt1 > 2500){
+   			Integer bInt= xInt1-543;
+   			strResultYear= Integer.toString(bInt);
+   		}else {
+   			strResultYear= Integer.toString(xInt1);
+   		}
+			vrsDate=vDate.concat("/".concat(vMonth.concat("/".concat(strResultYear)))); 
+		return (vrsDate); 
+	}
+
+public String dtnormal(String vgetdate){	
+	
+	String vrsDate;
+	String vDate;
+	String vYear;
+	String vMonth;
+	String strResultYear;
+	String strgetDate;
+	
+	strgetDate = vgetdate;
+	vYear = strgetDate.substring(6);
+	vMonth = strgetDate.substring(3,5);	
+	vDate = strgetDate.substring(0,2);
+	Integer xInt1 = Integer.parseInt(vYear);
+	System.out.println("xY="+xInt1);
+   		if (xInt1 > 2500){
+   			Integer bInt= xInt1-543;
+   			strResultYear= Integer.toString(bInt);
+   		}else {
+   			strResultYear= Integer.toString(xInt1);
+   		}
+			vrsDate=strResultYear.concat("/".concat(vMonth.concat("/".concat(vDate)))); 
+		return (vrsDate); 
+	}
+void goHome(){
+	Executions.sendRedirect("home.zul");
+}
+]]>
+</zscript>
+</div>
+</zk>

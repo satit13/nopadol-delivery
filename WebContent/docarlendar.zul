@@ -1,0 +1,55 @@
+<?page title="Carlendar" contentType="text/html;charset=UTF-8"?>
+<zk>
+<style>
+.selectedButton .z-button-cm {
+    font-weight: bold;
+}
+ 
+.chooser-popup div.z-popup-cl {
+    border: none;
+}
+ 
+.chooser-popup .z-popup-cnt {
+    padding: 0;
+}
+ 
+.chooser-popup .z-groupbox {
+    -moz-border-radius: 1px 1px 1px 1px;
+}
+</style>
+
+    <window>
+        <!-- Calendars Body -->
+        
+            <!-- Control Menu -->
+            <hlayout sclass="z-valign-middle">
+                <button id="today" label="Today" />
+                <button id="prev" image="/widgets/application/zk_calendar/img/arrow-180.png"/>
+                <button id="next" image="/widgets/application/zk_calendar/img/arrow.png"/>
+                <separator width="50px" />
+                <button id="pageDay" label="Day" width="55px" />
+                <button id="pageWeek" label="Week" width="55px"/>
+                <button id="pageMonth" label="Month" width="55px"/>
+                <separator width="50px" />
+                Filter :
+                <textbox id="filter"/>
+                <button id="applyFilter" label="Apply"/>
+                <button id="resetFilter" label="Reset"/>
+            </hlayout>
+            <separator bar="true" height="20px"/>
+         
+            <calendars id="calendars" firstDayOfWeek="Sunday" height="600px"
+                timeZone="Main=GMT+0" mold="month"/>
+   
+ 
+        <!-- Create/Update Event Popup -->
+        <!-- 
+	        <include src="/widgets/application/zk_calendar/calendar_editor.zul" />
+	     
+	        <script type="text/javascript"
+	            src="/js/lib/jquery.mousewheel.min.js" />
+	        <script type="text/javascript"
+            src="/widgets/application/zk_calendar/scroll.js" />
+         -->
+    </window>
+    </zk>

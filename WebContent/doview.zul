@@ -1,0 +1,2142 @@
+<?page title="Delivery Order" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<style>
+	.tbl{
+		font-size:10pt;
+		color:#005A88;	
+		/*loadViewDo(); */	
+	}
+</style>
+
+<div width="100%" height="100%" style="border:1px solid black;overflow:auto;" apply="drcom.MyComposer">
+<label id="lblgetdoc" value="${applicationScope['sodonum']}" visible="false"/>
+<label id="lbldono"  visible="false"/>
+<label id="lbldosts" onCreate="checkDocStatus();" visible="false"/>
+<grid id="doList" onCreate="viewDO();">
+		<columns>
+			<column label=""/>
+		</columns>
+		<rows>
+			<row>	
+			
+<x:table>
+	<x:tr>
+		<x:td>
+		<button label="New" image="/img/new.png" onClick="newDO()" />
+		</x:td>
+		<x:td><label value="ค้นหา DO" /></x:td>
+		<x:td><textbox id="txsearch" onOK="viewSearchDO()" /></x:td>
+		<x:td><label value="Filter" /></x:td>
+		<x:td><combobox id="cbfilter" onSelect="viewFilterDOByStatus();">
+			<comboitem label="อยู่ระหว่างจัดส่ง"/>
+			<comboitem label="เสร็จสมบูรณ์"/>
+			<comboitem label="หาไซต์งานไม่เจอ"/>
+			<comboitem label="ส่งสินค้าผิด"/>
+			<comboitem label="สินค้าชำรุด"/>
+			<comboitem label="ส่งมอบได้บางส่วน"/>
+			<comboitem label="อื่นๆ"/>
+			<comboitem label="ทั้งหมด"/>
+		</combobox>
+		</x:td>
+	</x:tr>
+</x:table>
+</row>
+<row>
+<listbox id="lsdo" mold="paging" pageSize="10" onSelect="vselectDO();" height="500px">
+	<listhead >
+		<listheader label="เลขที่เอกสาร" />
+		<listheader label="วันที่ส่ง" />
+		<listheader label="เวลาส่ง" />
+		<listheader label="วันที่กลับ" />
+		<listheader label="เวลาที่กลับ" />
+		<listheader label="ทะเบียนรถขนส่ง" />
+		<listheader label="ผลการส่ง" />
+		<listheader label="Description" />
+	</listhead>
+</listbox>
+</row>
+</rows>
+</grid>
+<grid id="doFRM" visible="false">
+		<columns>
+			<column label="DO:จัดการการส่งสินค้า"/>
+		</columns>
+		<rows>
+			<row>	
+	<x:table>
+		<x:tr>
+			<x:td>
+	<x:table width="100%">
+		<x:tr>
+			<x:td width="80%">
+	<x:table class="tbl" align="center" >
+		<x:tr>			
+			<x:td>
+			สาขาที่ส่ง :					
+			</x:td>
+			<x:td>
+			<hbox>				
+				<combobox id="cbxbranch" width="50px" onSelect="genNewDoc();">
+					<comboitem label="s01"/>
+					<comboitem label="s02"/>
+				</combobox>
+				<textbox id="txdodocno" width="100px" readonly="false"/>
+				<label value="*" style="font-size:15px; font-weight:bold; color:red;"/>
+				<button id="btnchk" label="!" onClick="genNewDoc();" visible="false"/>							
+			</hbox>
+			</x:td>
+			<x:td>วันที่เอกสาร :</x:td>
+			<x:td><datebox id="dtdocdate" format="dd/MM/yyyy" width="150px" onCreate="self.setValue(new Date());"/>
+			<label value="*" style="font-size:15px; font-weight:bold; color:red;"/>
+			</x:td>
+		</x:tr>
+		<x:tr>
+			<x:td>วันที่ส่ง :</x:td>
+			<x:td><datebox id="dtdatesend" format="dd/MM/yyyy" width="150px"/>
+			<label value="*" style="font-size:15px; font-weight:bold; color:red;"/>
+			</x:td>
+			<x:td>เวลาที่ส่ง :</x:td>
+			<x:td><timebox id="tbtimesend" format="HH:mm" onCreate="self.setValue(new Date())" locale="th"/></x:td>
+		</x:tr>		
+		<x:tr>
+			<x:td>วันที่กลับ :</x:td>
+			<x:td><datebox id="dtdatereturn" format="dd/MM/yyyy" width="150px" onChange="chkReturnDate();"/>
+			<label value="*" style="font-size:15px; font-weight:bold; color:red;"/>
+			</x:td>
+			<x:td>เวลาที่กลับ :</x:td>
+			<x:td><timebox id="tbtimereturn" format="HH:mm" onCreate="self.setValue(new Date())" locale="th" onChange="chkReturnDate();"/></x:td>
+		</x:tr>		
+		<x:tr>
+			<x:td>ทะเบียนรถขนส่ง :</x:td>
+			<x:td><combobox id="cbdocarlicence" onCreate="loadCarLicence();" width="150px"/>
+				<label value="*" style="font-size:15px; font-weight:bold; color:red;"/>
+			</x:td>	
+			<x:td>ระยะทางรวม :</x:td>
+			<x:td><intbox id="ibinstanceamount" value="0" readonly="true" width="150px" style="text-align:right; font-weight:bold;"/></x:td>		
+		</x:tr>
+		<x:tr>
+			<x:td>กม.เริ่มต้น :</x:td>
+			<x:td><intbox id="ibstart" width="145px" value="0"/>
+				<label value="*" style="font-size:15px; font-weight:bold; color:red;"/>
+			</x:td>
+			<x:td>กม.สิ้นสุด :</x:td>
+			<x:td><intbox xmlns:w="client" id="ibstop" width="150px" value="0">
+				<attribute w:name="onOK">
+								<![CDATA[
+									calMeasureTotal();
+									ibstop.focus();
+									]]>
+									
+				</attribute>
+				<attribute name="onChange" >
+									calMeasureTotal();
+									ibstop.focus();
+				</attribute>
+			
+			</intbox>
+			<label value="*" style="font-size:15px; font-weight:bold; color:red;"/>
+			</x:td>
+		</x:tr>		
+		<x:tr>
+			<x:td>หมายเหตุ :</x:td>
+			<x:td colspan="3"><textbox id="txdesc" rows="2" width="500px"/></x:td>
+		</x:tr>
+	</x:table>
+	</x:td>
+			<x:td width="20%" align="right" valign="top">
+			<button label="ประมวลผลใบ DR" onClick="viewDRModal();" mold="trendy" image="/img/pageprocess.png"/>
+			<textbox id="txdolabel" readonly="true" value="NW" width="25px" height="20px" style="background:#008CD5; text-align:center; font-weight:bold; color:#FFFFFF;"/>
+			</x:td>
+		</x:tr>
+	</x:table>
+</x:td>
+		</x:tr>
+		<x:tr>
+			<x:td>
+	<groupbox><caption label="รายการขนส่ง" style="font-weight:bold; color:#008186;"/>
+		<hbox>
+			<checkbox id="chkboxisbill" label="คลิกช่องนี้ กรณีที่ต้องการหาเอกสารที่ทำบิลไปก่อนแล้ว" style="color:#D70028;"/>
+		</hbox>
+		<button id="btnpDR" label="เลือกเอกสาร DR" image="/img/dr.png" mold="trendy" onClick="chkDRbeforBill();" />
+		<popup id="popdr" width="600px">
+		<label value="เลขที่ DR" /><textbox id="txfinddrcf"/><button label="ค้นหา" onClick="loaddrls();" />
+		<listbox id="lsdr" checkmark="true" multiple="true" mold="paging" pageSize="10">
+			<listhead>
+				<listheader label="เลขที่เอกสาร" width="150px"/>
+				<listheader label="Description" />	
+				<listheader label="กลุ่มสินค้า" width="150px"/>		
+			</listhead>			
+		</listbox>
+		<button label="ตกลง" onClick="selectDR();" />
+		<button id="btnexitdrpop" label="ออก" />
+		</popup>
+		<space />
+		<label value="เลือกเฉพาะรถทะเบียน :"/>
+		<combobox id="cbdrcar" onCreate="loadDRtemplate();" onSelect="selectCar2DR();"/>
+		<button label="เคลียร์ตาราง" onClick="clrDRTable();" />
+		<listbox id="lsdrdetail" nonselectableTags="">
+			<listhead>
+				<listheader label="เลขที่ DR" width="150px"/>
+				<listheader label="Description"/>	
+				<listheader label="อ้างอิงเลขที่บิล" width="150px"/>	
+				<listheader label="ค่าบริการจัดส่ง" width="150px"/>
+				<listheader label="มูลค่าจัดส่ง" width="150px"/>
+				<listheader id="lshdbtn" width="30px"/>	
+				<listheader label="billtype" width="30px" visible="false"/>		
+			</listhead>		
+		</listbox>			
+		</groupbox>
+		</x:td>
+		</x:tr>
+		<x:tr>
+			<x:td>		
+		<groupbox><caption label="พนักงานขนส่ง" style="font-weight:bold; color:#008186;"/>
+		<button label="เลือกจากพนักงานทั้งหมด" id="btnppEmp" image="/img/emp.png" mold="trendy" onClick="loadEmp();" />
+			<popup id="popemp" width="400px">	
+				<hbox>
+					<label value="Keyword"/><textbox id="txsearchemp" />
+					<button label="ค้น" onClick="loadEmp();" />
+				</hbox>			
+				<listbox id="lsemp" checkmark="true" multiple="true" mold="paging" pageSize="10"  >
+					<listhead>
+						<listheader label="รหัสพนักงาน" width="100px"/>
+						<listheader label="ชื่อ-สกุล" />
+						<listheader label="ตำแหน่ง" width="80px"/>
+						<listheader label="รหัสตำแหน่ง" visible="false"/>
+					</listhead>	
+				</listbox>
+				<button id="btnselect" label="ตกลง" onClick="selectEmp();" />
+				<button id="btnccemp" label="ออก" />
+			</popup>
+			<space />
+			<!-- Select Carlicence Templateaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -->
+			<label value="เลือกพนักงานตามทะเบียนรถ :" />
+			<combobox id="cblicencetmp" onCreate="loadCarTMP();" onSelect="selectTMP2Detail();"/>
+			<listbox id="lsempdetail" nonselectableTags="">
+				<listhead>
+					<listheader label="รหัสพนักงาน" width="120px"/>
+					<listheader label="ชื่อพนักงาน" />
+					<listheader label="ตำแหน่ง" width="80px"/>
+					<listheader label="รหัสตำแหน่ง" visible="false" />
+					<listheader label="ค่าเที่ยว" width="120px"/>	
+					<listheader label="หมายเหตุ" width="250px"/>	
+					<listheader id="emphd" width="30px"/>
+									
+				</listhead>				
+			</listbox>
+			<x:table>
+				<x:tr>
+					<x:td>
+						<checkbox id="cxisreturn" label="รถกลับแล้ว" onCheck="vUpdateTrue();"/>
+					</x:td>
+					<x:td>
+						<checkbox id="cxrsstatus1" label="การขนส่งเสร็จสมบูรณ์" onCheck="chkinvoidONSS();" visible="false"/>
+					</x:td>
+					<x:td></x:td>
+					<x:td align="right" width="100px"><label value="ผลการจัดส่ง" /></x:td>
+					<x:td>
+						<combobox id="cbxsendresult" onCreate="self.setSelectedIndex(0)" disabled="true">
+							<comboitem label="สมบูรณ์" />
+							<comboitem label="หาไซต์งานไม่เจอ"/>
+							<comboitem label="ส่งสินค้าผิด"/>
+							<comboitem label="สินค้าชำรุด"/>
+							<comboitem label="ส่งมอบได้บางส่วน"/>
+							<comboitem label="อื่นๆ"/>
+						</combobox>	
+					</x:td>
+				</x:tr>				
+			</x:table>			
+				
+		<hbox>
+			<button label="สร้างใหม่" image="/img/new.png" mold="trendy" onClick="clrScreenDO();"/>
+			<button id="btnSave" label="บันทึก" image="/img/savebtn.png" mold="trendy" onClick="SaveNewDO();" />
+			<button id="btnUpdate" label="ปรับปรุง" image="/img/update.png" mold="trendy" onClick="updateDO();" visible="false"/>
+			<button label="ค้นหา" mold="trendy" image="/img/find.png" onClick="viewDOLIST();" />
+			<button id="btnPrint" label="พิมพ์" image="/img/print.png" mold="trendy" onClick="printDOModal();" />
+			<button id="btnCCDO" label="ยกเลิกใบ DO" image="/img/cancel.png" mold="trendy">
+				<attribute name="onClick">
+				Messagebox.show("คุณตรวจสอบแล้ว และต้องการยกเลิกเอกสารนี้?",
+				    "Question", Messagebox.OK | Messagebox.CANCEL,
+				    Messagebox.QUESTION, new org.zkoss.zk.ui.event.EventListener(){
+				            public void onEvent(Event e){
+				                if("onOK".equals(e.getName())){
+				                  fnCancelDO();
+				                }
+				            }
+				        }
+				    );
+				
+				</attribute>				
+			</button>
+			<button label="ออก" image="/img/close.png" mold="trendy" onClick="closeWindo();" />				
+		</hbox>
+		<label id="lbllevel" visible="false" onCreate="chkValidate();"/>
+		<label id="lbldodocno" visible="false"/>
+	 </groupbox>
+			</x:td>
+		</x:tr>
+	</x:table>	 
+	 </row>
+		</rows>
+	</grid>
+<zscript>
+<![CDATA[
+	import java.io.*;
+    	import java.lang.*;
+    	import java.sql.*;
+    	import javax.servlet.http.Cookie;
+    	import javax.servlet.http.HttpServletRequest;
+    	import javax.servlet.http.HttpServletResponse; 
+    	import javax.servlet.http.HttpSession;
+    	import org.zkoss.zk.ui.Component;
+    	import org.zkoss.zk.ui.event.CreateEvent;
+    	import org.zkoss.zk.ui.event.Event;
+    	import org.zkoss.zk.ui.event.ForwardEvent;
+    	import org.zkoss.zk.ui.Executions;
+    	import java.text.SimpleDateFormat;
+    	import java.text.DecimalFormat;
+    	import java.util.Date;
+    	import org.zkoss.zk.ui.event.EventListener;
+    	import condb.Database;
+    	import condb.Mssqldb;
+    	
+    	Connection con=null;
+    	Statement st=null;
+    	Connection sqlcon=null;
+    	Statement mst=null;
+    	SimpleDateFormat dfm = new SimpleDateFormat("dd/MM/yyyy");
+    	
+		String vuser;
+		String vcode;
+		String vulevel;
+		
+    	public void chkValidate(){
+    		Integer intLevel;
+    		try{
+    			Cookie [] ck = ((HttpServletRequest)Executions.getCurrent().getNativeRequest()).getCookies();
+    			for (Cookie cookie : ck) {
+    				if (cookie.getName().equals("ckuser")) {
+    					vuser =cookie.getValue();
+    				}
+    			}
+    			for (Cookie ckps : ck) {
+    				if (ckps.getName().equals("ckucode")) {
+    					vcode =ckps.getValue();
+    				}
+    			}
+    			for (Cookie ckpf : ck) {
+    				if (ckpf.getName().equals("ckulevel")) {
+    					vulevel = ckpf.getValue();
+    				}
+    			}
+    			if(vuser==null || vuser=="" || vulevel==null || vulevel==""){
+    				//System.out.println("cookie = "+cookies);
+    				Executions.sendRedirect("index.zul");		
+    			} else
+    			{	
+    				
+    				//do somthing
+    				lbllevel.setValue(vulevel);
+    				
+    				
+    			}
+    		}catch(Exception e){
+    			e.printStackTrace();
+    		}
+    	}
+	public void viewDO(){
+		String vQry;
+		try{
+			con=Database.getConnection();
+			st=con.createStatement();
+			
+			vQry="select * from sm_do.ft_doview('') where isreturn='0' and sendresult='0';";
+			st.executeQuery(vQry);
+			ResultSet rs=st.getResultSet();
+			while(lsdo.getItemCount()>0){
+				lsdo.removeItemAt(0);
+			}
+			while(rs.next()){
+				Listitem oli=new Listitem();
+				oli.appendChild(new Listcell(rs.getString("docno")));
+				oli.appendChild(new Listcell(rs.getString("datesend")));
+				oli.appendChild(new Listcell(rs.getString("timesend")));
+				oli.appendChild(new Listcell(rs.getString("datereturn")));
+				oli.appendChild(new Listcell(rs.getString("timereturn")));
+				oli.appendChild(new Listcell(rs.getString("carlicence")));
+				oli.appendChild(new Listcell(rs.getString("sendresultstatus")));
+				oli.appendChild(new Listcell(rs.getString("mydescription")));
+				oli.setStyle("background:#FCF585;");
+				lsdo.appendChild(oli);
+			}
+			
+			
+			
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	public void viewSearchDO(){
+		String vQry;
+		String strDocNo;
+		try{
+			con=Database.getConnection();
+			st=con.createStatement();
+			if(txsearch.getValue().length()>0){
+				strDocNo=txsearch.getValue().trim().toLowerCase();
+			}else{
+				strDocNo="";
+			}
+			vQry="select * from sm_do.ft_doview('"+strDocNo+"');";
+			st.executeQuery(vQry);
+			ResultSet rs=st.getResultSet();
+			while(lsdo.getItemCount()>0){
+				lsdo.removeItemAt(0);
+			}
+			while(rs.next()){
+				Listitem oli=new Listitem();
+				oli.appendChild(new Listcell(rs.getString("docno")));
+				oli.appendChild(new Listcell(rs.getString("datesend")));
+				oli.appendChild(new Listcell(rs.getString("timesend")));
+				oli.appendChild(new Listcell(rs.getString("datereturn")));
+				oli.appendChild(new Listcell(rs.getString("timereturn")));
+				oli.appendChild(new Listcell(rs.getString("carlicence")));
+				oli.appendChild(new Listcell(rs.getString("sendresultstatus")));
+				oli.appendChild(new Listcell(rs.getString("mydescription")));
+				lsdo.appendChild(oli);
+			}
+			
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	//Filter DO
+	
+	public void viewFilterDOByStatus(){
+		String vQry;
+		Integer i;
+		Integer xRT;
+		Integer xRS;
+		try{
+			con=Database.getConnection();
+			st=con.createStatement();
+			i=cbfilter.getSelectedIndex();
+			if(i==0){
+				vQry="select * from sm_do.ft_doview('') where isreturn='0' and sendresult='0'";
+				//อยู่ระหว่างส่ง
+			}
+			else 
+				if(i==1){
+				vQry="select * from sm_do.ft_doview('') where isreturn='1' and sendresult='0'";
+				//สมบูรณ์
+			}else
+				if(i==2){
+				vQry="select * from sm_do.ft_doview('') where isreturn='1' and sendresult='1'";
+				//หาไซต์ไม่เจอ
+			}else
+				if(i==3){
+				vQry="select * from sm_do.ft_doview('') where isreturn='1' and sendresult='2'";
+				//ส่งสินค้าผิด
+			}
+				else
+					if(i==4){
+					vQry="select * from sm_do.ft_doview('') where isreturn='1' and sendresult='3'";
+					//สินค้าชำรุด
+				}
+					else
+						if(i==5){
+						vQry="select * from sm_do.ft_doview('') where isreturn='1' and sendresult='4'";
+						//ส่งมอบได้บางส่วน
+					}
+						else
+							if(i==6){
+							vQry="select * from sm_do.ft_doview('') where isreturn='1' and sendresult='5'";
+							//หาไซต์ไม่เจอ
+						}
+						else{
+						vQry="select * from sm_do.ft_doview('')";
+			}
+			st.executeQuery(vQry);
+			ResultSet rs=st.getResultSet();
+			while(lsdo.getItemCount()>0){
+				lsdo.removeItemAt(0);
+			}
+			while(rs.next()){
+				Listitem oli=new Listitem();				
+				oli.appendChild(new Listcell(rs.getString("docno")));
+				oli.appendChild(new Listcell(rs.getString("datesend")));
+				oli.appendChild(new Listcell(rs.getString("timesend")));
+				oli.appendChild(new Listcell(rs.getString("datereturn")));
+				oli.appendChild(new Listcell(rs.getString("timereturn")));
+				oli.appendChild(new Listcell(rs.getString("carlicence")));
+				oli.appendChild(new Listcell(rs.getString("sendresultstatus")));
+				oli.appendChild(new Listcell(rs.getString("mydescription")));
+				//-- Set Background by status
+				xRT=rs.getInt("isreturn");
+				xRS=rs.getInt("sendresult");
+				if(xRT==0 && xRS==0){
+					oli.setStyle("background:#FCF585;");
+					
+				}
+				if(xRT==1 && xRS==0){
+					oli.setStyle("background:#51FF6A;");
+					
+				}
+				if(xRT==1 && xRS==1){
+					oli.setStyle("background:#FFE3CB;");
+					//BFFFC8
+				}
+				if(xRT==1 && xRS==2){
+					oli.setStyle("background:#FF7B80;");
+				}
+				if(xRT==1 && xRS==3){
+					oli.setStyle("background:#F3E7BF;");
+				}
+				if(xRT==1 && xRS==4){
+					oli.setStyle("background:#FFFEBE;");
+				}
+				if(xRT==1 && xRS==5){
+					oli.setStyle("background:#E3E3E3;");
+				}
+				
+				lsdo.appendChild(oli);		
+			}
+		
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	public void vselectDO(){
+		String vdodocno;
+		try{
+			Listitem sli = new Listitem();
+			sli=lsdo.getSelectedItem();
+			Listcell lc0= (Listcell) sli.getChildren().get(0);
+			vdodocno=lc0.getLabel();
+			// application.setAttribute("dosts","1");
+			// application.setAttribute("dodocnumber", vdodocno);
+			// Executions.createComponents("domanage.zul",null,null);
+			lbldosts.setValue("1");
+			lbldono.setValue(vdodocno);
+			loadViewDO();
+			viewDOFRM();
+			lsdo.setSelectedIndex(-1);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void newDO(){
+		lbldosts.setValue("N");
+		clrScreenDO();
+		doList.setVisible(false);
+		doFRM.setVisible(true);
+		
+		// application.setAttribute("dosts","N");
+		// application.setAttribute("dodocnumber", "");		
+		// Executions.createComponents("domanage.zul",null,null);
+	}
+	
+	//==============================================================================
+		public void checkDocStatus(){
+		String strDocStatus;
+		strDocStatus=lbldosts.getValue();
+		if(strDocStatus.equals("N")){
+			clrScreenDO();
+		}
+	}
+	public void SaveNewDO(){
+		try{
+			if(cbxbranch.getText().length()==0){
+				Messagebox.show("กรุณกำหนดสาขาที่ส่งก่อน.", "Error",
+		                Messagebox.OK, Messagebox.ERROR);				
+				//txdodocno.setFocus(true);
+				return;
+			}
+			if(txdodocno.getValue().length()==0){
+				Messagebox.show("คุณยังไม่ได้กำหนดเลขที่ DO.", "Error",
+		                Messagebox.OK, Messagebox.ERROR);				
+				//txdodocno.setFocus(true);
+				return;
+			}
+			if(dtdocdate.getText().length()==0){
+				Messagebox.show("กรุณากำหนดวันที่เอกสารก่อน.", "Error",
+		                Messagebox.OK, Messagebox.ERROR);	
+				//dtdocdate.setFocus(true);
+				return;
+				
+			}
+			if(dtdatesend.getText().length()==0){
+				Messagebox.show("กรุณากำหนดวันทีส่งก่อน.", "Error",
+		                Messagebox.OK, Messagebox.ERROR);
+				return;
+			}
+			if(cbdocarlicence.getText().length()==0){
+				Messagebox.show("ทะเบีียนรถไม่ได้กำหนด.", "Error",
+		                Messagebox.OK, Messagebox.ERROR);
+				cbdocarlicence.setFocus(true);
+				return;
+			}
+			if(ibstart.getValue()<1){
+				Messagebox.show("กม.เริ่มต้นต้องมากกว่า 0.", "Error",
+		                Messagebox.OK, Messagebox.ERROR);
+				ibstart.setFocus(true);
+				return;
+			}
+			if((ibstop.getValue()<ibstart.getValue())|| ibstart.getValue()==0){
+				Messagebox.show("กม.สิ้นสุดต้องมากกว่า 0 และต้องมากกว่า กม.เริ่มต้น.", "Error",
+		                Messagebox.OK, Messagebox.ERROR);
+				ibstop.setFocus(true);
+				return;
+			}
+			if(lsdrdetail.getItemCount()==0){
+				Messagebox.show("เอกสารต้องมีใบ DR กรุณาเลือก DR", "Error",
+		                Messagebox.OK, Messagebox.ERROR);
+				return;
+			}
+			if(lsempdetail.getItemCount()==0){
+				Messagebox.show("กรุณาเลือกพนักงานจัดส่งสำหรับเอกสารนี้.", "Error",
+		                Messagebox.OK, Messagebox.ERROR);
+				return;
+			}else{
+					if(lbldosts.getValue().equals("N")){
+						
+						
+						/*
+						
+								doInsertHead();
+								sinsertDOQueue();
+								insertEmp2DO();
+								Messagebox.show("บันทึกข้อมูลเรียบร้อยแล้ว.", "Infomation",
+						                Messagebox.OK, Messagebox.INFORMATION);
+								printDO();						
+								clrScreenDO();
+								viewDOLIST();
+								viewDO();
+								*/
+					try {
+						String nQry;
+						String rsDoc;	
+						String rstrim;
+						String strDocno=txdodocno.getValue();
+						System.out.println(strDocno);						
+						
+						con=Database.getConnection();
+						Statement stnw=con.createStatement();
+						nQry="select * from sm_do.ft_ckdocno('"+strDocno+"');";
+						stnw.executeQuery(nQry);						
+						ResultSet stRS = stnw.getResultSet();
+						System.out.println("qy="+nQry);
+						while(stRS.next()){						
+							Integer vcount;
+							//vcount=stRS.getInt("isrecod");
+							rsDoc=stRS.getString("isrecord");
+							if(rsDoc.equals("0")){
+								//System.out.println("AA");
+								doInsertHead();
+								sinsertDOQueue();
+								insertEmp2DO();
+								Messagebox.show("บันทึกข้อมูลเรียบร้อยแล้ว.", "Infomation",
+						                Messagebox.OK, Messagebox.INFORMATION);
+								printDOModal();						
+								clrScreenDO();
+								viewDOLIST();
+								viewDO();
+							}else{
+								alert("เลขที่ DO :"+strDocno+" ซ้ำกรุณากำหนดใหม่นะครับ.");
+								txdodocno.setValue("");
+								btnchk.setVisible(true);
+								btnchk.setDisabled(false);
+								return;
+							}
+						}
+						
+							
+						}catch(SQLException ex){
+							System.out.println("SMS="+ex.getMessage());
+						}
+						
+					}else {
+						updateDO();
+						sinsertDOQueue();
+						insertEmp2DO();
+						printDOModal();						
+						viewDO();
+						clrScreenDO();
+						viewDOLIST();
+					}
+						
+			}		
+		}catch(Exception e){
+			System.out.println("Msg="+e.getMessage());
+		}
+	}
+	
+	
+	public void doInsertHead(){
+		String dQry;
+		String vbranch;
+		String vdodocno;
+		String vdodocdate;
+		String vsenddate;
+		String vsendtime;
+		String vreturndate;
+		String vreturntime;
+		String vcarlicense;
+		Integer vmeasurestart; //กม.เริ่มต้น
+		Integer vmeasurestop; //กม.สิ้นสุด
+		String vmydesc;
+		String viscancel;
+		String visreturn;
+		Integer vsendresult;
+		//-----var date check
+		String strdocDate;
+		String strsendDate;
+		String strreturnDate;		
+		
+		try{
+			vbranch = cbxbranch.getText();
+			vdodocno = txdodocno.getValue();
+			strdocDate=dtdocdate.getText();
+			if(strdocDate.length()>0){
+				vdodocdate = dtnormal(strdocDate);
+			}else{
+				vdodocdate="";
+			}			
+			strsendDate = dtdatesend.getText();
+			if(strsendDate.length()>0){
+				vsenddate = dtnormal(strsendDate);
+			}else{
+				vsenddate="";
+			}
+			vsendtime = tbtimesend.getText();
+			strreturnDate = dtdatereturn.getText();
+			if(strreturnDate.length()>0){
+				vreturndate = dtnormal(strreturnDate);
+			}else{
+				vreturndate="";
+			}
+			// System.out.print("Check line");
+			vreturntime = tbtimereturn.getText();
+			vcarlicense = cbdocarlicence.getText();
+			vmeasurestart = ibstart.getValue();
+			vmeasurestop = ibstop.getValue();
+			vmydesc = txdesc.getValue();
+			viscancel = "0";
+			if(cxisreturn.isChecked()==true){
+				visreturn = "1";
+			}else{
+				visreturn = "0";
+			}			
+			vsendresult=cbxsendresult.getSelectedIndex();
+			con = Database.getConnection();
+			st = con.createStatement();
+			dQry="SET datestyle=\"ISO, DMY\"; select * from sm_do.ft_doinsert('"+vdodocno+"','"+vdodocdate+"','"+vsenddate+"',"+
+			"'"+vsendtime+"','"+vreturndate+"','"+vreturntime+"','"+vcarlicense+"','"+vmeasurestart+"',"+
+			"'"+vmeasurestop+"','"+vmydesc+"','"+viscancel+"','"+visreturn+"','"+vsendresult+"','"+vbranch+"');";
+			System.out.println("DO-Head="+dQry);
+			 st.execute(dQry);
+			
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}		
+	}
+	public void sinsertDOQueue(){
+		String delQry;
+		String insQry;
+		String vdoDocno;
+		String vdrDocno;
+		String vIvDocno;
+		String vivdocnotrim;
+		String vServicecost;
+		String vDScost;
+		String vDesc;
+		String vIcc;
+		Integer i;
+		Double dblSVcost=0.00;
+		Double dblDScost=0.00;
+		try{
+			con = Database.getConnection();
+			vdoDocno=txdodocno.getValue().toLowerCase().trim();
+			delQry="select * from sm_do.ft_do2delete('"+vdoDocno+"');";
+			Statement stdeldrsub = con.createStatement();
+			stdeldrsub.execute(delQry);
+			i=lsdrdetail.getItemCount();
+			if(i>0){
+				for(int x=0;x<i;x++){
+					Listitem li = new Listitem();
+					li=lsdrdetail.getItemAtIndex(x);
+					Listcell lc0 = (Listcell) li.getChildren().get(0); // DR docno
+					Listcell lc1 = (Listcell) li.getChildren().get(1); // Desc
+					Listcell lc2 = (Listcell) li.getChildren().get(2); // Invoice box
+					Listcell lc3 = (Listcell) li.getChildren().get(3); // service
+					Listcell lc4 = (Listcell) li.getChildren().get(4); // cost
+					vdrDocno=lc0.getLabel().trim();
+					vDesc = lc1.getLabel();
+					vIcc = "0";
+					vServicecost = lc3.getLabel();
+					if(vServicecost.length()>0){
+						dblSVcost = Double.parseDouble(vServicecost);
+					}else{
+						dblSVcost = 0.00;
+					}
+					vDScost = lc4.getLabel();
+					if(vDScost.length()>0){
+						dblDScost = Double.parseDouble(vDScost);
+					}else{
+						dblDScost =0.00;
+					}
+					//------------------------------- con= Database.getConnection();
+					Statement st2 = con.createStatement();
+					vivdocnotrim = ((Textbox) lc2.getChildren().get(0)).getValue();
+						if(vivdocnotrim.length()>0){
+							vIvDocno=vivdocnotrim.trim();
+						}else{
+							vIvDocno="";
+						}
+						insQry="select * from sm_do.ft_do2insert('"+vdoDocno+"','"+vdrDocno+"','"+vIvDocno+"',"+
+						"'"+vDesc+"','"+vIcc+"',"+dblSVcost+","+dblDScost+");";
+						System.out.println("loop2-QueDR="+insQry);						
+						st2.execute(insQry);
+				}
+				
+			}else{
+				
+			}
+			
+			
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void insertEmp2DO(){
+		String epdelQry;
+		String epQry;
+		String vdodocno;
+		String vempcode;
+		String vemptype;
+		Double vtransportam;
+		String visempcc="0";
+		String vempDesc;
+		Integer j=0;
+		try{
+			vdodocno=txdodocno.getValue().trim();
+			con = Database.getConnection();
+			Statement stdelemp = con.createStatement();
+			epdelQry="select * from sm_do.ft_do3delete('"+vdodocno+"');";
+			System.out.println("delqryEMP="+epdelQry);
+			stdelemp.execute(epdelQry);
+			j=lsempdetail.getItemCount();
+			 System.out.println("J="+j);
+			if(j>0){					
+					for(int n=0;n<j;n++){						
+							Listitem eli=new Listitem();
+							eli = lsempdetail.getItemAtIndex(n);
+							Listcell le0 = (Listcell) eli.getChildren().get(0); //empcode
+							//Listcell le1 = (Listcell) eli.getChildren().get(1); //empname
+							//Listcell le2 = (Listcell) eli.getChildren().get(2); //type text
+							Listcell le3 = (Listcell) eli.getChildren().get(3); //type num
+							Listcell le4 = (Listcell) eli.getChildren().get(4); // trans rate
+							Listcell le5 = (Listcell) eli.getChildren().get(5); // desc
+							
+							vempcode=le0.getLabel().trim();;
+							vemptype=le3.getLabel();
+							vtransportam= ((Doublebox) le4.getChildren().get(0)).getValue();
+							vempDesc =((Textbox) le5.getChildren().get(0)).getValue();
+							Statement step = con.createStatement();
+							epQry="select * from sm_do.ft_do3insert('"+vdodocno+"','"+vempcode+"',"+
+							"'"+vemptype+"','"+vtransportam+"','"+visempcc+"','"+vempDesc+"');";
+							// System.out.println("Emp-loop="+epQry);
+							step.execute(epQry);				
+					}					
+				}
+			
+		}catch(SQLException ex){
+			System.out.println("empInsertMsg="+ex.getMessage());
+		}
+	}
+	public void updateDO(){
+		String doUpdateQry;
+		String vbranch;
+		String vdodocno;
+		String vdodocdate;
+		String vsenddate;
+		String vsendtime;
+		String vreturndate;
+		String vreturntime;
+		String vcarlicense;
+		Integer vmeasurestart; //กม.เริ่มต้น
+		Integer vmeasurestop; //กม.สิ้นสุด
+		String vmydesc;
+		String viscancel;
+		String visreturn;
+		Integer vsendresult;
+		//-----var date check
+		String strdocDate;
+		String strsendDate;
+		String strreturnDate;
+		try{
+			vbranch = cbxbranch.getText();
+			vdodocno = txdodocno.getValue().trim();
+			strdocDate=dtdocdate.getText();
+			vdodocdate = dtnormal(strdocDate);
+			System.out.println("Date="+vdodocdate);
+			strsendDate = dtdatesend.getText();
+			vsenddate = dtnormal(strsendDate);
+			vsendtime = tbtimesend.getText();
+			strreturnDate = dtdatereturn.getText();
+			vreturndate = dtnormal(strreturnDate);
+			vreturntime = tbtimereturn.getText();
+			vcarlicense = cbdocarlicence.getText();
+			vmeasurestart = ibstart.getValue();
+			vmeasurestop = ibstop.getValue();
+			vmydesc = txdesc.getValue();
+			viscancel = "0";
+			if(cxisreturn.isChecked()==true){
+				visreturn = "1";
+			}else{
+				visreturn="0";
+			}
+			vsendresult = cbxsendresult.getSelectedIndex();
+			con = Database.getConnection();
+			Statement upst = con.createStatement();
+			// sm_do.ft_doupdate(docno_in text, docdate_in date, datesend_in date, timesend_in text, datereturn_in date, timereturn_in text, measurestart_in numeric, measurestop_in numeric, mydescription_in text, carlicence_in text, isreturn_in text, sendresult_in text)
+			doUpdateQry="SET datestyle=\"ISO, DMY\"; select * from sm_do.ft_doupdate('"+vdodocno+"','"+vdodocdate+"','"+vsenddate+"',"+
+					"'"+vsendtime+"','"+vreturndate+"','"+vreturntime+"','"+vmeasurestart+"',"+
+					"'"+vmeasurestop+"','"+vmydesc+"','"+vcarlicense+"','"+visreturn+"','"+vsendresult+"','"+vbranch+"');";
+					upst.execute(doUpdateQry);
+			// System.out.println("Update Head = "+doUpdateQry);
+		
+		}
+			catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		
+	}
+	public void clrScreenDO(){
+		cbxbranch.setText("");
+		cbxbranch.setSelectedIndex(-1);
+		lbldosts.setValue("N");
+		txdolabel.setValue("NW");
+		txdolabel.setStyle("background:#008CD5; text-align:center; font-weight:bold; color:#FFFFFF;");
+		txdodocno.setValue("");
+		dtdocdate.setValue(new Date());
+		dtdatesend.setValue(new Date());
+		tbtimesend.setValue(new Date());
+		tbtimesend.setLocale("th");
+		dtdatereturn.setValue(new Date());
+		tbtimereturn.setValue(new Date());
+		tbtimereturn.setLocale("th");
+		cbdocarlicence.setText("");
+		ibstart.setValue(0);
+		ibstop.setValue(0);
+		ibinstanceamount.setValue(0);
+		txdesc.setText("");
+		lsdrdetail.getItems().clear();
+		lsempdetail.getItems().clear();
+		cbdocarlicence.setDisabled(false);
+		cbdrcar.setSelectedIndex(-1);
+		cbdrcar.setText("");
+		cblicencetmp.setText("");
+		cblicencetmp.setSelectedIndex(-1);
+		cxisreturn.setChecked(false);
+		cxisreturn.setDisabled(false);
+		cbxsendresult.setSelectedIndex(0);	
+		unlockDOFRM();
+	}
+	public void lockDOFRM(){
+		/*
+		cbxbranch.setDisabled(true);
+		btnchk.setDisabled(true);
+		txdodocno.setReadonly(true);
+		dtdocdate.setReadonly(true);
+		dtdocdate.setButtonVisible(false);
+		dtdatesend.setReadonly(true);
+		dtdatesend.setButtonVisible(false);
+		tbtimesend.setReadonly(true);		
+		dtdatereturn.setReadonly(true);
+		dtdatereturn.setButtonVisible(false);
+		tbtimereturn.setReadonly(true);		
+		txdesc.setReadonly(true);		
+		cbdocarlicence.setDisabled(true);
+		cbdrcar.setDisabled(true);		
+		cblicencetmp.setDisabled(true);
+		btnpDR.setDisabled(true);
+		btnppEmp.setDisabled(true);
+		btnSave.setDisabled(true);
+		btnPrint.setDisabled(false);	
+		*/
+
+	}
+	public void unlockDOFRM(){
+		
+		cbxbranch.setDisabled(false);
+		btnchk.setDisabled(false);
+		dtdocdate.setReadonly(false);
+		dtdocdate.setButtonVisible(true);
+		dtdatesend.setReadonly(false);
+		dtdatesend.setButtonVisible(true);
+		tbtimesend.setReadonly(false);		
+		dtdatereturn.setReadonly(false);
+		dtdatereturn.setButtonVisible(true);
+		tbtimereturn.setReadonly(false);		
+		cbdocarlicence.setDisabled(false);
+		txdesc.setReadonly(false);
+		cbdrcar.setDisabled(false);		
+		cblicencetmp.setDisabled(false);
+		btnpDR.setDisabled(false);
+		btnppEmp.setDisabled(false);		
+		btnPrint.setDisabled(true);
+		
+	}
+	
+public String dtnormal(String vgetdate){	
+		
+		String vrsDate;
+		String vYear;
+		String vDateMonth;
+		String strResultYear;
+		String strgetDate;
+		
+		strgetDate = vgetdate;
+		vYear = strgetDate.substring(6);
+		vDateMonth = strgetDate.substring(0,6);			
+		Integer xInt1 = Integer.parseInt(vYear);
+		System.out.println("xY="+xInt1);
+	   		if (xInt1 > 2500){
+	   			Integer bInt= xInt1-543;
+	   			strResultYear= Integer.toString(bInt);
+	   		}else {
+	   			strResultYear= Integer.toString(xInt1);
+	   		}
+   			vrsDate=vDateMonth.concat(strResultYear); 	 			
+   	System.out.println("return ="+vrsDate);
+
+	return (vrsDate); 
+}
+	
+	
+	
+	public void loadEmp(){
+		String empQry;
+		Integer vipo;
+		String vempkeyword;
+		try{
+			lsemp.getItems().clear();
+			vempkeyword=txsearchemp.getValue();
+			con = Database.getConnection();
+			st = con.createStatement();
+			empQry="select * from sm_do.ft_empview('"+vempkeyword+"');";
+			st.executeQuery(empQry);
+			ResultSet emprs = st.getResultSet();
+			while(lsemp.getItemCount()>0){
+				lsemp.removeItemAt(0);
+			}
+			while(emprs.next()){
+				Listitem eli = new Listitem();
+				eli.appendChild(new Listcell(emprs.getString("code")));
+				eli.appendChild(new Listcell(emprs.getString("name1")));
+				eli.appendChild(new Listcell(emprs.getString("emp_position")));				
+				eli.appendChild(new Listcell(emprs.getString("emp_positiontype")));
+				lsemp.appendChild(eli);
+			}
+			
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void selectEmp(){		
+	Integer i;
+	try{
+		//System.out.println(lsemp.getItemCount());
+		while(lsempdetail.getItemCount()>0){
+			lsempdetail.removeItemAt(0);
+		}
+		for(i=0;i<=lsemp.getItemCount();i++){
+			//System.out.println("i="+i);
+			Listitem eli = new Listitem();
+			eli = lsemp.getItemAtIndex(i);
+			if(eli.isSelected()==true){
+				Listcell lc0 =(Listcell) eli.getChildren().get(0);
+				Listcell lc1 =(Listcell) eli.getChildren().get(1);
+				Listcell lc2 =(Listcell) eli.getChildren().get(2);
+				Listcell lc3 =(Listcell) eli.getChildren().get(3);
+				Listcell lc4 = new Listcell();
+				Listcell lc5 = new Listcell();	
+				Listcell lc6 = new Listcell();
+				
+				Doublebox dbtransamount = new Doublebox();
+				dbtransamount.setValue(0.00);
+				dbtransamount.setStyle("text-align:right;");
+				Textbox txempdesc = new Textbox();
+				txempdesc.setWidth("250px");
+				lc4.appendChild(dbtransamount);
+				lc5.appendChild(txempdesc);
+				
+				Image btnrmemp = new Image();
+				btnrmemp.setSrc("/img/minus.png");
+				lc6.appendChild(btnrmemp);
+				lc6.addEventListener("onClick", new EventListener(){
+					public void onEvent(Event event) throws Exception{
+						Integer p;
+						p=lsempdetail.getSelectedIndex();
+						lsempdetail.removeItemAt(p);
+					}
+				});
+				Listitem vli = new Listitem();
+				vli.appendChild(lc0);
+				vli.appendChild(lc1);
+				vli.appendChild(lc2);
+				vli.appendChild(lc3);
+				vli.appendChild(lc4);
+				vli.appendChild(lc5);
+				vli.appendChild(lc6);
+				
+				lsempdetail.appendChild(vli);
+			}		
+		}
+		
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+	popemp.close();
+	}
+
+//-----------car licence do
+	public void loadCarLicence(){
+	String carQry;
+	cblicencetmp.getItems().clear();
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		carQry="select * from sm_do.ft_vehicalview();";
+		st.executeQuery(carQry);
+		ResultSet crs=st.getResultSet();
+		while(crs.next()){
+			Comboitem ci = new Comboitem();
+			ci.setValue(crs.getString("carlicence"));
+			ci.setLabel(crs.getString("carlicence"));
+			cbdocarlicence.appendChild(ci);
+		}
+		
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}
+	//-----------car licence DR  Template
+		public void loadDRtemplate(){
+		String carQry;
+		cblicencetmp.getItems().clear();
+		try{
+			con = Database.getConnection();
+			st = con.createStatement();
+			carQry="select * from sm_do.ft_vehicalview();";
+			st.executeQuery(carQry);
+			ResultSet crs=st.getResultSet();
+			while(crs.next()){
+				Comboitem ci = new Comboitem();
+				ci.setValue(crs.getString("carlicence"));
+				ci.setLabel(crs.getString("carlicence"));
+				cbdrcar.appendChild(ci);
+			}
+			st.close();
+			con.close();
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+// --------------select DR---by licence template
+public void selectCar2DR(){
+	String drcQry;
+	String drcarlicence;
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		drcarlicence = cbdrcar.getText().trim();
+		drcQry="select * from sm_do.ft_queueviewconfirm_car('"+drcarlicence+"');";
+		st.executeQuery(drcQry);
+		ResultSet rsc = st.getResultSet();
+		while(rsc.next()){
+			Listitem li = new Listitem();
+			Listcell lciv = new Listcell();
+			Listcell lcbtn = new Listcell();
+			Listcell lcbill = new Listcell();
+			Listcell lcSVcost = new Listcell();
+			Listcell lcDScost = new Listcell();
+			Textbox txiv = new Textbox();
+			txiv.setWidth("150px");
+			txiv.setStyle("background:#006C9A; font-weight:bold; color:#FFFFFF;");
+			txiv.addEventListener("onOK", new EventListener(){
+				public void onEvent(Event event) throws Exception{
+					String ivQry;
+					String vnDocNo;
+					Integer vgetRS;
+					try{
+					vnDocNo=txiv.getValue();
+					sqlcon = Mssqldb.getConnection();
+					mst = sqlcon.createStatement();
+					ivQry="exec usp_iv_ckinvoicepg '"+vnDocNo+"'";
+					mst.executeQuery(ivQry);
+					ResultSet ivrs = mst.getResultSet();
+						while(ivrs.next()){
+							vgetRS=ivrs.getInt("countbill");	
+							if(vgetRS==0){
+								li.setStyle("background:#FF5D5D;");
+								lcbill.setLabel("0");
+								txiv.setFocus(true);
+								btnSave.setDisabled(true);
+						}else{
+							//nothing
+							// alert("Bill No. : "+vDocno+" Is OK.");							
+							lcbill.setLabel("1");
+							lcSVcost.setLabel(ivrs.getString("amount_do"));
+							lcDScost.setLabel(ivrs.getString("amount_all"));
+							li.setStyle("background:#74FF88;");
+							btnSave.setDisabled(false);
+						}
+					}
+					}catch(SQLException ex){
+						ex.printStackTrace();
+					}
+				}
+			});
+			txiv.addEventListener("onChange", new EventListener(){
+				public void onEvent(Event event) throws Exception{
+					String ivQry;
+					String vnDocNo;
+					Integer vgetRS;
+					try{
+					vnDocNo=txiv.getValue();
+					sqlcon = Mssqldb.getConnection();
+					mst = sqlcon.createStatement();
+					ivQry="exec usp_iv_ckinvoicepg '"+vnDocNo+"'";
+					mst.executeQuery(ivQry);
+					ResultSet ivrs = mst.getResultSet();
+						while(ivrs.next()){
+							vgetRS=ivrs.getInt("countbill");	
+							if(vgetRS==0){
+								li.setStyle("background:#FF5D5D;");
+								lcbill.setLabel("0");
+								txiv.setFocus(true);
+								btnSave.setDisabled(true);
+						}else{
+							//nothing
+							// alert("Bill No. : "+vDocno+" Is OK.");							
+							lcbill.setLabel("1");
+							lcSVcost.setLabel(ivrs.getString("amount_do"));
+							lcDScost.setLabel(ivrs.getString("amount_all"));
+							li.setStyle("background:#74FF88;");;
+							btnSave.setDisabled(false);
+						}
+					}
+					}catch(SQLException ex){
+						ex.printStackTrace();
+					}
+				}
+			});
+			
+			txiv.addEventListener("onChanging", new EventListener(){
+				public void onEvent(Event event) throws Exception{
+					li.setStyle("");
+				}
+			});
+			li.appendChild(new Listcell(rsc.getString("sono")));
+			li.appendChild(new Listcell(rsc.getString("mydescription")));
+				lciv.appendChild(txiv);				
+			li.appendChild(lciv);
+			li.appendChild(lcSVcost);
+			li.appendChild(lcDScost);
+			//add btn
+			Image btnrm = new Image();
+			btnrm.setSrc("/img/minus.png");
+			lcbtn.appendChild(btnrm);
+			lcbtn.addEventListener("onClick", new EventListener(){
+				public void onEvent(Event event) throws Exception{
+					Integer i;
+					i=lsdrdetail.getSelectedIndex();
+					lsdrdetail.removeItemAt(i);
+				}
+			});
+			li.appendChild(lcbtn);
+			li.appendChild(lcbill);			
+			lsdrdetail.appendChild(li);			
+		}
+		cbdrcar.setText(drcarlicence);
+		cblicencetmp.setText(drcarlicence);
+		selectTMP2Detail();
+		cbdocarlicence.setText(cbdocarlicence.getText());
+		//btnpDR.setDisabled(true);
+		
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}
+//--------------load carlicense to template
+public void loadCarTMP(){
+	String carQry;
+	cblicencetmp.getItems().clear();
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		carQry="select * from sm_do.ft_vehicalview();";
+		st.executeQuery(carQry);
+		ResultSet crs=st.getResultSet();
+		while(crs.next()){
+			Comboitem ci = new Comboitem();
+			ci.setValue(crs.getString("carlicence"));
+			ci.setLabel(crs.getString("carlicence"));
+			cblicencetmp.appendChild(ci);
+		}
+		st.close();
+		con.close();
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}
+
+public void selectTMP2Detail(){
+	String tmpQry;
+	String vcarlicence;
+	try{
+		lsempdetail.getItems().clear();
+		vcarlicence=cblicencetmp.getText().trim();
+		con = Database.getConnection();
+		st = con.createStatement();
+		tmpQry="select * from sm_do.ft_empview_history('"+vcarlicence+"');";
+		st.executeQuery(tmpQry);
+		ResultSet rs = st.getResultSet();
+		while(rs.next()){
+			Listitem li = new Listitem();
+			Doublebox dbtransamount = new Doublebox();
+			dbtransamount.setValue(0.00);
+			dbtransamount.setStyle("text-align:right;");
+			Textbox txempdesc = new Textbox();
+			txempdesc.setWidth("250px");
+			li.appendChild(new Listcell(rs.getString("code")));
+			li.appendChild(new Listcell(rs.getString("name1")));
+			li.appendChild(new Listcell(rs.getString("emp_position")));
+			li.appendChild(new Listcell(rs.getString("emp_positiontype")));
+				Listcell lctf = new Listcell();
+				Listcell lcdesc = new Listcell();
+				lctf.appendChild(dbtransamount);
+				lcdesc.appendChild(txempdesc);
+			li.appendChild(lctf);
+			li.appendChild(lcdesc);
+			Listcell lc6 = new Listcell();
+			Image btnrmemp = new Image();
+			btnrmemp.setSrc("/img/minus.png");
+			lc6.appendChild(btnrmemp);
+			lc6.addEventListener("onClick", new EventListener(){
+				public void onEvent(Event event) throws Exception{
+					Integer p;
+					p=lsempdetail.getSelectedIndex();
+					lsempdetail.removeItemAt(p);
+				}
+			});
+			li.appendChild(lc6);
+			lsempdetail.appendChild(li);			
+		}
+		cbdocarlicence.setText(vcarlicence);
+		
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}
+//---------------load DR----------------- //
+
+public void loaddrls(){
+	String drQry;
+	String vdrDocno;	
+	lsdr.getItems().clear();
+	try{
+		vdrDocno=txfinddrcf.getValue().toLowerCase();
+		lsdr.getItems().clear();
+		con=Database.getConnection();
+		st=con.createStatement();
+		if(chkboxisbill.isChecked()==true){
+			drQry="select * from sm_do.ft_queueviewconfirm2('"+vdrDocno+"');";
+			}else
+			{
+			drQry="select * from sm_do.ft_queueviewconfirm('"+vdrDocno+"');";
+		}		
+		st.executeQuery(drQry);
+		ResultSet drs = st.getResultSet();
+		while(lsdr.getItemCount()>0){
+			lsdr.removeItemAt(0);
+		}
+		while(drs.next()){
+			Listitem dli=new Listitem();			
+			dli.appendChild(new Listcell(drs.getString("sono")));
+			dli.appendChild(new Listcell(drs.getString("mydescription")));
+			dli.appendChild(new Listcell(drs.getString("itemgroup")));
+			lsdr.appendChild(dli);
+		}
+		
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}
+public void chkDRbeforBill(){
+	if(chkboxisbill.isChecked()==false){
+		loaddrls();
+	}else{
+		lsdr.getItems().clear();
+	}
+}
+public void selectDR(){
+	//lsdrdetail.getItems().clear();
+	Integer n;
+	Popup pp2tip=new Popup();
+	pp2tip.setContext("กรุณาป้อนเลขที่บิลขายเสร็จแล้วกดปุ่ม Enter.");
+	try{
+		for(n=0;n<=lsdr.getItemCount();n++){
+			Listitem rli = new Listitem();			
+			rli = lsdr.getItemAtIndex(n);
+			if(rli.isSelected()==true){		
+				Listitem lis = new Listitem();
+				Listcell dc0 = (Listcell) rli.getChildren().get(0);
+				Listcell dc1 = (Listcell) rli.getChildren().get(1);
+				Listcell dc2 = new Listcell();
+				Listcell dc3 = new Listcell();
+				Listcell lcSVcost = new Listcell();
+				Listcell lcDScost = new Listcell();
+				Listcell dcbill = new Listcell();
+				Textbox txbill = new Textbox();
+				txbill.setStyle("background:#006C9A; font-weight:bold; color:#FFFFFF;");				
+				txbill.addEventListener("onOK", new EventListener(){
+					public void onEvent(Event event) throws Exception{
+						String ivQry;
+						String vDocno;
+						Integer vgetRS;
+						try{
+						vDocno=txbill.getValue();
+						sqlcon = Mssqldb.getConnection();
+						mst = sqlcon.createStatement();
+						ivQry="exec usp_iv_ckinvoicepg '"+vDocno+"'";
+						System.out.println(ivQry);
+						mst.executeQuery(ivQry);
+						ResultSet ivrs = mst.getResultSet();
+							while(ivrs.next()){
+								vgetRS=ivrs.getInt("countbill");	
+								if(vgetRS==0){
+									
+									lis.setStyle("background:#FF5D5D;");
+									txbill.setFocus(true);
+									dcbill.setLabel("0");
+									btnSave.setDisabled(true);
+									//return;
+							}else{
+								//nothing
+								// alert("Bill No. : "+vDocno+" Is OK.");
+								
+								dcbill.setLabel("1");
+								lcSVcost.setLabel(ivrs.getString("amount_do"));
+								lcDScost.setLabel(ivrs.getString("amount_all"));
+								lis.setStyle("background:#74FF88;");							
+								btnSave.setDisabled(false);
+								//return;
+							}
+						}
+						}catch(SQLException ex){
+							ex.printStackTrace();
+						}
+					}
+				});
+				txbill.addEventListener("onChange", new EventListener(){
+					public void onEvent(Event event) throws Exception{
+						String ivQry;
+						String vDocno;
+						Integer vgetRS;
+						try{
+						vDocno=txbill.getValue();
+						sqlcon = Mssqldb.getConnection();
+						mst = sqlcon.createStatement();
+						ivQry="exec usp_iv_ckinvoicepg '"+vDocno+"'";
+						System.out.println(ivQry);
+						mst.executeQuery(ivQry);
+						ResultSet ivrs = mst.getResultSet();
+							while(ivrs.next()){
+								vgetRS=ivrs.getInt("countbill");	
+								if(vgetRS==0){
+									lis.setStyle("background:#FF5D5D;");
+									txbill.setFocus(true);
+									dcbill.setLabel("0");
+									btnSave.setDisabled(true);
+									return;
+							}else{
+								//nothing
+								// alert("Bill No. : "+vDocno+" Is OK.");								
+								dcbill.setLabel("1");
+								lcSVcost.setLabel(ivrs.getString("amount_do"));
+								lcDScost.setLabel(ivrs.getString("amount_all"));
+								lis.setStyle("background:#74FF88;");
+								btnSave.setDisabled(false);
+								return;
+							}
+						}
+						}catch(SQLException ex){
+							ex.printStackTrace();
+						}
+					}
+				});
+				txbill.addEventListener("onChanging", new EventListener(){
+					public void onEvent(Event event) throws Exception{
+						lis.setStyle("");
+					}
+				});
+				/*
+				txbill.addEventListener("onChange", new EventListener(){
+					public void onEvent(Event event) throws Exception{
+						String ivQry;
+						String vDocno;
+						Integer vgetRS;
+						try{
+						vDocno=txbill.getValue();
+						sqlcon = Mssqldb.getConnection();
+						mst = sqlcon.createStatement();
+						ivQry="exec usp_iv_ckinvoicepg '"+vDocno+"'";
+						mst.executeQuery(ivQry);
+						ResultSet ivrs = mst.getResultSet();
+							while(ivrs.next()){
+								vgetRS=ivrs.getInt("countbill");	
+								if(vgetRS==0){
+									//alert("ไม่พบบิลเลขที่ :"+vDocno+" กรุณาตรวจสอบแล้วลองใหม่");
+									Messagebox.show("ไม่พบบิลขายเลขที่ : "+vDocno+"", "Error",
+							                Messagebox.OK, Messagebox.ERROR);
+							}else{
+								//nothing
+								Messagebox.show("Bibll No. : "+vDocno+"", "Information",
+							                Messagebox.OK, Messagebox.INFORMATION);
+								
+							}
+						}
+						}catch(SQLException ex){
+							ex.printStackTrace();
+						}
+					}
+				});
+				*/
+				Image btnrm = new Image();
+				btnrm.setSrc("/img/minus.png");
+				dc3.appendChild(btnrm);
+				dc3.addEventListener("onClick", new EventListener(){
+					public void onEvent(Event event) throws Exception{
+						Integer i;
+						i=lsdrdetail.getSelectedIndex();
+						lsdrdetail.removeItemAt(i);
+					}
+				});
+				dc2.appendChild(txbill);				
+				lis.appendChild(dc0);
+				lis.appendChild(dc1);
+				lis.appendChild(dc2);
+				lis.appendChild(lcSVcost);
+				lis.appendChild(lcDScost);
+				lis.appendChild(dc3);
+				lis.appendChild(dcbill);
+				lsdrdetail.appendChild(lis);			
+			}			
+		}
+		
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+	popdr.close();
+	
+}
+void closeWindo(){
+	lbldono.setValue("");
+	clrScreenDO();
+	doList.setVisible(true);
+	doFRM.setVisible(false);	
+}
+public void loadViewDO(){
+	String vQry;
+	String vdocno;
+	Integer visreturn;
+	Integer visresult;
+	String idoc;
+	try{
+		if(lbldono.getValue().length()>0){
+			vdocno=lbldono.getValue().trim();
+			con = Database.getConnection();
+			st = con.createStatement();
+			//System.out.println("ค่าส่งไป="+vdocno.length());
+			vQry="select * from sm_do.ft_doview('"+vdocno+"');";
+			st.execute(vQry);
+			ResultSet rs = st.getResultSet();
+			while(rs.next()){
+				cbxbranch.setText(rs.getString("branch"));
+				idoc =rs.getString("docno");				
+				txdodocno.setValue(idoc.trim());
+				dtdocdate.setValue(rs.getDate("docdate"));
+				dtdatesend.setValue(rs.getDate("datesend"));
+				tbtimesend.setText(rs.getString("timesend"));
+				dtdatereturn.setValue(rs.getDate("datereturn"));
+				tbtimereturn.setText(rs.getString("timereturn"));
+				cbdocarlicence.setText(rs.getString("carlicence"));
+				ibstart.setValue(rs.getInt("measurestart"));
+				ibstop.setValue(rs.getInt("measurestop")); 
+				txdesc.setText(rs.getString("mydescription"));
+				visreturn=rs.getInt("isreturn");
+				visresult=rs.getInt("sendresult");
+				cbxsendresult.setSelectedIndex(visresult);
+				if(visreturn==1){
+					cxisreturn.setChecked(true);
+					cxisreturn.setDisabled(true);
+				}else{
+					cxisreturn.setChecked(false);
+					cxisreturn.setDisabled(false);
+				}				
+				if(visreturn==1 && visresult!=0){
+					btnchk.setDisabled(true);
+					txdolabel.setValue("RN");
+					txdolabel.setStyle("background:#D94200; text-align:center; font-weight:bold; color:#FFFFFF;");
+				}else if(visreturn==1 && cxisreturn.isChecked()==true && visresult==0 ){
+					txdolabel.setValue("SS");
+					txdolabel.setStyle("background:#008E2A; text-align:center; font-weight:bold; color:#FFFFFF;");
+					lockDOFRM();
+					btnSave.setDisabled(true);						
+					
+					
+				}else{
+					txdolabel.setValue("NW");
+					txdolabel.setStyle("background:#008E2A; text-align:center; font-weight:bold; color:#FFFFFF;");
+				}	
+				calMeasureTotal();
+				loadSubDO1();
+				loadSubdo2();
+							
+				
+			}
+		}
+		
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}
+public void loadSubDO1(){	
+	String subQry1;
+	String doDocno;
+	lsdrdetail.getItems().clear();
+	try{
+		doDocno=lbldono.getValue().trim();
+		con = Database.getConnection();
+		st = con.createStatement();
+		subQry1="select * from sm_do.ft_do2view('"+doDocno+"');";
+		 System.out.println("Sub1="+subQry1);
+		st.executeQuery(subQry1);
+		ResultSet rsdr =st.getResultSet();
+		while(lsdrdetail.getItemCount()>0){
+			lsdrdetail.removeItemAt(0);
+		}
+		while(rsdr.next()){
+			Listitem li = new Listitem();
+			Textbox txinvoice = new Textbox();
+			Listcell lc = new Listcell();
+			Listcell lcbill = new Listcell();
+			Listcell lcSVcost = new Listcell();
+			Listcell lcDScost = new Listcell();
+			
+			
+			txinvoice.setValue(rsdr.getString("invoiceno").trim());	
+			lcSVcost.setLabel(rsdr.getString("amount_do_in"));
+			lcDScost.setLabel(rsdr.getString("amount_all_in"));
+			txinvoice.addEventListener("onOK", new EventListener(){
+				public void onEvent(Event event) throws Exception{
+					String ivQry;
+					String vDocno;
+					Integer vgetRS;
+					try{
+					vDocno=txinvoice.getValue();
+					sqlcon = Mssqldb.getConnection();
+					mst = sqlcon.createStatement();
+					ivQry="exec usp_iv_ckinvoicepg '"+vDocno+"'";
+					System.out.println(ivQry);
+					mst.executeQuery(ivQry);
+					ResultSet ivrs = mst.getResultSet();
+						while(ivrs.next()){
+							vgetRS=ivrs.getInt("countbill");	
+							if(vgetRS==0){
+								
+								txinvoice.setFocus(true);
+								lcbill.setValue("0");
+								li.setStyle("background:#FF5D5D;");
+								btnSave.setDisabled(true);								 
+						}else{
+							//nothing
+							// alert("Bill No. : "+vDocno+" Is OK.");							
+							lcbill.setValue("1");
+							lcSVcost.setLabel(ivrs.getString("amount_do"));
+							lcDScost.setLabel(ivrs.getString("amount_all"));
+							li.setStyle("background:#74FF88;");
+							btnSave.setDisabled(false);
+							event.stopPropagation();
+						}
+					}
+					}catch(SQLException ex){
+						ex.printStackTrace();
+					}	
+					//event.stopPropagation();
+				}				
+			});
+			txinvoice.addEventListener("onChange", new EventListener(){
+				public void onEvent(Event event) throws Exception{
+					String ivQry;
+					String vDocno;
+					Integer vgetRS;
+					try{
+					vDocno=txinvoice.getValue();
+					sqlcon = Mssqldb.getConnection();
+					mst = sqlcon.createStatement();
+					ivQry="exec usp_iv_ckinvoicepg '"+vDocno+"'";
+					System.out.println(ivQry);
+					mst.executeQuery(ivQry);
+					ResultSet ivrs = mst.getResultSet();
+						while(ivrs.next()){
+							vgetRS=ivrs.getInt("countbill");	
+							if(vgetRS==0){
+								li.setStyle("background:#FF5D5D;");
+								txinvoice.setFocus(true);
+								lcbill.setLabel("0");
+								btnSave.setDisabled(true);
+								return;
+						}else{
+							//nothing
+							// alert("Bill No. : "+vDocno+" Is OK.");
+							
+							lcbill.setLabel("1");
+							lcSVcost.setLabel(ivrs.getString("amount_do"));
+							lcDScost.setLabel(ivrs.getString("amount_all"));
+							li.setStyle("background:#74FF88;");
+							btnSave.setDisabled(false);
+							return;
+						}
+					}
+					}catch(SQLException ex){
+						ex.printStackTrace();
+					}
+				}
+			});
+			txinvoice.addEventListener("onChanging", new EventListener(){
+				public void onEvent(Event event) throws Exception{
+					li.setStyle("");
+				}
+			});
+			Listcell lcdel = new Listcell();
+			Image imgdel = new Image();
+			imgdel.setSrc("/img/minus.png");
+			lcdel.appendChild(imgdel);
+			lcdel.addEventListener("onClick", new EventListener(){
+				public void onEvent(Event event) throws Exception{
+					Integer i;
+					i=lsdrdetail.getSelectedIndex();
+					lsdrdetail.removeItemAt(i);
+					btnSave.setDisabled(false);
+				}
+			});
+			lc.appendChild(txinvoice);
+			li.appendChild(new Listcell(rsdr.getString("sono")));
+			li.appendChild(new Listcell(rsdr.getString("mydescription")));	
+			li.appendChild(lc);
+			li.appendChild(lcSVcost);
+			li.appendChild(lcDScost);
+			li.appendChild(lcdel);
+			li.appendChild(lcbill);
+			lsdrdetail.appendChild(li);
+		}
+	//	chkBillStatus(); //ตรวจสอบบิลตอนรถกลับ และผลการจัดส่ง
+	
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}
+
+
+
+public void chkBillStatus(){
+	
+	Integer di;
+	String vBillvalue;
+	di=lsdrdetail.getItemCount();
+			if(di>0 && cxisreturn.isChecked()==true && cbxsendresult.getSelectedIndex()<0){
+					Listitem lcx = new Listitem();
+					for(int nd=0;nd<di; nd++){								
+						lcx = lsdrdetail.getItemAtIndex(nd);
+						Listcell lcbill = (Listcell) lcx.getChildren().get(2);
+						vBillvalue =((Textbox) lcbill.getChildren().get(0)).getValue(); 
+						if(vBillvalue.length()<=0){
+							alert("กรุณาป้อนเลขที่บิลก่อน");
+							// System.out.println("NoComplete");
+							btnSave.setDisabled(true);
+							((Textbox) lcbill.getChildren().get(0)).setDisabled(false);
+						}else{
+							btnSave.setDisabled(false);
+							((Textbox) lcbill.getChildren().get(0)).setDisabled(true);
+							cbxsendresult.setDisabled(false);
+						}
+						((Textbox) lcbill.getChildren().get(0)).setDisabled(false);
+						btnSave.setDisabled(true);
+						cbxsendresult.setDisabled(true);
+					}
+			}
+			
+			 if(di>0 && cxisreturn.isChecked()==true && cbxsendresult.getSelectedIndex()>=0){
+				Listitem lcx = new Listitem();
+				for(int nd=0;nd<di; nd++){								
+					lcx = lsdrdetail.getItemAtIndex(nd);
+					Listcell lcbill = (Listcell) lcx.getChildren().get(2);
+					Listcell lcbtn = (Listcell) lcx.getChildren().get(5);
+					vBillvalue =((Textbox) lcbill.getChildren().get(0)).getValue();					
+						btnSave.setDisabled(false);
+						((Textbox) lcbill.getChildren().get(0)).setDisabled(true);
+						// ((Image) lcbtn.getChildren().get(0)).setSrc("");
+						lcbtn.setVisible(false);
+						btnSave.setDisabled(true);
+				}			
+			}
+}
+
+
+public void loadSubdo2(){
+	String subQry2;
+	String vDODocNo;
+	lsempdetail.getItems().clear();
+	try{
+		vDODocNo=lbldono.getValue().trim();
+		con = Database.getConnection();
+		st = con.createStatement();
+		subQry2="select * from sm_do.ft_do3view('"+vDODocNo+"');";
+		// System.out.println(subQry2);
+		st.executeQuery(subQry2);
+		ResultSet eprs = st.getResultSet();
+		while(lsempdetail.getItemCount()>0){
+			lsempdetail.removeItemAt(0);
+		}
+		while(eprs.next()){
+			Listitem epli = new Listitem();
+			Listcell lctf=new Listcell();
+			Listcell lcempdesc = new Listcell();
+			Doublebox dbltransportation = new Doublebox();
+			Textbox txempdesc = new Textbox();
+			epli.appendChild(new Listcell(eprs.getString("empcode")));
+			epli.appendChild(new Listcell(eprs.getString("empname")));
+			epli.appendChild(new Listcell(eprs.getString("emp_positionname")));
+			epli.appendChild(new Listcell(eprs.getString("emp_position")));
+			dbltransportation.setValue(eprs.getDouble("transportation"));
+			lctf.appendChild(dbltransportation);
+			epli.appendChild(lctf);
+			txempdesc.setValue(eprs.getString("mydescription"));
+			txempdesc.setWidth("200px");
+			txempdesc.setInplace(true);
+			lcempdesc.appendChild(txempdesc);
+			epli.appendChild(lcempdesc);
+			Listcell lcdel = new Listcell();
+			Image imgdel = new Image();
+			imgdel.setSrc("/img/minus.png");
+			lcdel.appendChild(imgdel);
+			lcdel.addEventListener("onClick", new EventListener(){
+				public void onEvent(Event event) throws Exception{
+					Integer i;
+					i=lsempdetail.getSelectedIndex();
+					lsempdetail.removeItemAt(i);
+				}
+			});
+			epli.appendChild(lcdel);
+			lsempdetail.appendChild(epli);
+		}
+		// chkTransporttation();
+		
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}
+// ตรวจสอบการป้อนข้อมูลค่าเที่ยว
+public void chkTransporttation(){
+	Integer ti;
+	Integer ulv;
+	ulv =Integer.parseInt(lbllevel.getValue());
+	Double dbTransport;
+	ti = lsempdetail.getItemCount();
+	if(ti>0 && cxisreturn.isChecked()==true ){
+		Listitem epli = new Listitem();
+		for(int p=0;p<ti;p++){
+			epli = lsempdetail.getItemAtIndex(p);
+			Listcell eplc0 =(Listcell) epli.getChildren().get(4);
+			Listcell eplc1 =(Listcell) epli.getChildren().get(5);	
+			dbTransport = ((Doublebox) eplc0.getChildren().get(0)).getValue();
+			if(dbTransport==0){
+				alert("ยังไม่ป้อนค่าเที่ยวนะครับ..");
+				btnSave.setDisabled(false);
+				return;
+			}else{
+				// ระดับหัวหน้าแก้ไข DO ค่าเที่ยวได้
+				//System.out.println("User Level="+ulv);
+				if(ulv>=2){
+					
+					((Doublebox) eplc0.getChildren().get(0)).setDisabled(false);	
+					((Textbox) eplc1.getChildren().get(0)).setDisabled(false);
+					unlockDOFRM();
+					cbdocarlicence.setDisabled(false);
+				}else{
+					((Doublebox) eplc0.getChildren().get(0)).setDisabled(true);	
+					((Textbox) eplc1.getChildren().get(0)).setDisabled(true);
+					cbdocarlicence.setDisabled(true);	
+				}
+			}
+			((Doublebox) eplc0.getChildren().get(0)).setDisabled(false);	
+			((Textbox) eplc1.getChildren().get(0)).setDisabled(false);			
+		}
+		
+	}
+	if(ti>0 && cxisreturn.isChecked()==true && cbxsendresult.getSelectedIndex()>=0){
+		Listitem epli = new Listitem();
+		for(int p=0;p<ti;p++){
+			epli = lsempdetail.getItemAtIndex(p);
+			Listcell eplc0 =(Listcell) epli.getChildren().get(4);
+			Listcell eplc1 =(Listcell) epli.getChildren().get(5);
+			Listcell eplc2 =(Listcell) epli.getChildren().get(6);			
+			if(ulv>=2){
+				//System.out.println("Kom");
+				((Doublebox) eplc0.getChildren().get(0)).setDisabled(false);	
+				((Textbox) eplc1.getChildren().get(0)).setDisabled(false);
+				unlockDOFRM();
+				eplc2.setVisible(true);
+				btnSave.setDisabled(false);
+				cbdocarlicence.setDisabled(false);
+			}else{
+				((Doublebox) eplc0.getChildren().get(0)).setDisabled(true);	
+				((Textbox) eplc1.getChildren().get(0)).setDisabled(true);
+				eplc2.setVisible(false);
+				btnSave.setDisabled(true);
+			}
+			/*
+			((Doublebox) eplc0.getChildren().get(0)).setDisabled(true);
+			((Textbox) eplc1.getChildren().get(0)).setDisabled(true);
+			eplc2.setVisible(false);
+			btnSave.setDisabled(true);
+			*/
+		}
+		
+	}
+	
+}
+// ตรวจสอบข้อมูลวันที่กลับ
+
+public void chkReturnDate(){
+	Date vSendDate;
+	Date vReturnDate;
+	Date  vSendTime;
+	Date vReturnTime;
+	
+	vSendDate=dtdatesend.getValue();
+	vReturnDate = dtdatereturn.getValue();
+	vReturnTime= tbtimereturn.getValue();
+	vSendTime = tbtimesend.getValue();
+		if(vReturnDate.before(vSendDate)==true){
+			alert("วันที่รถกลับน้อยกว่าวันส่งไม่ได้กรุณากำหนดใหม่");
+			btnSave.setDisabled(true);			
+	
+		} 
+		else if(vReturnDate.equals(vSendDate) && vReturnTime.before(vSendTime)){
+		alert("วันที่รถกลับน้อยกว่าวันส่งไม่ได้กรุณากำหนดใหม่");
+		btnSave.setDisabled(true);
+			}else{
+				chkinvoidONSS();
+			}	
+	}
+public void genNewDoc(){
+	String strNewDO;
+	String vgetNewDO;
+	String vgetBranch;
+	try{
+		if(cbxbranch.getText().length()==0){
+			Messagebox.show("กรุณาเลือกสาขาก่อนครับ.","Error",
+					Messagebox.OK, Messagebox.ERROR);
+			return;
+		}else{
+			vgetBranch = cbxbranch.getText();
+			con = Database.getConnection();
+			st = con.createStatement();
+			strNewDO="select * from sm_do.ft_dodocnew(0,'"+vgetBranch+"')";
+			st.executeQuery(strNewDO);
+			ResultSet rdo = st.getResultSet();
+			while(rdo.next()){
+				vgetNewDO = rdo.getString("ft_dodocnew");
+				txdodocno.setValue(vgetNewDO);
+			}
+		}
+		
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+		
+	
+}
+void calMeasureTotal(){
+	Integer vTTMS;
+	Integer vStartMS;
+	Integer vStopMS;
+	String  strStop;
+	try{
+		vStartMS=ibstart.getValue();
+		vStopMS=ibstop.getValue();
+		// vStopMS=Integer.parseInt(strStop);
+		if(vStopMS<vStartMS){
+			alert("กม.สิ้นสุด ต้องมากกว่า กม.เริ่มต้น.");
+			ibstop.focus();
+			btnSave.setDisabled(true);
+		}else{			
+			vTTMS=(vStopMS-vStartMS);
+			ibinstanceamount.setValue(vTTMS);
+			txdesc.focus();
+			btnSave.setDisabled(false);
+		}
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+	
+}
+public void printDO(){
+	String vDODocNo;
+	try{
+		vDODocNo=txdodocno.getValue().trim();
+		application.setAttribute("dodocno",vDODocNo);	
+		Executions.getCurrent().sendRedirect("/rp/printdo.zul", "_new");
+		//Executions.createComponents("/rp/printdr.zul",null, null);    	
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+}
+public void printDOModal(){
+	String vDODocNo;
+	try{
+		vDODocNo=txdodocno.getValue().trim();
+		application.setAttribute("dodocno",vDODocNo);	
+		Executions.createComponents("/rp/printdo.zul",null,null);
+		//Executions.createComponents("/rp/printdr.zul",null, null);    	
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+}
+
+// ตรวจสอบบิลขาย
+
+
+public void vUpdateTrue(){
+	Integer di;
+	String vStrBill;
+	String vIshave;
+	di=lsdrdetail.getItemCount();
+	if(di==0){
+		alert("คุณยังไม่ได้กำหนด DR");
+		cxisreturn.setChecked(false);
+	} else if(di>0){
+		Listitem lcx = new Listitem();
+		String vDrNo;
+		for(int nd=0;nd<di; nd++){								
+			lcx = lsdrdetail.getItemAtIndex(nd);
+			Listcell lcdr = (Listcell) lcx.getChildren().get(0);
+			Listcell lcbill = (Listcell) lcx.getChildren().get(2);
+			Listcell lcishave =(Listcell) lcx.getChildren().get(4);
+			vIshave= lcishave.getLabel();
+			vDrNo = lcdr.getLabel();
+			vStrBill =((Textbox) lcbill.getChildren().get(0)).getValue(); 
+			if(vStrBill.length()<=0 || vIshave.equals("0")){
+				alert("DR เลขที่ "+vDrNo+" ยังไม่มีบิลขาย..กรุณาป้อนเลขที่บิลก่อน");
+				// System.out.println("NoComplete");
+				btnSave.setDisabled(true);
+				((Textbox) lcbill.getChildren().get(0)).setDisabled(false);
+				cxisreturn.setChecked(false);
+			}else{
+				
+				btnSave.setDisabled(false);
+				((Textbox) lcbill.getChildren().get(0)).setDisabled(true);
+				cbxsendresult.setDisabled(false);
+			}
+			//((Textbox) lcbill.getChildren().get(0)).setDisabled(false);
+			// btnSave.setDisabled(true);
+		}
+		}else {
+			btnSave.setDisabled(false);
+			cbxsendresult.setDisabled(false);
+		}	
+	}
+
+
+public void chkinvoidONSS(){
+		Integer di;
+		String vStrBill;
+		di=lsdrdetail.getItemCount();
+		if(di==0){
+			alert("คุณยังไม่ได้กำหนด DR");
+			btnSave.setDisabled(true);
+		}else if(di>0){
+			Listitem lcx = new Listitem();
+			String vDrNo;
+			for(int nd=0;nd<di; nd++){								
+				lcx = lsdrdetail.getItemAtIndex(nd);
+				Listcell lcdr = (Listcell) lcx.getChildren().get(0);
+				Listcell lcbill = (Listcell) lcx.getChildren().get(2);
+				vDrNo = lcdr.getLabel();
+				vStrBill =((Textbox) lcbill.getChildren().get(0)).getValue(); 
+				if(vStrBill.length()<=0){
+					alert("DR เลขที่ "+vDrNo+" ยัไม่มีบิลขาย..กรุณาป้อนเลขที่บิลก่อน");
+					// System.out.println("NoComplete");
+					btnSave.setDisabled(true);
+					((Textbox) lcbill.getChildren().get(0)).setDisabled(false);					
+				}else{
+					btnSave.setDisabled(false);
+					cbxsendresult.setDisabled(false);
+					((Textbox) lcbill.getChildren().get(0)).setDisabled(true);
+				}
+				((Textbox) lcbill.getChildren().get(0)).setDisabled(false);
+				cbxsendresult.setDisabled(false);
+				btnSave.setDisabled(true);
+			}
+		}else{
+			cbxsendresult.setDisabled(false);
+			btnSave.setDisabled(false);
+		}
+	}
+
+public void fnCancelDO(){
+	String pgQry;
+	String docNo;
+	try{
+		docNo=txdodocno.getValue();
+		con = Database.getConnection();
+		Statement stcc = con.createStatement();
+		pgQry="update sm_do.tb_do_delivery  set iscancel=1, editorcode='"+vuser+"' where docno='"+docNo+"'";
+		stcc.execute(pgQry);
+		stcc.close();
+		con.close();
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}
+
+public void clrDRTable(){
+	lsdrdetail.getItems().clear();
+	cbdrcar.setText("");
+	cbdrcar.setSelectedIndex(-1);
+}
+
+public void viewDOFRM(){
+	doList.setVisible(false);
+	doFRM.setVisible(true);
+}
+public void viewDOLIST(){
+	doList.setVisible(true);
+	doFRM.setVisible(false);
+}
+public void viewDRModal(){
+	Executions.createComponents("drprocess.zul", null, null);
+}
+	]]>
+</zscript>
+</div>
+</zk>

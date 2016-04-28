@@ -1,0 +1,42 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<div width="100%" style="border:1px solid black;overflow:auto;" apply="sendbugmail.bug2mail">
+<grid>
+		<columns>
+			<column label="แจ้งปัญหาการใช้งานหรือความต้องการเพิ่มเติมที่นี่ครับ"/>			
+		</columns>
+		<rows>
+			<row>	
+				<x:table width="800px">
+					<x:tr>
+						<x:td width="100px" align="right">ผู้แจ้ง</x:td>
+						<x:td><textbox id="txtSender" width="500px"/></x:td>
+					</x:tr>
+					<x:tr>
+						<x:td valign="top"  align="right">รายละเอียด</x:td>
+						<x:td><textbox id="txtSMS" rows="10" width="500px"/></x:td>
+					</x:tr>
+					<x:tr>
+						<x:td></x:td>
+						<x:td>
+						<button label="Send" id="btnSend" image="/img/email.png">												
+						</button>
+						<button label="Cancel" onClick="RT2Home();"  image="/img/cancel.png"/>
+						</x:td>
+					</x:tr>
+				</x:table>
+			
+			</row>
+		</rows>
+	</grid>	
+</div>
+<zscript>
+	<![CDATA[
+		import java.lang.*;
+		void RT2Home(){
+			Executions.sendRedirect("/home.zul");
+		}
+		
+	]]>
+</zscript>
+</zk>

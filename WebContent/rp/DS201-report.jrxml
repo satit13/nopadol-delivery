@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DS201-รายงานสรุปค่าจัดส่งสินค้า" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cb49a143-aa34-496c-a4e8-3107ba837cec">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="929"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="shipping2" uuid="8f19827e-2295-4115-9e43-e4cc94c97502">
+		<parameter name="branch_2" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="begindate_2" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="enddate_2" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="ratekm_2" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="distance_2" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select a.*,cast(มูลค่าสินค้า *100/amount_all as decimal(10,2)) as amount_p
+from
+     (	select ประเภทขาย,sum(มูลค่าสินค้า ) มูลค่าสินค้า,( select sum(มูลค่าสินค้า ) มูลค่าสินค้า
+		from sm_do.ft_shippingvalue($P{ratekm_2},$P{begindate_2},$P{enddate_2}) where upper(ศูนย์ธุรกิจ)=upper($P{branch_2}) ) as amount_all
+	from sm_do.ft_shippingvalue($P{ratekm_2},$P{begindate_2},$P{enddate_2}) where upper(ศูนย์ธุรกิจ)=upper($P{branch_2}) and  upper("ระยะทางผิด(เกิน500กม.)")=$P{distance_2} group by ประเภทขาย  ) as a;]]>
+		</queryString>
+		<field name="ประเภทขาย" class="java.lang.String"/>
+		<field name="มูลค่าสินค้า" class="java.math.BigDecimal"/>
+		<field name="amount_all" class="java.math.BigDecimal"/>
+		<field name="amount_p" class="java.math.BigDecimal"/>
+	</subDataset>
+	<subDataset name="shiping3" uuid="296651d2-7a39-4422-87de-f88f0d602ff3">
+		<parameter name="branch_3" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="begindate_3" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="enddate_3" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="ratekm_3" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="distance_3" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select a.*,cast(ค่าขนส่ง *100/amount_all as decimal(10,2)) as amount_p
+from
+     (	select ประเภทขาย,sum(ค่าขนส่ง ) as ค่าขนส่ง,( select sum(ค่าขนส่ง ) as ค่าขนส่ง from sm_do.ft_shippingvalue($P{ratekm_3},$P{begindate_3},$P{enddate_3}) where upper(ศูนย์ธุรกิจ)=upper($P{branch_3}) ) as amount_all
+	from sm_do.ft_shippingvalue($P{ratekm_3},$P{begindate_3},$P{enddate_3}) where upper(ศูนย์ธุรกิจ)=upper($P{branch_3}) and  upper("ระยะทางผิด(เกิน500กม.)")=$P{distance_3} group by ประเภทขาย  ) as a;]]>
+		</queryString>
+		<field name="ประเภทขาย" class="java.lang.String"/>
+		<field name="ค่าขนส่ง" class="java.math.BigDecimal"/>
+		<field name="amount_all" class="java.math.BigDecimal"/>
+		<field name="amount_p" class="java.math.BigDecimal"/>
+	</subDataset>
+	<parameter name="branch" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="begindate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="enddate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ratekm" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[15]]></defaultValueExpression>
+	</parameter>
+	<parameter name="distance" class="java.lang.String">
+		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select  upper(ศูนย์ธุรกิจ) as branchx,* from sm_do.ft_shippingvalue($P{ratekm},$P{begindate},$P{enddate})
+where upper(ศูนย์ธุรกิจ)=upper($P{branch}) and  upper("ระยะทางผิด(เกิน500กม.)")=$P{distance};]]>
+	</queryString>
+	<field name="branchx" class="java.lang.String"/>
+	<field name="เลขที่เอกสาร" class="java.lang.String"/>
+	<field name="วันที่ส่ง" class="java.sql.Date"/>
+	<field name="เดือนที่ส่ง" class="java.lang.Double"/>
+	<field name="ปีที่ส่ง" class="java.lang.Double"/>
+	<field name="measurestart" class="java.math.BigDecimal"/>
+	<field name="measurestop" class="java.math.BigDecimal"/>
+	<field name="ระยะทาง(กม.)" class="java.math.BigDecimal"/>
+	<field name="สถานะขนส่ง" class="java.lang.String"/>
+	<field name="rt_amount" class="java.math.BigDecimal"/>
+	<field name="ws_amount" class="java.math.BigDecimal"/>
+	<field name="หมยเลขรถ" class="java.lang.Integer"/>
+	<field name="เลขทะเบียนรถ" class="java.lang.String"/>
+	<field name="ชื่อรถ" class="java.lang.String"/>
+	<field name="คนขับ" class="java.lang.String"/>
+	<field name="มูลค่าสินค้า" class="java.math.BigDecimal"/>
+	<field name="ศูนย์ธุรกิจ" class="java.lang.String"/>
+	<field name="ประเภทขาย" class="java.lang.String"/>
+	<field name="อัตรา(กม.:บาท)" class="java.lang.Integer"/>
+	<field name="ค่าขนส่ง" class="java.math.BigDecimal"/>
+	<field name="ระยะทางผิด(เกิน500กม.)" class="java.lang.String"/>
+	<field name="multiowner" class="java.lang.String"/>
+	<field name="rt_amount%" class="java.math.BigDecimal"/>
+	<field name="ws_amount%" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="85" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="13a5c455-777e-42cf-a7b6-734c5414ad8d" x="0" y="2" width="802" height="71"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement uuid="b87dbd20-19ab-43c5-a523-a2c45192781b" x="680" y="4" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="50497c9d-09c0-4d94-9d4c-f49a39df52e2" x="760" y="4" width="40" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="47d19584-dd49-41d4-b499-53b4a2413653" x="231" y="11" width="570" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DS201-รายงานสรุปค่าจัดส่งสินค้า]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="5ecccdee-936f-4bec-8c12-36856363347e" x="257" y="47" width="56" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{branch}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0256b88c-8919-4e47-afd8-5c890fee9061" x="222" y="47" width="35" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[สาขา :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="05b9864f-2cc2-4a87-80b5-dfb2baea65c0" x="301" y="47" width="53" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ตั้งแต่วันที่ :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b18ab01e-6e21-4dc8-8272-1d8001829e24" x="427" y="47" width="16" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ถึง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e8c54c93-7db6-4d0e-b7f0-ab1c3b6cf450" x="515" y="47" width="38" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[อัตรา :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9281885c-e901-4e64-b0ce-f61ff422cd31" x="632" y="47" width="129" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ระยะทางผิด(เกิน500กม.) :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="40309dab-8246-48ab-b7c0-95f5c499e6c2" x="356" y="47" width="70" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{begindate}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="04b9ef7a-bf51-40d6-bc9a-a6ad09c13f83" x="443" y="47" width="65" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{enddate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8f95b5fb-bf30-4cb4-b433-7aeac221efd1" x="553" y="47" width="25" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ratekm}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e8944327-3e84-471b-85a1-062697756f19" x="762" y="47" width="35" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{distance}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="0648c953-4b64-4bba-8ad0-e5a986b77831" x="11" y="7" width="150" height="42"/>
+				<imageExpression><![CDATA["/var/lib/tomcat7/webapps/npdo/rp/logonp.gif"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="d070cadb-d250-4ac2-82d2-8217497bc730" x="578" y="47" width="48" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[บาท/กม.]]></text>
+			</staticText>
+		</band>
+	</title>
+	<summary>
+		<band height="303" splitType="Stretch">
+			<crosstab>
+				<reportElement uuid="cd232bc6-c0c9-4465-bb02-ed0f52cc9567" style="table" x="50" y="213" width="752" height="90" forecolor="#000000"/>
+				<crosstabHeaderCell>
+					<cellContents>
+						<staticText>
+							<reportElement uuid="3351e12b-5003-4d7a-9eb7-abdf26ab2f8f" style="Crosstab Data Text" x="0" y="26" width="50" height="12"/>
+							<textElement>
+								<font fontName="Tahoma" size="8" isBold="true"/>
+							</textElement>
+							<text><![CDATA[วันที่]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="วันที่ส่ง" width="50" totalPosition="End">
+					<bucket class="java.sql.Date">
+						<bucketExpression><![CDATA[$F{วันที่ส่ง}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField pattern="dd/MM/yyyy">
+								<reportElement uuid="2169827b-b499-430a-857d-d41b886225b9" style="Crosstab Data Text" x="0" y="2" width="50" height="14"/>
+								<textElement>
+									<font fontName="Tahoma" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{วันที่ส่ง}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement uuid="979cb32b-8daf-4e11-ab35-b3cdef5b7999" x="0" y="3" width="50" height="13"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Total วันที่ส่ง]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="brach" height="13">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{branchx}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents>
+							<textField>
+								<reportElement uuid="19855e6c-6e0e-4072-a824-902230b2112e" style="Crosstab Data Text" x="0" y="0" width="414" height="11"/>
+								<textElement>
+									<font fontName="Tahoma" size="9" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{brach}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="ประเภทขาย" height="34" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{ประเภทขาย}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement uuid="1d71901c-ddc0-44b3-a1ce-a8517ee323d5" style="Crosstab Data Text" x="0" y="0" width="197" height="13"/>
+								<textElement>
+									<font fontName="Tahoma" size="8" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{ประเภทขาย}]]></textFieldExpression>
+							</textField>
+							<staticText>
+								<reportElement uuid="9d4487f2-320d-49ac-a921-37dfd6deb818" style="Crosstab Data Text" x="0" y="13" width="38" height="20"/>
+								<textElement>
+									<font fontName="Tahoma" size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[ระยะทาง(กม.)]]></text>
+							</staticText>
+							<staticText>
+								<reportElement uuid="89f3041b-ac86-4d26-aef2-6bd3e0767c29" style="Crosstab Data Text" x="134" y="13" width="63" height="12"/>
+								<textElement textAlignment="Right">
+									<font fontName="Tahoma" size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[มูลค่าสินค้า]]></text>
+							</staticText>
+							<staticText>
+								<reportElement uuid="bef324c3-442f-4623-aad1-d83e1d79dc37" style="Crosstab Data Text" x="50" y="13" width="26" height="20"/>
+								<textElement>
+									<font fontName="Tahoma" size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[จำนวนเที่ยว]]></text>
+							</staticText>
+							<staticText>
+								<reportElement uuid="cc9ee5c1-7f2e-42d4-911a-e189dc8d0018" style="Crosstab Data Text" x="85" y="13" width="46" height="13"/>
+								<textElement textAlignment="Right">
+									<font fontName="Tahoma" size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[ค่าขนส่ง]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement uuid="d7230903-0511-4d96-8e55-415191b893d9" x="0" y="0" width="217" height="13"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Total ]]></text>
+							</staticText>
+							<staticText>
+								<reportElement uuid="9d4487f2-320d-49ac-a921-37dfd6deb818" style="Crosstab Data Text" x="0" y="14" width="50" height="20"/>
+								<textElement>
+									<font fontName="Tahoma" size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[ระยะทาง(กม.)]]></text>
+							</staticText>
+							<staticText>
+								<reportElement uuid="bef324c3-442f-4623-aad1-d83e1d79dc37" style="Crosstab Data Text" x="55" y="14" width="27" height="20"/>
+								<textElement>
+									<font fontName="Tahoma" size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[จำนวนเที่ยว]]></text>
+							</staticText>
+							<staticText>
+								<reportElement uuid="cc9ee5c1-7f2e-42d4-911a-e189dc8d0018" style="Crosstab Data Text" x="100" y="14" width="47" height="16"/>
+								<textElement textAlignment="Right">
+									<font fontName="Tahoma" size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[ค่าขนส่ง]]></text>
+							</staticText>
+							<staticText>
+								<reportElement uuid="89f3041b-ac86-4d26-aef2-6bd3e0767c29" style="Crosstab Data Text" x="149" y="13" width="66" height="16"/>
+								<textElement textAlignment="Right">
+									<font fontName="Tahoma" size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[มูลค่าสินค้า]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="มูลค่าสินค้าMeasure" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[$F{มูลค่าสินค้า}]]></measureExpression>
+				</measure>
+				<measure name="ระยะทาง(กม.)" class="java.lang.Integer" calculation="Sum">
+					<measureExpression><![CDATA[$F{ระยะทาง(กม.)}]]></measureExpression>
+				</measure>
+				<measure name="ค่าขนส่ง" class="java.lang.Integer" calculation="Sum">
+					<measureExpression><![CDATA[$F{ค่าขนส่ง}]]></measureExpression>
+				</measure>
+				<measure name="จำนวนเที่ยว" class="java.lang.Integer" calculation="Count">
+					<measureExpression><![CDATA[$F{เลขที่เอกสาร}]]></measureExpression>
+				</measure>
+				<crosstabCell width="199" height="17">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0.00">
+							<reportElement uuid="dbfe2ca8-bedf-47cd-8d81-75dd411c102d" style="Crosstab Data Text" x="133" y="2" width="64" height="14"/>
+							<textElement textAlignment="Right">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{มูลค่าสินค้าMeasure}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,###">
+							<reportElement uuid="67a7942c-11db-4ad4-9e3d-c9f833d69bff" style="Crosstab Data Text" x="0" y="2" width="34" height="14"/>
+							<textElement textAlignment="Right">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{ระยะทาง(กม.)}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement uuid="e655ea75-bc7f-4384-8556-e4a923b6de10" style="Crosstab Data Text" x="85" y="2" width="46" height="14"/>
+							<textElement textAlignment="Right">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{ค่าขนส่ง}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,###">
+							<reportElement uuid="86f5bde1-81cb-429f-a20d-31bf66645ed7" style="Crosstab Data Text" x="40" y="2" width="40" height="14"/>
+							<textElement>
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{จำนวนเที่ยว}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="199" height="19" rowTotalGroup="วันที่ส่ง">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0.00">
+							<reportElement uuid="54ed939b-dd6b-4c26-b8e5-79a7810de87d" style="Crosstab Data Text" x="134" y="4" width="63" height="13"/>
+							<textElement textAlignment="Right">
+								<font fontName="Tahoma" size="8" isBold="false"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{มูลค่าสินค้าMeasure}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,###">
+							<reportElement uuid="67a7942c-11db-4ad4-9e3d-c9f833d69bff" style="Crosstab Data Text" x="0" y="4" width="38" height="12"/>
+							<textElement textAlignment="Right">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{ระยะทาง(กม.)}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,###">
+							<reportElement uuid="86f5bde1-81cb-429f-a20d-31bf66645ed7" style="Crosstab Data Text" x="40" y="4" width="40" height="12"/>
+							<textElement>
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{จำนวนเที่ยว}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement uuid="e655ea75-bc7f-4384-8556-e4a923b6de10" style="Crosstab Data Text" x="85" y="4" width="46" height="13"/>
+							<textElement textAlignment="Right">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{ค่าขนส่ง}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="217" height="17" columnTotalGroup="ประเภทขาย">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0.00">
+							<reportElement uuid="88fc4bb4-5b13-4227-9124-c9ef8a1f70fc" style="Crosstab Data Text" x="149" y="0" width="66" height="16"/>
+							<textElement textAlignment="Right">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{มูลค่าสินค้าMeasure}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement uuid="e655ea75-bc7f-4384-8556-e4a923b6de10" style="Crosstab Data Text" x="89" y="2" width="58" height="14"/>
+							<textElement textAlignment="Right">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{ค่าขนส่ง}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,###">
+							<reportElement uuid="86f5bde1-81cb-429f-a20d-31bf66645ed7" style="Crosstab Data Text" x="52" y="2" width="33" height="14"/>
+							<textElement>
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{จำนวนเที่ยว}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,###">
+							<reportElement uuid="67a7942c-11db-4ad4-9e3d-c9f833d69bff" style="Crosstab Data Text" x="1" y="2" width="50" height="14"/>
+							<textElement textAlignment="Right">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{ระยะทาง(กม.)}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="217" height="19" rowTotalGroup="วันที่ส่ง" columnTotalGroup="ประเภทขาย">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0.00">
+							<reportElement uuid="21f50cb8-bc17-4a9d-80f1-178f8fae817e" style="Crosstab Data Text" x="149" y="4" width="66" height="13"/>
+							<textElement textAlignment="Right">
+								<font fontName="Tahoma" size="8" isBold="false"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{มูลค่าสินค้าMeasure}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement uuid="e655ea75-bc7f-4384-8556-e4a923b6de10" style="Crosstab Data Text" x="89" y="4" width="58" height="12"/>
+							<textElement textAlignment="Right">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{ค่าขนส่ง}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,###">
+							<reportElement uuid="86f5bde1-81cb-429f-a20d-31bf66645ed7" style="Crosstab Data Text" x="55" y="4" width="30" height="12"/>
+							<textElement>
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{จำนวนเที่ยว}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,###">
+							<reportElement uuid="67a7942c-11db-4ad4-9e3d-c9f833d69bff" style="Crosstab Data Text" x="0" y="4" width="52" height="13"/>
+							<textElement textAlignment="Right">
+								<font fontName="Tahoma" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{ระยะทาง(กม.)}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell columnTotalGroup="brach">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="วันที่ส่ง" columnTotalGroup="brach">
+					<cellContents/>
+				</crosstabCell>
+			</crosstab>
+			<pieChart>
+				<chart evaluationTime="Report">
+					<reportElement uuid="103e895c-6ac9-4c31-a2a1-baa8ae548fc4" x="387" y="0" width="393" height="202"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="shipping2" uuid="4fca0762-36e1-4696-857d-133f07f54e7c">
+							<datasetParameter name="branch_2">
+								<datasetParameterExpression><![CDATA[$P{branch}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="ratekm_2">
+								<datasetParameterExpression><![CDATA[$P{ratekm}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="begindate_2">
+								<datasetParameterExpression><![CDATA[$P{begindate}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="enddate_2">
+								<datasetParameterExpression><![CDATA[$P{enddate}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="distance_2">
+								<datasetParameterExpression><![CDATA[$P{distance}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<keyExpression><![CDATA[$F{ประเภทขาย}]]></keyExpression>
+					<valueExpression><![CDATA[$F{มูลค่าสินค้า}]]></valueExpression>
+					<labelExpression><![CDATA[$F{amount_p}.toString()]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+			<staticText>
+				<reportElement uuid="3629f986-3049-41bc-b52a-18dc893bc031" x="536" y="0" width="117" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[แสดงสัดส่วนมูลค่าขนส่ง]]></text>
+			</staticText>
+			<pieChart>
+				<chart evaluationTime="Report">
+					<reportElement uuid="103e895c-6ac9-4c31-a2a1-baa8ae548fc4" x="24" y="0" width="391" height="202"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="shiping3" uuid="4fca0762-36e1-4696-857d-133f07f54e7c">
+							<datasetParameter name="branch_3">
+								<datasetParameterExpression><![CDATA[$P{branch}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="begindate_3">
+								<datasetParameterExpression><![CDATA[$P{begindate}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="enddate_3">
+								<datasetParameterExpression><![CDATA[$P{enddate}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="ratekm_3">
+								<datasetParameterExpression><![CDATA[$P{ratekm}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="distance_3">
+								<datasetParameterExpression><![CDATA[$P{distance}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<keyExpression><![CDATA[$F{ประเภทขาย}]]></keyExpression>
+					<valueExpression><![CDATA[$F{ค่าขนส่ง}]]></valueExpression>
+					<labelExpression><![CDATA[$F{amount_p}.toString()]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+			<staticText>
+				<reportElement uuid="3629f986-3049-41bc-b52a-18dc893bc031" x="157" y="0" width="100" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[แสดงสัดส่วนค่าขนส่ง]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,155 @@
+<?page title="PO-Auto" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<div height="100%" style="border:1px solid black;overflow:auto;" >
+<grid>
+		<columns>
+			<column label="SV1-การส่งมอบสินค้าตรงเวลา(ตามวันนัดส่ง)"/>
+		</columns>
+		<rows>
+			<row>
+			<x:table>
+				<x:tr>
+					<x:td>เลือกดูตาม:</x:td>
+					<x:td>
+						<radiogroup>
+							<radio id="rdtime" label="ตามช่วงวันที่" checked="true"/>
+							<radio id="rdallnexttime" label="ทั้งหมดตั้งแต่วันปัจจุบัน"/>
+							<radio id="rdalltime" label="ทั้งหมด"/>
+						</radiogroup>
+					</x:td>
+					<x:td>ตั้งแต่วันที่</x:td>
+					<x:td><datebox id="dtstart" format="dd/MM/yyyy" onCreate="self.setValue(new Date());"/></x:td>
+					<x:td>ถึงวันที่</x:td>
+					<x:td><datebox id="dtstop" format="dd/MM/yyyy" onCreate="self.setValue(new Date());"/></x:td>					
+					<x:td><button label="ดูรายงาน" onClick="viewAutoPO();" /></x:td>
+					<x:td><button label="ออก" onClick="exittohome();" /></x:td>
+				</x:tr>
+			</x:table>				
+			</row>
+		</rows>
+	</grid>
+	<jasperreport id="poreport" height="85%"/>
+<zscript>
+<![CDATA[
+import java.sql.*;
+import java.io.*;
+import java.lang.*;
+import java.util.Date;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse; 
+import net.sf.jasperreports.engine.DefaultJasperReportsContext;
+import net.sf.jasperreports.extensions.ExtensionsEnvironment;
+import net.sf.jasperreports.engine.JasperReportsContext;
+import net.sf.jasperreports.engine.JRRuntimeException;
+import net.sf.jasperreports.engine.JRDataset;
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
+import java.util.*;
+import org.zkoss.util.media.AMedia;
+import java.text.SimpleDateFormat;
+import org.zkoss.zul.*;
+
+
+String vserver;
+String vdbname;
+String vurl;
+String vuser;
+String vpassword;
+String vprofit;
+vserver="//192.168.0.7:1433;";
+vdbname="bcnp";
+vuser ="sa";
+vpassword="[ibdkifu";	
+vprofit="";
+
+Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+public void viewAutoPO(){
+	String getstartdate;
+	String getstopdate;
+	String startdate;
+	String stopdate;
+	Integer vtype;
+	String rpQry;
+	
+	Connection conn = null;
+	PreparedStatement stmt = null;
+	ResultSet rs = null;
+	
+	try{
+		getstartdate = dtstart.getText();
+		getstopdate = dtstop.getText();
+		startdate = dtnormal(getstartdate);
+		stopdate = dtnormal(getstopdate);
+		
+		
+		if(rdtime.isChecked()==true){
+			vtype =1;
+		}else if(rdallnexttime.isChecked()==true){
+			vtype=0;
+		}else{
+			vtype=2;
+		}	
+		Map params = new HashMap();
+		params.put("parambegindate", startdate);
+		params.put("paramenddate", stopdate);
+		params.put("paramtype", vtype);
+		
+		vurl="jdbc:sqlserver:"+vserver+"databaseName="+vdbname+"";  
+		conn = DriverManager.getConnection(vurl, vuser, vpassword);
+		rpQry="exec USP_PR_ConfirmSendItemFromPO "+vtype+",'"+startdate+"','"+stopdate+"'";
+		System.out.println(rpQry);
+		stmt = conn.prepareStatement(rpQry);
+		rs = stmt.executeQuery();			
+		
+		poreport.setSrc(session.getWebApp().getRealPath("/rp/confirmpoemail.jasper"));			
+		poreport.setDatasource(new JRResultSetDataSource(rs));					
+		poreport.setType("pdf");	
+		
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}
+
+public String dtnormal(String vgetdate){	
+	
+	String vrsDate;
+	String vDate;
+	String vYear;
+	String vMonth;
+	String strResultYear;
+	String strgetDate;
+	
+	strgetDate = vgetdate;
+	vYear = strgetDate.substring(6);
+	vMonth = strgetDate.substring(3,5);	
+	vDate = strgetDate.substring(0,2);
+	Integer xInt1 = Integer.parseInt(vYear);
+	//System.out.println("xY="+xInt1);
+   		if (xInt1 > 2500){
+   			Integer bInt= xInt1-543;
+   			strResultYear= Integer.toString(bInt);
+   		}else {
+   			strResultYear= Integer.toString(xInt1);
+   		}
+			vrsDate=vDate.concat("/".concat(vMonth.concat("/".concat(strResultYear)))); 
+		return (vrsDate); 
+	}
+public void exittohome(){
+	Executions.sendRedirect("mainpage.zul");
+}
+
+	]]>
+</zscript>
+</div>
+</zk>

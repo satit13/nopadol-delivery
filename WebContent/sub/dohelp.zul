@@ -1,0 +1,135 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" border="normal">
+<zscript>
+	<![CDATA[
+	         import java.io.*;
+	         import java.lang.*;
+	         
+	         void showDR(){
+	        	 tbdr.setVisible(true);
+	        	 tbdo.setVisible(false);
+	        	 tbsys.setVisible(false);
+	         }
+	         void showDO(){
+	        	 tbdr.setVisible(false);
+	        	 tbdo.setVisible(true);
+	        	 tbsys.setVisible(false);
+	         }
+	         void showSYS(){
+	        	 tbdr.setVisible(false);
+	        	 tbdo.setVisible(false);
+	        	 tbsys.setVisible(true);
+	         }
+	]]>
+</zscript>
+<radiogroup>
+<radio label="DR" checked="true" onCheck="showDR();"/>
+<radio label="DO" onCheck="showDO();"/>
+
+</radiogroup>
+<tabbox id="tbdr" width="100%" mold="accordion" >
+	<tabs>
+		<tab label="1. เข้าใช้งานระบบ" />
+		<tab label="2. ขั้นตอนสำหรับพนักงานขายขอเข้าคิวส่งสินค้า DR" />
+		<tab label="3. รายการใบ DR ที่ขอเข้าคิวจัดส่ง และรอการยืนยันวันเวลา " />
+		<tab label="4. ตัวอย่างใบ DR " />	
+		<tab label="5. หน้าจอสำหรับการค้นหาเอกสาร หรือกรองข้อมูล สำหรับติดตามสถานะใบขอส่งสินค้า" />
+		<tab label="6. หน้าจอสำหรับพนักงานจัดส่งยืนยันวันเวลาส่งสินค้า" />		
+		
+	</tabs>
+	<tabpanels>
+	    <tabpanel>
+			<div align="center">
+			<image src="/helpimg/d01.png" />
+			</div>
+		</tabpanel>
+		<tabpanel>
+			<div align="center">
+			<image src="/helpimg/d02.png" />
+			</div>
+		</tabpanel>
+		<tabpanel>
+			<div align="center">
+			<image src="/helpimg/d03.png" />
+			</div>
+		</tabpanel>
+		<tabpanel>
+			<div align="center">
+			<image src="/helpimg/d04.png" />
+			</div>
+		</tabpanel>
+		<tabpanel>
+			<div align="center">
+			<image src="/helpimg/d05.png" />
+			</div>
+		</tabpanel>
+		<tabpanel>
+			<div align="center">
+			<image src="/helpimg/d06.png" />
+			</div>
+		</tabpanel>		
+	</tabpanels>
+</tabbox>
+<tabbox id="tbdo" width="100%" mold="accordion" visible="false">
+	<tabs>
+		<tab label="1. ฟอร์มบันทึกใบ DO สำหรับพนักงานจัดส่ง" />
+		<tab label="2. เลือกเอกสาร DR ที่ยืนยันวันเวลาแล้วสำหรับทำ DO " />
+		<tab label="3. เลือกพนักงานขับรถและพนักงานติดตามเพื่อกำหนดค่าเที่ยว" />
+		<tab label="4. หน้าจอการตรวจสอบบิลขาย และกำหนดค่าเที่ยว" />
+		<tab label="5. ตัวอย่างใบ DO" />
+		<tab label="6. รายงานค่าเที่ยว" />
+	</tabs>
+	<tabpanels>
+		<tabpanel>
+			<div align="center">
+			<image src="/helpimg/dd01.png" />
+			</div>
+		</tabpanel>
+		<tabpanel>
+			<div align="center">
+			<image src="/helpimg/dd02.png" />
+			</div>
+		</tabpanel>
+		<tabpanel>
+			<div align="center">
+			<image src="/helpimg/dd03.png" />
+			</div>
+		</tabpanel>
+		<tabpanel>
+			<div align="center">
+			<image src="/helpimg/dd04.png" />
+			</div>
+		</tabpanel>
+		<tabpanel>
+			<div align="center">
+			<image src="/helpimg/dd05.png" />
+			</div>
+		</tabpanel>
+		<tabpanel>
+			<div align="center">
+			<image src="/helpimg/dd06.png" />
+			</div>
+		</tabpanel>
+	</tabpanels>
+</tabbox>
+<tabbox id="tbsys" width="100%" mold="accordion" visible="false">
+	<tabs>
+		<tab label="a. Work flow" />
+		<tab label="b. Data flow" />
+	</tabs>
+	<tabpanels>
+		<tabpanel>
+			<div align="center">
+			<image src="/helpimg/wkflow.png" />
+			</div>
+		</tabpanel>
+		<tabpanel>
+			<div align="center">
+			<image src="/helpimg/dataflow.png" />
+			</div>
+		</tabpanel>
+	</tabpanels>
+</tabbox>
+</window>
+</zk>

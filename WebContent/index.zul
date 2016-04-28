@@ -1,0 +1,128 @@
+<?page title="Login::" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<div style="height:100%; background-image: URL(./img/dobg.png); background-repeat:no-repeat; background-position:center;">
+<div style="background-image: URL(./img/header.png); background-repeat:no-repeat; background-position:center; position: relative; top: 0px;" height="100px">
+<label value="" style="position: relative; top: 25px; font-size:36px; font-weight:bold; color:#FFFFFF; padding:50px;" visible="false"/>
+</div>
+<div style="background:#7EBCE7; text-align: left; border-bottom-style: solid; color: #FFFFFF; width: 100%;" />
+	<div style="position: relative; top: 100px;" align="center">
+		
+		<grid width="300px">
+
+		<columns>
+
+			<column label="Login.." style="background:#007599; font-size:28px; color:#FFFFFF; height:50px;"/>			
+
+		</columns>
+
+		<rows>
+
+			<row>	
+				<x:table>
+					<x:tr>
+						<x:td>User</x:td>
+						<x:td><textbox id="txuser" width="200px" focus="true"/></x:td>
+					</x:tr>
+					<x:tr>
+						<x:td>Password</x:td>
+						<x:td><textbox id="txpass" width="200px" type="password" onOK="checkLogin();"/></x:td>
+					</x:tr>
+					<x:tr>
+						<x:td></x:td>
+						<x:td>
+						<button label="Login" onClick="checkLogin();" mold="trendy"/>
+						<button label="Cancel" onClick="ResetLoginBox();" mold="trendy" />
+						</x:td>
+					</x:tr>
+					<x:tr>
+						<x:td></x:td>
+						<x:td><label value="v.20130508" /> </x:td>
+					</x:tr>
+				</x:table>
+
+			</row>
+
+		</rows>
+
+	</grid>		
+	</div>	
+	<zscript>
+<![CDATA[
+         //background:#008BB6;
+import java.io.*;
+import java.sql.*;
+import java.lang.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse; 
+import javax.servlet.http.HttpSession;
+import org.zkoss.zk.ui.event.ForwardEvent;
+import org.zkoss.zk.ui.Executions;
+import condb.Database;
+
+String vuser;
+String vpass;
+
+Connection con = null;
+Statement st = null;
+public void checkLogin(){
+	String vQry;
+	String vulevel;
+	String vcode;
+	try{
+		vuser= txuser.getValue();
+		vpass = txpass.getValue();
+		con = Database.getConnection();
+		st = con.createStatement();
+		vQry="SELECT code, \"user\", userlevel FROM sm_do.tb_do_user where \"user\"='"+vuser+"' and password='"+vpass+"';";
+		st.executeQuery(vQry);
+		ResultSet rs = st.getResultSet();	
+	    if (rs.next()== true){ 	            	
+	        vuser = rs.getString("user");
+	        vulevel = rs.getString("userlevel");
+	        vcode = rs.getString("code");
+	    	HttpServletResponse response = (HttpServletResponse)Executions.getCurrent().getNativeResponse();
+	    	Cookie userCookie = new Cookie("ckuser", vuser);	    	
+	    	Cookie levelCookie = new Cookie("ckulevel", vulevel);
+	    	Cookie ucodeCookie = new Cookie("ckucode",vcode);
+	    	response.addCookie(userCookie); 
+	    	response.addCookie(levelCookie);
+	    	response.addCookie(ucodeCookie);	    	
+	    	Executions.sendRedirect("home.zul");
+		}
+	}catch(SQLException e){	
+		System.out.println(e.getMessage());
+		System.out.println(e.getErrorCode());		
+		alert("ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง..");
+	}            
+}
+
+public void chkLogin(){
+	String vuser;
+	String vpassword;
+	try{
+		vuser = txuser.getValue();
+		vpassword = txpass.getValue();
+		if(vuser.equals("admin") && vpassword.equals("admin")){
+			Executions.sendRedirect("home.zul");
+		}else{
+			alert("User or Password incorrect.");
+			txpass.setValue("");
+			txuser.focus();
+		}
+		
+	}catch(Exception ex){
+		ex.printStackTrace();
+	}
+}
+public void ResetLoginBox(){
+	txuser.setValue("");
+	txpass.setValue("");
+	txuser.focus();
+}
+
+]]>
+</zscript>
+</div>
+
+</zk>

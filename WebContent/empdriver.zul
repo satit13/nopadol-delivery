@@ -1,0 +1,68 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" border="normal" width="500px" >
+<listbox id="lsemp" onCreate="loadEmp();">
+	<listhead>
+		<listheader label="รหัสพนักงาน" width="100px"/>
+		<listheader label="ชื่อ-สกุล" />
+		<listheader label="ตำแหน่ง" width="80px"/>
+	</listhead>	
+</listbox>
+<zscript>
+<![CDATA[
+     	import java.io.*;
+    	import java.lang.*;
+    	import java.sql.*;
+    	import org.zkoss.zk.ui.Component;
+    	import org.zkoss.zk.ui.event.CreateEvent;
+    	import org.zkoss.zk.ui.event.Event;
+    	import org.zkoss.zk.ui.event.ForwardEvent;
+    	import org.zkoss.zk.ui.Executions;
+    	import java.text.SimpleDateFormat;
+    	import java.text.DecimalFormat;
+    	import java.util.Date;
+    	import org.zkoss.zk.ui.event.EventListener;
+    	import condb.Database;
+
+	Connection con=null;
+	Statement st=null;
+	
+	public void loadEmp(){
+		String empQry;
+		Integer vipo;
+		try{
+			con = Database.getConnection();
+			st = con.createStatement();
+			empQry="select code, name1, position from sm_do.tb_do_empbplus;";
+			st.executeQuery(empQry);
+			ResultSet emprs = st.getResultSet();
+			while(lsemp.getItemCount()>0){
+				lsemp.removeItemAt(0);
+			}
+			while(emprs.next()){
+				Listitem eli = new Listitem();
+				eli.appendChild(new Listcell(emprs.getString("code")));
+				eli.appendChild(new Listcell(emprs.getString("name1")));
+				Listcell lcp = new Listcell();
+				vipo=emprs.getInt("position");
+				if(vipo==1){
+					lcp.setLabel("ขับรถ");
+					eli.appendChild(lcp);
+				}else if(vipo==0){
+					lcp.setLabel("ติดตามรถ");
+					eli.appendChild(lcp);	
+				}else {
+					lcp.setLabel("ไม่ได้กำหนด");
+					eli.appendChild(lcp);
+				}
+				lsemp.appendChild(eli);
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+
+]]>
+</zscript>
+</window>
+</zk>

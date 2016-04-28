@@ -1,0 +1,549 @@
+<?page title="System Data Configuration" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<window title="System Data Configuration" border="normal" apply="drconf.Composer">
+<intbox id="empnew" visible="false"/>
+<style>
+	.tbl{
+		font-size:10pt;
+		color:#005A88;		
+	}
+</style>
+<tabbox>
+	<tabs>
+		<tab label="เส้นทางขนส่ง" onCreate="veiwRoute()"/>
+		<tab label="สถานที่ขนส่ง" onCreate="viewPlace()"/>
+		<tab label="รถขนส่ง" onCreate="viewCar()"/>
+		<tab label="พนักงานขนส่ง" onCreate="viewEmp()"/>		
+	</tabs>
+	<tabpanels>
+		<!-- เส้นทาง-->
+		<tabpanel>
+			<listbox id="lsroute" mold="paging" pageSize="10">
+			<listhead>
+				<listheader label="Code" width="100px" />
+				<listheader label="Detail"/>
+			</listhead>	
+			</listbox>
+
+		</tabpanel>
+		<!-- สถานที่ขนส่ง -->
+		<tabpanel>
+		<listbox id="lsplace" mold="paging" pageSize="10">
+			<listhead>
+				<listheader label="Code" width="100px"/>
+				<listheader label="Detail" />
+			</listhead>			
+		</listbox>
+
+		</tabpanel>
+		<!-- รถขนส่ง -->
+		<tabpanel>
+			<listbox id="lscar" mold="paging" pageSize="10">
+			<listhead>
+				<listheader label="เลขทะเบียน" width="15%" />
+				<listheader label="Name Description" width="50%"/>
+				<listheader label="Standard" width="35%"/>
+			</listhead>	
+			</listbox>
+
+		</tabpanel>
+		<!-- พนักงาน -->
+		<tabpanel>
+		<grid id="grdemp">
+		<columns>
+			<column label=""/>			
+		</columns>
+		<rows>
+			<row>
+			<hbox>
+				<groupbox>
+				<button label="เพิ่มพนักงาน" onClick="viewGRDEMPfrm(); clrEMPFrm();" />
+				</groupbox>
+				<groupbox>
+				<label value="ค้นหาพนักงาน :" />
+				<textbox id="txtempKeyword" width="200px" onOK="SearchEmp();"/>
+				<button label="ตกลง" onClick="SearchEmp();" />
+				</groupbox>
+			</hbox>
+			</row>
+			<row>
+			<listbox id="lsemp" mold="paging" pageSize="10" onSelect="vselectEMP();">
+				<listhead>
+					<listheader label="รหัสพนักงาน" width="20%"/>
+					<listheader label="ชื่อพนักงาน"  width="30%"/>
+					<listheader label="Eng Name" width="30%"/>
+					<listheader label="ตำแหน่ง"  width="20%"/>					
+				</listhead>				
+			</listbox>		
+			</row>
+		</rows>
+	</grid>
+		<grid id="grdempfrm" visible="false">
+			<columns>
+				<column label="เพิ่มข้อมูลพนักงาน"/>
+			</columns>
+			<rows>
+				<row>
+					<x:table>
+						<x:tr>
+							<x:td>รหัสพนักงาน</x:td>
+							<x:td>
+								<textbox id="txtempcode" width="100px" readonly="true" style="background:#5FC2DC; font-weight:bold;"/>
+								<button id="btnPopemp" label="เลือกพนักงานจาก Pay Roll" disabled="true" />
+								<popup id="ppemppy" width="580px"> 
+									<x:table>
+									<x:tr>
+										<x:td>รหัส หรือ ชื่อพนักงาน</x:td>
+										<x:td><textbox id="txtpemp" onOK="SearchEmpPAY();"/></x:td>
+										<x:td><button label="ตกลง" onClick="SearchEmpPAY()" /></x:td>
+										<x:td><button id="btnClosepp" label="ปิดหน้านี้" onClick="" /></x:td>
+									</x:tr>									
+									</x:table>
+										<listbox id="payempls" width="550px" mold="paging" pageSize="10" onSelect="vSelectEmpPAY();">
+											<listhead>
+												<listheader label="รหัส" width="100px"/>
+												<listheader label="ชื่อ-สกุล" />
+												<listheader label="Eng Name" />
+												<listheader label="ตำแหน่ง" />
+												<listheader label="emp_postion" visible="false"/>
+											</listhead>											
+										</listbox>							
+								</popup>
+								
+							</x:td>
+						</x:tr>
+						<x:tr>
+							<x:td>ชื่อ-สกุล</x:td>
+							<x:td><textbox id="txtempname" width="300px"/></x:td>
+						</x:tr>
+						<x:tr>
+							<x:td>English name</x:td>
+							<x:td><textbox id="txtempengname" width="300px"/></x:td>
+						</x:tr>
+						<x:tr>
+							<x:td>ตำแหน่ง</x:td>
+							<x:td><combobox id="cbposition" width="300px">
+								<comboitem label="พนักติดตามรถ"/>
+								<comboitem label="พนักขับรถ"/>
+								</combobox>
+							</x:td>
+						</x:tr>
+						<x:tr>
+							<x:td>เลขที่ใบอนุญาตขับขี่(ถ้ามี)</x:td>
+							<x:td><textbox id="txtcarlicenseid" width="300px"/></x:td>
+						</x:tr>
+						<x:tr>
+							<x:td>วันที่ใบขับขี่หมดอายุ</x:td>
+							<x:td><datebox id="dtlicenseexpire" format="dd/MM/yyyy" onCreate="self.setValue(new Date())"/></x:td>
+						</x:tr>
+						<x:tr>
+							<x:td>รายละเอียดเพิ่มเติม</x:td>
+							<x:td><textbox id="txtdesc" width="300px" rows="2"/></x:td>
+						</x:tr>
+						<x:tr>
+							<x:td>สถานะ</x:td>
+							<x:td>
+								<radiogroup>
+									<radio id="rdactive" label="ทำงาน"/>
+									<radio id="rdunactive" label="ลาออก"/>
+								</radiogroup>
+							</x:td>
+						</x:tr>
+						<x:tr>
+							<x:td></x:td>
+							<x:td>
+							<button id="btnClr" label="ล้างหน้าจอ" onClick="clrEMPFrm();" />
+							<button id="btnSave" label="บันทึก" onClick="checkTXTvalidate();" />
+							<button id="btnExit" label="ออก" onClick="viewEMP()" />							
+							</x:td>
+						</x:tr>
+					</x:table>	
+				</row>
+			</rows>
+		</grid>
+		</tabpanel>
+	</tabpanels>
+</tabbox>
+<zscript>
+	<![CDATA[ 
+import java.io.*;
+import java.lang.*;
+import java.sql.*;
+import java.util.Date;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.CreateEvent;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.ForwardEvent;
+import org.zkoss.zk.ui.Executions;
+import java.text.SimpleDateFormat;
+
+import condb.Database;
+import condb.Mssqldb;
+
+Connection con = null;
+Statement st = null;
+Connection mscon = null;
+
+SimpleDateFormat dtmfm = new SimpleDateFormat("dd/MM/yyyy");
+
+public void veiwRoute(){
+	String strQry;
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		strQry = "select * from sm_do.ft_routeview();";
+		st.executeQuery(strQry);
+		ResultSet rs = st.getResultSet();
+		while(lsroute.getItemCount()>0){
+			lsroute.removeItemAt(0);
+		}
+		while(rs.next()){
+			Listitem li = new Listitem();
+			li.appendChild(new Listcell(rs.getString("routecode")));
+			li.appendChild(new Listcell(rs.getString("routedetail")));
+			lsroute.appendChild(li);
+		}
+		st.close();
+		con.close();
+	}catch(SQLException e){
+		e.getMessage();
+	}
+}
+	 
+public void viewPlace(){
+	String strpQry;
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		strpQry="select * from sm_do.ft_placeview('');";
+		st.executeQuery(strpQry);
+		ResultSet prs = st.getResultSet();
+		while(lsplace.getItemCount()>0){
+			lsplace.removeItemAt(0);
+		}
+		while(prs.next()){
+			Listitem pli = new Listitem();
+			pli.appendChild(new Listcell(prs.getString("placecode")));
+			pli.appendChild(new Listcell(prs.getString("placedetail")));
+			lsplace.appendChild(pli);
+		}
+		st.close();
+		con.close();
+	}catch(SQLException ex){
+		ex.getMessage();
+	}
+}
+public void viewCar(){
+	String strcQry;
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		strcQry="select carlicence, name1, standardtype from sm_do.tb_do_vehical;";
+		st.execute(strcQry);
+		ResultSet crs = st.getResultSet();
+		while(lscar.getItemCount()>0){
+			lscar.removeItemAt(0);
+		}
+		while(crs.next()){
+			Listitem cli = new Listitem();
+			cli.appendChild(new Listcell(crs.getString("carlicence")));
+			cli.appendChild(new Listcell(crs.getString("name1")));
+			cli.appendChild(new Listcell(crs.getString("standardtype")));
+			lscar.appendChild(cli);
+		}
+		st.close();
+		con.close();
+	}catch(SQLException ex){
+		ex.getMessage();
+	}
+}
+// select carlicence, name1, standardtype from sm_do.tb_do_vehical;
+public void viewEmp(){
+	String streQry;
+	Integer i;
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		streQry="select * from sm_do.ft_empview('');";
+		st.executeQuery(streQry);
+		ResultSet ers = st.getResultSet();
+		while(lsemp.getItemCount()>0){
+			lsemp.removeItemAt(0);
+		}
+		while(ers.next()){
+			Listitem eli = new Listitem();
+			eli.appendChild(new Listcell(ers.getString("code")));
+			eli.appendChild(new Listcell(ers.getString("name1")));
+			eli.appendChild(new Listcell(ers.getString("name2")));
+			eli.appendChild(new Listcell(ers.getString("emp_position")));			
+			lsemp.appendChild(eli);
+		}
+		st.close();
+		con.close();
+	}catch(SQLException ex){
+		ex.getMessage();
+	}
+}
+public void SearchEmp(){
+	String streQry;
+	String vKeyword;
+	try{
+		vKeyword = txtempKeyword.getValue();
+		con = Database.getConnection();
+		Statement stv = con.createStatement();
+		streQry="select * from sm_do.ft_empview('"+vKeyword+"');";
+		stv.executeQuery(streQry);
+		ResultSet ers = stv.getResultSet();
+		while(lsemp.getItemCount()>0){
+			lsemp.removeItemAt(0);
+		}
+		while(ers.next()){
+			Listitem eli = new Listitem();
+			eli.appendChild(new Listcell(ers.getString("code")));
+			eli.appendChild(new Listcell(ers.getString("name1")));
+			eli.appendChild(new Listcell(ers.getString("name2")));
+			eli.appendChild(new Listcell(ers.getString("emp_position")));			
+			lsemp.appendChild(eli);
+		}
+		stv.close();
+		con.close();
+	}catch(SQLException ex){
+		ex.getMessage();
+	}
+}
+
+public void vselectEMP(){
+	String streQry;
+	String strEmpCode;
+	Integer visActive;
+	Listitem li;
+	String vdtCLexpire;
+	try{
+		li = lsemp.getSelectedItem();
+		Listcell elc = (Listcell) li.getChildren().get(0);
+		strEmpCode = elc.getLabel();
+		con = Database.getConnection();
+		Statement eST = con.createStatement();
+		streQry = "select * from sm_do.ft_empview('"+strEmpCode+"');";
+		System.out.println(streQry);
+		eST.executeQuery(streQry);
+		ResultSet eRS = eST.getResultSet();
+		while(eRS.next()){
+			txtempcode.setValue(eRS.getString("code"));
+			txtempname.setValue(eRS.getString("name1"));
+			txtempengname.setValue(eRS.getString("name2"));
+			cbposition.setSelectedIndex(eRS.getInt("emp_positiontype"));
+			txtcarlicenseid.setValue(eRS.getString("licencenumber"));
+			
+			vdtCLexpire= eRS.getString("licenceexpired");
+			System.out.println(vdtCLexpire);
+				if(vdtCLexpire==null || vdtCLexpire.length()==0){
+					dtlicenseexpire.setValue(new Date());
+				}else{
+					dtlicenseexpire.setValue(eRS.getDate("licenceexpired"));			
+				}
+			txtdesc.setValue(eRS.getString("mydescription"));
+			
+			visActive = eRS.getInt("activestatus");
+			if(visActive==1){
+				rdactive.setChecked(true);
+			}else{
+				rdunactive.setChecked(true);
+			}
+			grdempfrm.setVisible(true);
+			grdemp.setVisible(false);
+			empnew.setValue(0);
+			btnPopemp.setDisabled(true);
+		}
+		eST.close();
+		con.close();
+	}catch(Exception ex){
+		ex.printStackTrace();
+	}
+	
+}
+// ค้นหาพนักงานจาก Pay roll
+public void SearchEmpPAY(){
+	String pyQry;
+	String vEMPKey;
+	try{
+		if(txtpemp.getValue().length()==0){
+			alert("กรุณาป้อน รหัส หรือ ชื่อพนักงานก่อนครับ.");
+			return;
+		}else{
+			vEMPKey = txtpemp.getValue();
+			mscon = Mssqldb.getConnection();
+			Statement mst = mscon.createStatement();
+			pyQry="exec usp_do_emp '"+vEMPKey+"'";
+			mst.executeQuery(pyQry);
+			ResultSet mRS = mst.getResultSet();
+			while(payempls.getItemCount()>0){
+				payempls.removeItemAt(0);
+			}
+			while(mRS.next()){
+				Listitem mli = new Listitem();
+				mli.appendChild(new Listcell(mRS.getString("code")));
+				mli.appendChild(new Listcell(mRS.getString("name1")));
+				mli.appendChild(new Listcell(mRS.getString("name2")));
+				mli.appendChild(new Listcell(mRS.getString("emp_position_desc")));
+				mli.appendChild(new Listcell(mRS.getString("emp_position")));
+				payempls.appendChild(mli);		
+				
+			}
+			mst.close();
+			mscon.close();
+		}
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}
+public void vSelectEmpPAY(){
+	Integer x;
+	Listitem cli = new Listitem();
+	cli = payempls.getSelectedItem();
+	Listcell clc0 = (Listcell) cli.getChildren().get(0);
+	Listcell clc1 = (Listcell) cli.getChildren().get(1);
+	Listcell clc2 = (Listcell) cli.getChildren().get(2);
+	Listcell clc3 = (Listcell) cli.getChildren().get(3);
+	Listcell clc4 = (Listcell) cli.getChildren().get(4);
+	txtempcode.setValue(clc0.getLabel());
+	txtempname.setValue(clc1.getLabel());
+	txtempengname.setValue(clc2.getLabel());
+	x= Integer.parseInt(clc4.getLabel());
+	cbposition.setSelectedIndex(x);
+	rdactive.setChecked(true);
+	ppemppy.close();
+	empnew.setValue(1);
+	
+}
+/*
+3.insert
+sm_do.ft_empinsert(code_in text, name1_in text, name2_in text,emp_position_in text, licencenumber_in text, licenceexpired_in date
+, activestatus_in text, mydescription_in text)
+4.update
+sm_do.ft_empupdate(code_in text, name1_in text, name2_in text,emp_position_in text, licencenumber_in text, licenceexpired_in date
+, activestatus_in text, mydescription_in text)
+*/
+public void InsertUpdateEMP(){
+	String vUpQry;
+	String vempcode;
+	String vempname1;
+	String vempname2;
+	Integer vempposition;
+	String vempcarlicenseid;
+	String vgetstrDate;
+	String vdtexpire;
+	String vActiveStatus;
+	String vDesc;
+	Integer visNew;
+	Integer visRS;
+	try{
+		vempcode = txtempcode.getValue();
+		vempname1 = txtempname.getValue();
+		vempname2 = txtempengname.getValue();
+		vempposition  = cbposition.getSelectedIndex();
+		vempcarlicenseid = txtcarlicenseid.getValue();
+		vgetstrDate = dtlicenseexpire.getText();
+		vdtexpire = dtnormal(vgetstrDate);
+		vDesc = txtdesc.getValue();
+		visNew = empnew.getValue();
+		if(rdactive.isChecked()==true){
+			vActiveStatus="1";
+		}else{
+			vActiveStatus="0";
+		}
+		con = Database.getConnection();
+		Statement ss = con.createStatement();
+		//System.out.println("positionID="+vempposition);
+		if(visNew==1){
+			vUpQry="SET datestyle=\"ISO, DMY\"; select * from sm_do.ft_empinsert('"+vempcode+"','"+vempname1+"','"+vempname2+"',"+
+					"'"+vempposition+"','"+vempcarlicenseid+"','"+vdtexpire+"','"+vActiveStatus+"','"+vDesc+"')";
+			}else{
+				vUpQry="SET datestyle=\"ISO, DMY\"; select * from sm_do.ft_empupdate('"+vempcode.trim()+"','"+vempname1+"','"+vempname2+"',"+
+						"'"+vempposition+"','"+vempcarlicenseid+"','"+vdtexpire+"','"+vActiveStatus+"','"+vDesc+"')";
+			}
+			System.out.println(vUpQry);
+			ss.execute(vUpQry);
+			// ResultSet isRS = ss.getResultSet();
+			alert("Save Succsess.");
+			ss.close();
+			con.close();
+			
+		}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+	
+}
+
+public void checkTXTvalidate(){
+	if(txtempcode.getText().length()==0){
+		Messagebox.show("กรุณาเลือกพนักงานจากระบบ Pay roll ครับ..", "Error",
+                Messagebox.OK, Messagebox.ERROR);
+		return;
+	}else
+	if(txtempname.getText().length()==0){
+		Messagebox.show("กรุณาเลือกพนักงานจากระบบ Pay roll ครับ..", "Error",
+                Messagebox.OK, Messagebox.ERROR);
+		return;
+	}if(cbposition.getText().length()==0){
+		Messagebox.show("กรุณาเลือกพนักงานจากระบบ Pay roll ครับ..", "Error",
+                Messagebox.OK, Messagebox.ERROR);
+		return;
+	}else{
+		InsertUpdateEMP();
+	}
+}
+
+
+public String dtnormal(String vgetdate){	
+	
+	String vrsDate;
+	String vYear;
+	String vDateMonth;
+	String strResultYear;
+	String strgetDate;
+	
+	strgetDate = vgetdate;
+	vYear = strgetDate.substring(6);
+	vDateMonth = strgetDate.substring(0,6);			
+	Integer xInt1 = Integer.parseInt(vYear);
+	// System.out.println("xY="+xInt1);
+   		if (xInt1 > 2500){
+   			Integer bInt= xInt1-543;
+   			strResultYear= Integer.toString(bInt);
+   		}else {
+   			strResultYear= Integer.toString(xInt1);
+   		}
+			vrsDate=vDateMonth.concat(strResultYear); 	 			
+	// System.out.println("return ="+vrsDate);
+
+return (vrsDate); 
+}
+void clrEMPFrm(){
+	empnew.setValue(1);
+	txtempcode.setValue("");
+	txtempname.setValue("");
+	txtempengname.setValue("");
+	cbposition.setText("");
+	txtcarlicenseid.setValue("");
+	dtlicenseexpire.setValue(new Date());
+	txtdesc.setValue("");
+	rdactive.setChecked(false);
+	rdunactive.setChecked(false);
+	btnPopemp.setDisabled(false);
+}
+void viewGRDEMPfrm(){
+	grdempfrm.setVisible(true);
+	grdemp.setVisible(false);
+	
+}
+void viewEMP(){
+	grdempfrm.setVisible(false);
+	grdemp.setVisible(true);
+	empnew.setValue(0);
+}
+]]>
+			
+</zscript>
+</window>
+</zk>

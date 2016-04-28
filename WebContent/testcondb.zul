@@ -1,0 +1,84 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="new page title" border="normal">
+<hbox>
+<button label="Insert" onClick="vinData()" />
+<button label="View" onClick="viewDO();" />
+</hbox>
+<listbox id="ls">
+	<listhead>
+		<listheader label="A" sort="auto" />
+		<listheader label="B" sort="auto" />
+	</listhead>	
+</listbox>
+<html><![CDATA[  
+               <form method="POST" action="upload" enctype="multipart/form-data" >
+               File:
+               <input type="file" name="file" id="file" /> <br/>
+               Destination:
+               <input type="text" value="/tmp" name="destination"/>
+               </br>
+               <input type="submit" value="Upload" name="upload" id="upload" />
+           </form>
+]]>
+
+</html>
+
+
+<zscript>
+<![CDATA[
+import java.sql.*;
+import java.io.*;
+import condb.Database;
+ 
+ public void viewDO(){
+	 String vQry;
+	 try{
+		 Connection con = Database.getConnection();
+		 Statement st = con.createStatement();
+		 vQry="SELECT * FROM sm_do.tb_do_queue;";
+		 System.out.println(vQry);
+		 st.executeQuery(vQry);
+		 ResultSet rs = st.getResultSet();
+		 while(ls.getItemCount()>0){
+			 ls.removeItemAt(0);
+		 }
+		 while(rs.next()){
+			 Listitem li = new Listitem();
+			 li.appendChild(new Listcell(rs.getString("id")));
+			 li.appendChild(new Listcell(rs.getString("sono")));
+			 ls.appendChild(li);
+		 }	 
+		
+	}catch(SQLException e){
+		System.out.println("vErr="+e.getMessage());
+	}
+ }
+ 
+ public void vinData(){
+	 String vQry;
+	 String vsono;
+	 String vduedate;
+	 String vduetime;
+	 String vcfdate;
+	 String vcftime;
+	 Integer i;
+	 try{
+		 i=ls.getItemCount()+1;
+		 Connection con = Database.getConnection();
+		 Statement st = con.createStatement();
+		 vQry="INSERT INTO sm_do.tb_do_queue(sono)VALUES('A99"+i+"');";
+		 System.out.println(vQry);
+		// System.out.println((char)34+"Hello"+(char)34);
+		 // System.out.println("\"Hello\"");
+		 st.execute(vQry);
+	 }catch(SQLException ex){
+		 System.out.println("err="+ex.getMessage());
+		 
+	 }
+ }
+         ]]>
+</zscript>
+
+</window>
+</zk>

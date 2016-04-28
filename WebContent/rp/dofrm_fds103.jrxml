@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dofrm_fds103" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2529b5f2-5cb6-4a1d-b293-93642972a4d5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="DS1" uuid="764a6ce9-4083-4ba9-92ad-26ff15e99313">
+		<parameter name="ivParam" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select * from sm_do.ft_do2view($P{ivParam})]]>
+		</queryString>
+		<field name="docno" class="java.lang.String"/>
+		<field name="sono" class="java.lang.String"/>
+		<field name="invoiceno" class="java.lang.String"/>
+		<field name="mydescription" class="java.lang.String"/>
+		<field name="arcode" class="java.lang.String"/>
+		<field name="arname" class="java.lang.String"/>
+		<field name="amount_do_in" class="java.math.BigDecimal"/>
+		<field name="amount_all_in" class="java.math.BigDecimal"/>
+		<group name="docno">
+			<groupExpression><![CDATA[$F{docno}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="DS2" uuid="a489ff58-484b-4eb7-b4bc-b370b348b300">
+		<parameter name="empParam" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select * from sm_do.ft_do3view($P{empParam});]]>
+		</queryString>
+		<field name="docno" class="java.lang.String"/>
+		<field name="empcode" class="java.lang.String"/>
+		<field name="empname" class="java.lang.String"/>
+		<field name="emp_position" class="java.lang.String"/>
+		<field name="emp_positionname" class="java.lang.String"/>
+		<field name="transportation" class="java.math.BigDecimal"/>
+		<field name="mydescription" class="java.lang.String"/>
+		<variable name="sumTransport" class="java.lang.Number" calculation="Sum">
+			<variableExpression><![CDATA[$F{transportation}]]></variableExpression>
+		</variable>
+	</subDataset>
+	<parameter name="docnoParam" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from sm_do.ft_doview($P{docnoParam});]]>
+	</queryString>
+	<field name="docno" class="java.lang.String"/>
+	<field name="docdate" class="java.sql.Date"/>
+	<field name="datesend" class="java.sql.Date"/>
+	<field name="timesend" class="java.lang.String"/>
+	<field name="datereturn" class="java.sql.Date"/>
+	<field name="timereturn" class="java.lang.String"/>
+	<field name="measurestart" class="java.math.BigDecimal"/>
+	<field name="measurestop" class="java.math.BigDecimal"/>
+	<field name="mydescription" class="java.lang.String"/>
+	<field name="iscancel" class="java.lang.String"/>
+	<field name="iscancelstatus" class="java.lang.String"/>
+	<field name="carlicence" class="java.lang.String"/>
+	<field name="isreturn" class="java.lang.String"/>
+	<field name="sendresult" class="java.lang.String"/>
+	<field name="sendresultstatus" class="java.lang.String"/>
+	<field name="branch" class="java.lang.String"/>
+	<field name="during" class="java.lang.String"/>
+	<field name="distance" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="52" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="6300d2fb-0bc6-4926-b1f3-2e084b9525e0" x="452" y="0" width="100" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[F-DS-103]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="887a05ef-d722-4f90-bb63-abd5466d3a9a" x="409" y="15" width="143" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ใบแจ้งเที่ยวจัดส่ง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e2c9b034-9d15-4ffe-b96f-3e94948ce82d" x="452" y="35" width="100" height="15"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[DO-Delivery Order]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="9d00dfc9-923c-40d5-92ec-6c332ebd7fee" x="334" y="14" width="218" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="9d00dfc9-923c-40d5-92ec-6c332ebd7fee" x="334" y="50" width="218" height="1"/>
+			</line>
+			<image>
+				<reportElement uuid="b4668fc8-b6f9-43d5-adee-60b01978c739" x="7" y="0" width="150" height="42"/>
+				<imageExpression><![CDATA["/var/lib/tomcat7/webapps/npdo/rp/logonp.gif"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="113" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d702374a-84ee-4f69-a38f-5efda4a2c9b0" x="19" y="2" width="72" height="14"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[รถหมายเลข]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6b485bf0-503c-44b2-9ff9-909df8949321" x="19" y="18" width="72" height="14"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[ทะเบียนรถ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="77a6a975-d158-4dd9-bfa7-94ac5e4feedd" x="334" y="2" width="61" height="14"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[เลขที่ขนส่ง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="580634cb-57d0-4159-afdc-b32e14816f2e" x="334" y="18" width="61" height="14"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[วันที่เอกสาร]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d32acc74-19ea-4d80-a001-73a0e5d49005" x="13" y="42" width="78" height="16"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[เวลารวม(H:M:S)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b5577ccf-2b76-4a37-9d40-9a59bc2e3e48" x="327" y="42" width="88" height="16"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ระยะทางรวม(Km.)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="11347904-a016-4984-9c1c-94356785c28c" x="101" y="58" width="60" height="16"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[วันเวลาส่ง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="765c1016-6ede-43aa-8a14-9ac0794b6bb5" x="101" y="75" width="60" height="16"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[วันเวลากลับ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="659862c7-4bf9-4e42-9d18-9cdf24ff0120" x="413" y="58" width="60" height="16"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[กม.ที่รถออก]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0910ed25-10f5-4d45-a8ca-3520b1b692b9" x="413" y="75" width="60" height="16"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[กม.ที่รถเข้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="863ba496-e6c0-48e1-946a-841ad08776a2" x="18" y="92" width="100" height="21"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[พนักงาน]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="30399e54-3cd8-49fc-9bb2-f781de93a883" x="6" y="57" width="546" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="6f4dfa7a-12bb-44ae-8aac-a85daa9b1f06" x="6" y="90" width="546" height="1"/>
+			</line>
+			<rectangle>
+				<reportElement uuid="2dd4e90b-0a40-4064-8177-d11ff3b072b7" x="6" y="58" width="85" height="32"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="b9f7df2f-ecb2-4d33-933a-2d709fa5e60f" x="327" y="58" width="82" height="32"/>
+			</rectangle>
+			<line>
+				<reportElement uuid="6fd41d90-2349-4976-8390-79bcfd7c4d68" x="91" y="74" width="236" height="1"/>
+			</line>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="4736ed34-2594-436e-b77f-ebc21816313b" x="409" y="18" width="143" height="14"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="bbcdacef-99ee-4dd7-a377-f1ab6a310551" x="164" y="58" width="80" height="17"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{datesend}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8fa50711-3c5d-4c59-88e8-63313ef7ee65" x="244" y="58" width="76" height="16"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{timesend}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="a6373b2a-27fc-43fe-8f9c-fea2f05451e5" x="164" y="74" width="80" height="16"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{datereturn}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7ac98673-d859-483e-a60d-ac30cd88a85f" x="244" y="74" width="76" height="16"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{timereturn}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6030a1c0-aa38-482f-9693-e1616437b9e4" x="469" y="58" width="83" height="16"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{measurestart}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e6b5501c-5c12-49b7-8da5-fd7eca911377" x="469" y="74" width="83" height="16"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{measurestop}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="90d198d6-80d5-4f62-95f4-693073ac1331" x="334" y="93" width="75" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ผลการส่งสินค้า]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="b42e9522-23f1-40ca-951d-2ca14244518f" x="412" y="93" width="140" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sendresultstatus}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="799c8570-87c4-4706-8e49-24f1e45df774" x="409" y="2" width="143" height="14"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{docnoParam}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3f43de36-adaf-4cb9-9dd7-d4c83f9627e3" x="101" y="16" width="175" height="16"/>
+				<textElement>
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{carlicence}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4d6e3667-d27f-4799-a843-03b8fd9a3392" x="18" y="65" width="71" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{during}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9760a7d9-0241-474b-bae5-bd584df30b91" x="334" y="65" width="64" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{distance}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="4" splitType="Stretch">
+			<line>
+				<reportElement uuid="eee0e1c0-134c-4c4f-b0a8-d6a2106c3814" x="7" y="1" width="545" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="119">
+			<componentElement>
+				<reportElement uuid="21a2c15b-a664-48c0-95e4-6f2bd796bd1e" key="table 3" style="table 3" x="15" y="8" width="469" height="80"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="DS2" uuid="057662a8-9d6d-4ae6-92cc-6ad01dac4867">
+						<datasetParameter name="empParam">
+							<datasetParameterExpression><![CDATA[$P{docnoParam}]]></datasetParameterExpression>
+						</datasetParameter>
+					</datasetRun>
+					<jr:column width="95" uuid="e252403b-cfad-4cc0-8d4f-2a713f9c22a8">
+						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="39f442a1-7223-446d-b283-d63651f94f0b" x="6" y="0" width="87" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" isBold="true"/>
+								</textElement>
+								<text><![CDATA[รหัสพนักงาน]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="37fbd1c1-b870-4c58-8532-8e8e63e18354" x="6" y="0" width="87" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{empcode}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="132" uuid="e680ac8f-9e9f-4627-9c62-2331077a862c">
+						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="c43db437-2ebf-4ada-9848-32080650e026" x="4" y="0" width="122" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" isBold="true"/>
+								</textElement>
+								<text><![CDATA[ชื่อ - สกุล]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="f5797f9a-3f41-40bd-ab65-e634b7019fc3" x="4" y="0" width="122" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{empname}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="96" uuid="a07c2b07-56e6-48db-be71-3fdb3e9b1944">
+						<jr:tableFooter style="table 3_TH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="8025b3e4-ec9a-442d-9e5a-13de839ffa70" x="3" y="0" width="90" height="30"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="Tahoma" isBold="true"/>
+								</textElement>
+								<text><![CDATA[รวม]]></text>
+							</staticText>
+						</jr:tableFooter>
+						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="75429e00-7984-4df4-b144-d71a69f927b9" x="3" y="0" width="90" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" isBold="true"/>
+								</textElement>
+								<text><![CDATA[ตำแหน่ง]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="856764c6-62b8-4cb1-9099-f05ec6ceea9a" x="3" y="0" width="90" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{emp_positionname}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="84" uuid="fdeca43c-5de1-412f-942b-9a4b830a993d">
+						<jr:tableFooter style="table 3_TH" height="30" rowSpan="1">
+							<textField pattern="#,##0.00">
+								<reportElement uuid="4b454302-37b4-4021-94c9-7b11edf21cde" x="3" y="0" width="79" height="30"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{sumTransport}]]></textFieldExpression>
+							</textField>
+						</jr:tableFooter>
+						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="8ff1bfde-7d12-4d1a-a259-42da42ca481d" x="3" y="0" width="79" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" isBold="true"/>
+								</textElement>
+								<text><![CDATA[ค่าเที่ยว]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField pattern="#,##0.00">
+								<reportElement uuid="059841c7-a82a-457f-88e4-3c83e09e3348" x="3" y="0" width="79" height="20"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="Tahoma"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{transportation}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="119" uuid="5cb808ee-c5cc-47b6-bd3a-054c17bd465a">
+						<jr:tableFooter style="table 3_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="6f9345b2-0b6d-4342-bac8-7ba0b8cdd66d" x="4" y="0" width="115" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" isBold="true"/>
+								</textElement>
+								<text><![CDATA[คำอธิบาย]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="ffe12662-de7c-4287-a7e1-0d9dc98c1ad8" x="4" y="0" width="115" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{mydescription}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="132">
+			<componentElement>
+				<reportElement uuid="f4b50666-6940-4bcf-9067-711015bb3e8e" key="table 1" style="table 1" x="19" y="30" width="465" height="77"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="DS1" uuid="6188c53e-8208-436a-9e39-03e4d410575c">
+						<datasetParameter name="ivParam">
+							<datasetParameterExpression><![CDATA[$P{docnoParam}]]></datasetParameterExpression>
+						</datasetParameter>
+					</datasetRun>
+					<jr:column width="102" uuid="f4ccb136-c9ad-451b-892e-9a81cac8372d">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="0dacaf66-ac7a-45ef-ab8c-280efc1b7141" x="5" y="0" width="90" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" isBold="true"/>
+								</textElement>
+								<text><![CDATA[เลขที่ใบเข้าคิว]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement uuid="9ddef72e-5d96-47af-9e7c-b5484fa041b8" x="5" y="0" width="90" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sono}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="110" uuid="7fd0d5e2-3684-48e0-bc29-1946b652224c">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="1bb9c17a-2a5d-40a6-9190-45282b2677b1" x="5" y="0" width="102" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" isBold="true"/>
+								</textElement>
+								<text><![CDATA[เลขที่บิล]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement uuid="9b5603c6-e3af-4557-a3f5-3c861d75d9ac" x="4" y="0" width="102" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{invoiceno}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="77" uuid="8663e8ca-36e8-4804-8853-67bae42da4b0">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="e4a16581-004a-4a86-8e13-fb1aeab24f18" x="5" y="0" width="70" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" isBold="true"/>
+								</textElement>
+								<text><![CDATA[รหัสลูกค้า]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement uuid="89eb111d-71b6-4a60-b182-c456f17451cd" x="4" y="0" width="71" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{arcode}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="145" uuid="d13e1c69-3ad5-4ff6-95a0-5e868736e6bb">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="eafe4018-c0cd-4fc9-88ce-48bcfcf4be08" x="3" y="0" width="138" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" isBold="true"/>
+								</textElement>
+								<text><![CDATA[ชื่อลูกค้า]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement uuid="00867876-464d-4349-b33e-e1a405861db8" x="3" y="0" width="138" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{arname}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="89" uuid="b2c437b6-7e56-49b7-87ad-a8543e2ba437">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="dbf1ed92-6eb8-4f7b-b0b2-8af065855130" x="6" y="0" width="77" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" isBold="true"/>
+								</textElement>
+								<text><![CDATA[คำอธิบาย]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement uuid="ef883809-6297-433d-965b-e9be56ea69a4" x="8" y="0" width="77" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{mydescription}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement uuid="7e432b22-3ef6-4fb5-9825-5e61e38fa179" x="20" y="5" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[เอกสารอ้างอิง(DR)]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="d52fe00a-cd19-4c3d-9240-a1cb75a659b4" x="13" y="25" width="539" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="10" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="89" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="5d9c38d5-0698-4779-8020-85bee3a45b8d" x="19" y="2" width="89" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[ผู้จัดทำรายการ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="85570e24-77be-41ad-b942-8b87dd5602fb" x="213" y="3" width="100" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[ผู้ตรวจสอบ/บัญชี]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7430c20d-1d74-4684-b87a-7117e334a9e2" x="439" y="3" width="100" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[ผู้ตรวจสอบค่าเที่ยว]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2de08f7f-802e-437c-8eca-e4dd2e2e3eb6" x="16" y="47" width="109" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[--------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8f1dcf3c-0117-45ae-a9f3-3c1db21d9550" x="16" y="64" width="109" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[(                              )]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8f1dcf3c-0117-45ae-a9f3-3c1db21d9550" x="211" y="64" width="109" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[(                              )]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2de08f7f-802e-437c-8eca-e4dd2e2e3eb6" x="211" y="47" width="109" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[--------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8f1dcf3c-0117-45ae-a9f3-3c1db21d9550" x="435" y="64" width="109" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[(                              )]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2de08f7f-802e-437c-8eca-e4dd2e2e3eb6" x="435" y="47" width="109" height="13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[--------------------------------]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

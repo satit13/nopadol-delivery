@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DS202" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4e3ad312-0401-4da2-a6b8-9cc401941ba4">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="date1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="date2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="profitcenter" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="saletype" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from sm_do.ft_doanalyze($P{date1},$P{date2})
+where saletype = $P{saletype} and branch = $P{profitcenter}
+order by docdate asc]]>
+	</queryString>
+	<field name="docno" class="java.lang.String"/>
+	<field name="docdate" class="java.sql.Date"/>
+	<field name="datesend" class="java.sql.Date"/>
+	<field name="timesend" class="java.lang.String"/>
+	<field name="datereturn" class="java.sql.Date"/>
+	<field name="timereturn" class="java.lang.String"/>
+	<field name="measurestart" class="java.math.BigDecimal"/>
+	<field name="measurestop" class="java.math.BigDecimal"/>
+	<field name="mydescription" class="java.lang.String"/>
+	<field name="iscancel" class="java.lang.String"/>
+	<field name="iscancelstatus" class="java.lang.String"/>
+	<field name="carlicence" class="java.lang.String"/>
+	<field name="isreturn" class="java.lang.String"/>
+	<field name="sendresult" class="java.lang.String"/>
+	<field name="sendresultstatus" class="java.lang.String"/>
+	<field name="sono" class="java.lang.String"/>
+	<field name="invoiceno" class="java.lang.String"/>
+	<field name="mydescriptiondetail" class="java.lang.String"/>
+	<field name="driver_name" class="java.lang.String"/>
+	<field name="during" class="java.lang.String"/>
+	<field name="distance" class="java.math.BigDecimal"/>
+	<field name="arcode" class="java.lang.String"/>
+	<field name="arname" class="java.lang.String"/>
+	<field name="transportlocation" class="java.lang.String"/>
+	<field name="amount_do" class="java.math.BigDecimal"/>
+	<field name="amount_all" class="java.math.BigDecimal"/>
+	<field name="branch" class="java.lang.String"/>
+	<field name="saletype" class="java.lang.String"/>
+	<variable name="sum_amount_date" class="java.lang.Double" resetType="Group" resetGroup="date" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount_do}]]></variableExpression>
+	</variable>
+	<variable name="sum_amount_all" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount_do}]]></variableExpression>
+	</variable>
+	<filterExpression><![CDATA[$F{amount_do} > 0]]></filterExpression>
+	<group name="date">
+		<groupExpression><![CDATA[$F{docdate}]]></groupExpression>
+		<groupHeader>
+			<band height="18">
+				<textField pattern="MM/dd/yyyy">
+					<reportElement uuid="40ba708d-26ea-4c7e-9aa7-5d37197b66a9" mode="Opaque" x="27" y="0" width="528" height="18" forecolor="#000000" backcolor="#F1EFE2"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Bottom">
+						<font fontName="Tahoma" size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["  วันที่   "]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement uuid="fa0764b0-009a-46e1-b220-315932f48d0f" x="83" y="0" width="100" height="18" backcolor="#F1EFE2"/>
+					<textElement verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="18">
+				<textField pattern="dd/MM/yyyy">
+					<reportElement uuid="f352322c-d61c-4cbf-93a6-2e67b26c8eb5" x="27" y="0" width="528" height="18" backcolor="#666666"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Bottom">
+						<font fontName="Tahoma" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" รวมวันที่ "]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="505e56ca-f676-4622-9edd-70ec4433fe08" x="431" y="0" width="124" height="18"/>
+					<textElement textAlignment="Right" verticalAlignment="Bottom">
+						<font fontName="Tahoma" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sum_amount_date}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement uuid="fa0764b0-009a-46e1-b220-315932f48d0f" x="83" y="0" width="100" height="18" backcolor="#F1EFE2"/>
+					<textElement verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="4bcfa9e4-3d03-4cdb-a77b-efd58971ffef" x="28" y="0" width="96" height="1"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="98" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="7b1dbb55-5455-468a-8ba8-6ac31b2ccc3b" x="1" y="0" width="554" height="94"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="f5f92bf4-5915-4728-a414-794a858b27c0" x="161" y="0" width="384" height="31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DS202 รายงานการเก็บค่าบริการจัดส่งแยกตามสาขา]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="be4d3f50-ed56-4398-b33e-c39c3a2d20b8" x="279" y="54" width="56" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ตั้งแต่วันที่ :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b12c9091-5b1e-4fd7-b31a-094c86299288" x="403" y="54" width="48" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ถึงวันที่ :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a95eca1d-d047-4f9b-becc-cf9defbdce40" x="278" y="74" width="56" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[สาขา :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="eb27a57e-f846-4934-9126-e83cf235fa25" x="400" y="74" width="81" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ประเภทการขาย :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="34636060-cb22-4296-84ce-64c97db78770" x="337" y="54" width="64" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{date1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="3414b96f-931d-4bd4-bec4-38bd89d96e12" x="455" y="54" width="91" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{date2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8afda77e-f17f-448c-b7c6-6b75a92055e0" x="336" y="74" width="50" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{profitcenter}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0f2e8f8f-6664-463d-acf3-07b16e98a02c" x="484" y="74" width="62" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{saletype}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="00e810fa-6d40-4e93-8f1c-967df2eaa118" x="5" y="4" width="150" height="42"/>
+				<imageExpression><![CDATA["/var/lib/tomcat7/webapps/npdo/rp/logonp.gif"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="0de284e9-d46d-42da-8856-a9377dd58dfb" x="123" y="0" width="119" height="20" backcolor="#666666"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[เลขที่เอกสารจาย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ee7bf843-bbf5-42f6-9531-9ff46381f2f8" x="242" y="0" width="189" height="20" backcolor="#666666"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ชื่อลูกค้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a690b7c3-0751-4645-8694-22654f9099eb" x="431" y="0" width="124" height="20" backcolor="#666666"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[มูลค่าค่าจัดส่ง]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="5c4e9e8f-f89b-4b96-9673-60fc31721ebf" x="124" y="0" width="118" height="20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{invoiceno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="47ad4afc-af42-4bd7-af17-27d1d7228adf" x="242" y="0" width="189" height="20"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{arname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="9a38e718-d52c-41c2-be63-dea7003fb931" x="431" y="0" width="124" height="20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount_do}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="195aa52f-aa2e-4511-88ab-b3562ec479e5" x="27" y="0" width="97" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[  รวมทั้งหมด ]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="d36b3897-708e-4d2c-a7db-1e7389ec0b03" x="431" y="0" width="124" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_amount_all}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="f0e5863b-88c8-48de-911f-e1e7e02178c1" x="27" y="20" width="528" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

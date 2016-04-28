@@ -1,0 +1,224 @@
+<?page title="Delivery Carlendar" contentType="text/html;charset=UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+<window title="DO Carlendar" border="normal">
+<listbox id="lsconfirm">
+	<listhead>
+		<listheader label="" sort="auto" />
+		<listheader label="" sort="auto" />
+	</listhead>	
+</listbox>
+
+<calendars id="calendars1" firstDayOfWeek="Sunday" height="600px"
+                timeZone="Main=GMT+7" mold="month" visible="false"/>
+<zscript>
+<![CDATA[
+	import java.io.*;
+	import java.lang.*;
+	import java.sql.*;
+	import org.zkoss.zk.ui.Component;
+	import org.zkoss.zk.ui.event.CreateEvent;
+	import org.zkoss.zk.ui.event.Event;
+	import org.zkoss.zk.ui.event.ForwardEvent;
+	import org.zkoss.zk.ui.Executions;
+	import java.util.TimeZone;
+	import org.zkoss.calendar.api.CalendarEvent;
+	import org.zkoss.calendar.api.RenderContext;
+	import org.zkoss.calendar.impl.SimpleCalendarModel; 
+	import org.zkoss.calendar.Calendars;
+	import org.zkoss.calendar.event.CalendarsEvent;
+	import java.text.SimpleDateFormat;
+	import java.text.DateFormat;
+	import java.util.Date;
+	import java.util.Calendar;
+	import org.zkoss.util.media.Media;
+	import org.zkoss.zhtml.Fileupload;
+	import org.zkoss.zk.ui.event.EventListener;
+	import condb.Database;
+	import condb.Mssqldb;
+	import java.util.*;
+	import java.text.DateFormat;
+	import java.text.ParseException;
+
+	
+	Connection con = null;
+	Statement st = null;
+	
+	public void viewConfirm(){
+		String strQry;
+		try{
+			con = Database.getConnection();
+			st = con.createStatement();
+			strQry="select * from sm_do.ft_confirmview('1');";
+		}catch(SQLException ex){
+			ex.getMessage();
+		}
+	}
+
+	SimpleCalendarModel scm = new SimpleCalendarModel();
+  
+                public void addToModel(CalendarEvent ce) {
+                    scm.add(ce);
+                }
+  
+                public CalendarEvent createRandomEvent() {
+                	
+                	/*
+                	SimpleDateFormat DATA_FORMAT = new SimpleDateFormat("yyyy/MM/dd");              
+                    SimpleCalendarEvent sce = new SimpleCalendarEvent();
+                    String cfQry;
+                    Date gDate;
+                    String strDate;
+                    String gTime;
+                    String strCvDate;
+                    /*
+                    try{
+                    con = Database.getConnection();
+                    st = con.createStatement();
+                    cfQry="select * from sm_do.ft_confirmview('1');";
+                    st.executeQuery(cfQry);
+                    ResultSet rs = st.getResultSet();
+                    while(rs.next()){
+                    	java.util.Calendar cal = java.util.Calendar.getInstance();
+                    	//dt.setValue(rs.getDate("confirmdate"));
+                    	gTime=rs.getString("confirmtime");
+                    	strDate = DATA_FORMAT.format(rs.getDate("confirmdate"));
+                    	String dSub=strDate.substring(0,4);
+                    	String ddSub = strDate.substring(4);
+                    	Integer yInt = Integer.parseInt(dSub);
+                    	Integer nY;
+                    	if(yInt>2500){
+                    		 nY= yInt-543;
+                    	}else{
+                    		 nY=yInt;
+                    	}
+                    	String nnY = Integer.toString(nY);
+                    	System.out.println(nnY);
+                    	String rsDate=nnY.concat(ddSub);
+                    	//sce.setContent(rs.getString("sono"));
+                    	strCvDate=rsDate.concat(" ".concat(gTime));
+                    	DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                    	dt.setText(strCvDate);
+                    	Date nDate =dt.getValue();
+                    	
+                    	System.out.println("nDate="+formatter.format(nDate));
+                    	sce.setBeginDate(nDate);
+                    	sce.setEndDate(nDate);
+                    	sce.setContent("Test");
+                    	sce.setTitle("TitleTest");
+                    	System.out.println(new Date());
+                    	System.out.println(strCvDate);
+                    	//String ssd=nrfm.format(strCvDate);
+                    	//sce.setBeginDate(strCvDate);
+                    	//DateTimeFormatter format = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
+                    	//DateTime time = format.parseDateTime("04/02/2011 20:27:05");
+                    	//gDate=nrfm.format(strCvDate);
+                    	System.out.println("strCvD="+strCvDate+" Date="+strDate+" gtime="+gTime);
+                    		
+                    }
+                    
+                    }catch(SQLException ex){
+                    	ex.getMessage();
+                    }
+                    
+                    return sce;
+                    /*
+                    Random generator = new Random();
+                      
+                    long timeNow = System.currentTimeMillis();
+                    long roundedTime = timeNow - (timeNow % 1000);
+  
+                    java.util.Calendar cal = java.util.Calendar.getInstance();
+  
+                    cal.setTimeInMillis(roundedTime);
+                    cal.add(java.util.Calendar.HOUR, -(generator.nextInt(3) + 2));
+                    sce.setBeginDate(cal.getTime());
+                    System.out.println(cal.getTime());
+  
+                    cal.setTimeInMillis(roundedTime);
+                    cal.add(java.util.Calendar.HOUR, generator.nextInt(3) + 1);
+                    sce.setEndDate(cal.getTime());
+                    System.out.println(cal.getTime());
+  
+                    //The color Strings should only be colors
+                    //that CSS accept
+                    sce.setContentColor("#00A2E8");
+                    sce.setHeaderColor("#00A2E8");
+  
+                    sce.setContent("This is the content of the event");
+                    sce.setTitle("This is the title of the event");
+  
+                    //is this event locked?
+                    sce.setLocked(false);
+                    
+                    java.util.Calendar cal = java.util.Calendar.getInstance();
+                   // cal.add(java.util.Calendar.MONTH,1+1);
+                   // sce.setBeginDate(cal.getTime());
+                    cal.add(java.util.Calendar.HOUR,1+1);
+                    sce.setBeginDate(cal.getTime());
+                    cal.add(java.util.Calendar.HOUR,2+1);
+                    sce.setEndDate(cal.getTime());
+                    sce.setContent("This is the content of the event");
+                    sce.setTitle("This is the title of the event");
+                    */
+                    long tn = System.currentTimeMillis();
+                    long nwt = tn-1000;
+                    
+                    SimpleCalendarEvent sce = new SimpleCalendarEvent();
+                    java.util.Calendar cal = java.util.Calendar.getInstance();
+                    
+                    cal.setTimeInMillis(nwt);
+                    System.out.println(nwt);
+                    cal.add(java.util.Calendar.DATE, 0);
+                    sce.setBeginDate(cal.getTime());
+                    System.out.println(cal.getTime());
+                    sce.setEndDate(cal.getTime());
+                     
+                    //The color Strings should only be colors
+                    //that CSS accept
+                    sce.setContentColor("red");
+                    sce.setHeaderColor("red");
+                     
+                    sce.setContent("This is the content of the event");
+                    sce.setTitle("This is the title of the event");
+                     
+                    //is this event locked?
+                    sce.setLocked(false);
+                    return sce;
+                }
+  
+                public void createData() {
+                    scm = new SimpleCalendarModel();
+  			
+                 // for(int i=0; i<3; i++) {
+                        CalendarEvent ce = createRandomEvent();
+                        addToModel(ce);
+                  // }
+  				
+  					//System.out.println(scm);
+                    calendar.setModel(scm);
+                    
+                }
+                
+                public void veiwEv(){
+                	// alert(calendar.getBeginDate());
+                	SimpleCalendarEvent ce = new SimpleCalendarEvent();
+                	Calendar cal = Calendar.getInstance(calendar.getDefaultTimeZone()); // create a calendar instance used to calculate the date time
+                	Date beginDate = dt.getValue(); // select a day by datebox
+                	 
+                	// just in case to clear the seconds and the millisecond.
+                	cal.setTime(beginDate);
+                	cal.set(Calendar.SECOND, 0);
+                	cal.set(Calendar.MILLISECOND, 0);
+                	beginDate = cal.getTime();
+                	System.out.println(beginDate);
+                	ce.setBeginDate(beginDate);
+                	ce.setContent("Content1");
+                }
+            ]]>
+        </zscript>
+       <datebox id="dt" format="yyyy/MM/dd HH:mm"/> <button id="createData" label="Create Data" onClick="createData()" />
+       <button label="click" onClick="veiwEv()" />
+    <calendars id="calendar" height="80%" firstDayOfWeek="Sunday" mold="default" >    
+    </calendars>      
+</window>
+</zk>

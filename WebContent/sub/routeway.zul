@@ -1,0 +1,98 @@
+<?page title="RouteWay" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<style>
+	.tbl{
+		font-size:10pt;
+		color:#005A88;		
+	}
+</style>
+<window title="RouteWay" border="normal">
+<x:table class="tbl">
+				<x:tr>
+					<x:td>Code</x:td>
+					<x:td><textbox id="txtcode"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>ชื่อเส้นทางหลัก</x:td>
+					<x:td><textbox id="txtname1"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>ชื่อเส้นทางรอง</x:td>
+					<x:td><textbox id="txtname2"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>คำอธิบาย</x:td>
+					<x:td><textbox id="txtdesc" width="380px"/></x:td>
+				</x:tr>
+			</x:table>
+			<hbox>
+			<button label="ล้างหน้าจอ" onClick="" />
+			<button label="บันทึก" onClick="" />
+			<button label="ลบ" onClick="" />
+			<button label="ออก" onClick="" />
+		</hbox>
+		<separator onCreate="veiwRoute()"/>
+		<listbox id="lsroute" mold="paging" pageSize="10" onSelect="vSelectR();">
+			<listhead>
+				<listheader label="Code" width="100px"/>
+				<listheader label="เส้นทางหลัก" />
+				<listheader label="เส้นทางรอง" />
+				<listheader label="รายละเอียด" />
+			</listhead>			
+		</listbox>
+		
+		<zscript>
+		<![CDATA[
+         
+import java.io.*;
+import java.lang.*;
+import java.sql.*;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.CreateEvent;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.ForwardEvent;
+import org.zkoss.zk.ui.Executions;
+import condb.Database;
+import condb.Mssqldb;
+Connection con=null;
+Statement st=null;
+public void veiwRoute(){
+	String strQry;
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		strQry = "select routecode, name1, name2, mydescription from sm_do.tb_do_route;";
+		st.executeQuery(strQry);
+		ResultSet rs = st.getResultSet();
+		while(lsroute.getItemCount()>0){
+			lsroute.removeItemAt(0);
+		}
+		while(rs.next()){
+			Listitem li = new Listitem();
+			li.appendChild(new Listcell(rs.getString("routecode")));
+			li.appendChild(new Listcell(rs.getString("name1")));
+			li.appendChild(new Listcell(rs.getString("name2")));
+			li.appendChild(new Listcell(rs.getString("mydescription")));
+			lsroute.appendChild(li);
+		}
+	}catch(SQLException e){
+		e.getMessage();
+	}
+}
+public void vSelectR(){
+	Listitem rli = new Listitem();
+	rli = lsroute.getSelectedItem();
+	Listcell lcr0 = (Listcell) rli.getChildren().get(0);
+	Listcell lcr1 = (Listcell) rli.getChildren().get(1);
+	Listcell lcr2 = (Listcell) rli.getChildren().get(2);
+	Listcell lcr3 = (Listcell) rli.getChildren().get(3);
+	txtcode.setValue(lcr0.getLabel());
+	txtname1.setValue(lcr1.getLabel());
+	txtname2.setValue(lcr2.getLabel());
+	txtdesc.setValue(lcr3.getLabel());	
+	
+}
+]]>
+		</zscript>
+</window>
+</zk>

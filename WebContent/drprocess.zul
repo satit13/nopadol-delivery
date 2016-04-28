@@ -1,0 +1,141 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<window id="wdrprocess" mode="modal" width="800px">
+<grid onCreate="viewCFdr();">
+		<columns>
+			<column label="ประมวลผลใบ DR"/>
+			
+		</columns>
+		<rows>
+			<row>	
+			<x:table>
+				<x:tr>
+					<x:td>
+						<button label="ประมวลผล" onClick="ProcessDRSCV();" image="/img/process.png"/>
+						<button label="Close" onClick="wdrprocess.detach();" image="/img/cross.png"/>
+					</x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>
+						<listbox id="lsconfirm" mold="paging" pageSize="10">
+							<listhead>
+								<listheader label="DR-Docno" />
+								<listheader label="Confirm Date" />
+								<listheader label="ทะเบียนรถ" />
+								<listheader label="สถานที่" />
+								<listheader label="พนักงานขาย" />
+							</listhead>		
+						</listbox>
+					</x:td>
+				</x:tr>
+			</x:table>			
+			</row>
+		</rows>
+	</grid>
+	
+	<zscript>
+		<![CDATA[
+		import java.io.*;
+		import java.lang.*;
+		import java.sql.*;
+		import org.zkoss.zk.ui.Component;
+		import org.zkoss.zk.ui.event.CreateEvent;
+		import org.zkoss.zk.ui.event.Event;
+		import org.zkoss.zk.ui.event.ForwardEvent;
+		import org.zkoss.zk.ui.Executions;
+		import java.text.SimpleDateFormat;
+		import java.text.DecimalFormat;
+		import java.util.Date;
+		import org.zkoss.zk.ui.event.EventListener;
+		import condb.Database;
+		import condb.Mssqldb;
+		
+		Connection con=null;
+		Statement st=null;
+		Connection sqlcon=null;
+		Statement mst=null;
+		SimpleDateFormat dfm = new SimpleDateFormat("dd/MM/yyyy");
+		
+		public void viewCFdr(){
+			String strDRQry;
+			try{
+				con = Database.getConnection();
+				st = con.createStatement();
+				strDRQry ="select * from sm_do.ft_queueviewconfirm('')";
+				st.executeQuery(strDRQry);
+				ResultSet rs = st.getResultSet();
+				while(lsconfirm.getItemCount()>0){
+					lsconfirm.removeItemAt(0);
+				}
+				while(rs.next()){
+					Listitem li = new Listitem();
+					li.appendChild(new Listcell(rs.getString("sono")));
+					li.appendChild(new Listcell(dfm.format(rs.getDate("confirmdate"))));
+					li.appendChild(new Listcell(rs.getString("carlicence")));
+					li.appendChild(new Listcell(rs.getString("placedetail")));
+					li.appendChild(new Listcell(rs.getString("salename")));
+					//li.appendChild(new Listcell(rs.getString("")));
+					//li.appendChild(new Listcell(rs.getString("")));
+					lsconfirm.appendChild(li);
+				}
+				
+			}catch(SQLException ex){
+				ex.printStackTrace();
+			}
+		}
+			
+		
+		
+		//ตรวจสอบเอกสารใบสั่งขายใน BC SQLServer
+		public void ProcessDRSCV(){
+			String msQry;
+			String pgQry;
+			String vSoNo;
+			Integer visBill;
+			String vSalecode;
+			String vSalename;
+			Integer i;
+			try{				
+				i=lsconfirm.getItemCount();
+				if(i>0){
+					for(int x=0;x<i;x++){
+						Listitem lis = new Listitem();
+						lis=lsconfirm.getItemAtIndex(x);
+						Listcell lcdoc = (Listcell) lis.getChildren().get(0);
+						vSoNo = lcdoc.getLabel().trim();
+						//ไปตรวจ Bill
+						sqlcon = Mssqldb.getConnection();
+						Statement stm = sqlcon.createStatement();
+						
+						msQry="exec USP_SO_Cksaleorderpg '"+vSoNo+"'";
+						stm.executeQuery(msQry);
+						System.out.println(msQry);
+						ResultSet rsm = stm.getResultSet();
+						
+							while(rsm.next()){
+								visBill=rsm.getInt("billstatus");
+								System.out.println("Docno="+vSoNo+"IsBill="+visBill);
+								if(visBill==1){
+									//ถ้า bill =1 ปัด ค่าบิล
+									Statement pst = con.createStatement();
+									pgQry="select * from sm_do.ft_processcf('"+vSoNo+"')";
+									pst.execute(pgQry);			
+									System.out.println("Qry="+pgQry);
+								}							
+							}
+					}				
+					
+				}
+				wdrprocess.detach();
+				
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+			}
+			
+		}
+		
+		
+		]]>
+	</zscript>
+	</window>
+</zk>

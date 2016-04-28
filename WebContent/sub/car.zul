@@ -1,0 +1,157 @@
+<?page title="Car Delevery" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<style>
+	.tbl{
+		font-size:10pt;
+		color:#005A88;		
+	}
+</style>
+<window title="Car Delevery" border="normal">
+<x:table class="tbl">
+				<x:tr>
+					<x:td>ทะเบียนรถ</x:td>
+					<x:td><textbox id="txtlicence"/></x:td>
+					<x:td></x:td><x:td></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>ชื่อรถ 1</x:td>
+					<x:td><textbox id="txtname1"/></x:td>
+					<x:td>ชื่อรถ 2</x:td>
+					<x:td><textbox id="txtname2"/></x:td>
+				</x:tr>				
+				<x:tr>
+					<x:td>เลขตัวถัง</x:td>
+					<x:td><textbox id="txtbodycode"/></x:td>
+					<x:td>เลขเครื่องยนต์</x:td>
+					<x:td><textbox id="txtengineno"/></x:td>
+				</x:tr>				
+				<x:tr>
+					<x:td>ลักษณะมาตรฐาน</x:td>
+					<x:td><textbox id="txttype"/></x:td>
+					<x:td>วันที่ซื้อ</x:td>
+					<x:td><datebox id="dbxbuydate" format="dd/MM/yyyy" style="font-size:11px;"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>เลขที่กรมธรรม์</x:td>
+					<x:td><textbox id="txtinsurance"/></x:td>
+					<x:td>อัตราเฉลี่ย กม./ลิตร</x:td>
+					<x:td><textbox id="txtdistance"/></x:td>
+				</x:tr>				
+				<x:tr>
+					<x:td>กว้าง x ยาว x สูง</x:td>
+					<x:td colspan="3"><textbox id="txtwide"/>X<textbox id="txtlong"/>X<textbox id="txtheight"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>เพิ่มเติม</x:td>
+					<x:td colspan="3"><textbox id="txtdesc" width="400px"/></x:td>
+				</x:tr>
+			</x:table>
+			<hbox>
+				<button label="บันทึก" onClick="" />
+				<button label="ค้นหา" onClick="" />
+				<button label="ออก" onClick="" />
+			</hbox>
+			<separator onCreate="viewCarList()"/>
+	<listbox id="lscar" mold="paging" pageSize="5" onSelect="vselectcar()">
+	<listhead>
+		<listheader label="ทะเบียน" />
+		<listheader label="ชื่อรถ 1" />
+		<listheader label="เลขตัวถัง" />
+		<listheader label="เลขเครื่องยนต์" />
+		<listheader label="มาตรฐาน" />
+		<listheader label="วันที่ซื้อ" />
+		<listheader label="เลขกรมธรรม์" />
+		<listheader label="อัตราเฉลี่ย กม./ลิตร" />
+		<listheader label="กว้าง" />
+		<listheader label="ยาว" />
+		<listheader label="สูง" />
+		<listheader label="เพิ่มเติม" />
+		<listheader label="name2" visible="false"/>
+		<listheader label="carno" visible="false"/>		
+	</listhead>	
+	</listbox>
+
+<zscript>
+<![CDATA[
+         
+import java.io.*;
+import java.lang.*;
+import java.sql.*;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.CreateEvent;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.ForwardEvent;
+import org.zkoss.zk.ui.Executions;
+import condb.Database;
+import condb.Mssqldb;
+Connection con=null;
+Statement st=null;
+
+public void viewCarList(){
+	String strQry;
+	try{
+		con = Database.getConnection();
+		st= con.createStatement();
+		strQry ="select * from sm_do.tb_do_vehical;";
+		st.executeQuery(strQry);
+		ResultSet rs= st.getResultSet();
+		while(lscar.getItemCount()>0){
+			lscar.removeItemAt(0);
+		}
+		while(rs.next()){
+			Listitem li = new Listitem();
+			li.appendChild(new Listcell(rs.getString("carlicence")));
+			li.appendChild(new Listcell(rs.getString("name1")));
+			li.appendChild(new Listcell(rs.getString("bodynumber")));
+			li.appendChild(new Listcell(rs.getString("enginenumber")));
+			li.appendChild(new Listcell(rs.getString("standardtype")));
+			li.appendChild(new Listcell(rs.getString("datebuy")));
+			li.appendChild(new Listcell(rs.getString("insurancenumber")));
+			li.appendChild(new Listcell(rs.getString("distancerate")));
+			li.appendChild(new Listcell(rs.getString("wide")));
+			li.appendChild(new Listcell(rs.getString("long")));
+			li.appendChild(new Listcell(rs.getString("high")));
+			li.appendChild(new Listcell(rs.getString("mydescription")));
+			li.appendChild(new Listcell(rs.getString("name2")));
+			li.appendChild(new Listcell(rs.getString("carno")));
+			lscar.appendChild(li);
+		}
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}
+public void vselectcar(){
+	Listitem clc = new Listitem();
+	clc=lscar.getSelectedItem();
+	Listcell lc0 = (Listcell) clc.getChildren().get(0); //license
+	Listcell lc1 = (Listcell) clc.getChildren().get(1); //name1
+	Listcell lc2 = (Listcell) clc.getChildren().get(2); // body number
+	Listcell lc3 = (Listcell) clc.getChildren().get(3); // engine number
+	Listcell lc4 = (Listcell) clc.getChildren().get(4); //standard type
+	Listcell lc5 = (Listcell) clc.getChildren().get(5); //buydate
+	Listcell lc6 = (Listcell) clc.getChildren().get(6); //insurance no
+	Listcell lc7 = (Listcell) clc.getChildren().get(7); //distance
+	Listcell lc8 = (Listcell) clc.getChildren().get(8); //wide
+	Listcell lc9 = (Listcell) clc.getChildren().get(9); //long
+	Listcell lc10 = (Listcell) clc.getChildren().get(10); //height
+	Listcell lc11 = (Listcell) clc.getChildren().get(11); // desc
+	Listcell lc12 = (Listcell) clc.getChildren().get(12);	// name2
+	txtlicence.setValue(lc0.getLabel());
+	txtname1.setValue(lc1.getLabel());	
+	txtbodycode.setValue(lc2.getLabel());
+	txtengineno.setValue(lc3.getLabel());
+	txttype.setValue(lc4.getLabel());
+	dbxbuydate.setText(lc5.getLabel());
+	txtinsurance.setValue(lc6.getLabel());
+	txtdistance.setValue(lc7.getLabel());
+	txtwide.setValue(lc8.getLabel());
+	txtlong.setValue(lc9.getLabel());
+	txtheight.setValue(lc10.getLabel());
+	txtdesc.setValue(lc11.getLabel());
+	txtname2.setValue(lc12.getLabel());
+	
+}
+]]>
+</zscript>
+</window>
+</zk>

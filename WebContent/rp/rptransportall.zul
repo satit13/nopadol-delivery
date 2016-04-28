@@ -1,0 +1,147 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<div height="100%" style="border:1px solid black;overflow:auto;" >
+<grid>
+		<columns>
+			<column label="DS101-รายงานสรุปค่าเที่ยวจัดส่งทั้งหมด"/>
+		</columns>
+		<rows>
+			<row>
+			<x:table>
+				<x:tr>
+					<x:td>ตั้งแต่วันที่</x:td>
+					<x:td><datebox id="dtstartdate" format="dd/MM/yyyy" onCreate="self.setValue(new Date());"/></x:td>
+					<x:td>ถึงวันที่</x:td>
+					<x:td><datebox id="dtenddate" format="dd/MM/yyyy" onCreate="self.setValue(new Date());"/></x:td>
+					<x:td>
+					    <button label="ดูรายงาน" onClick="showRPds101();" />
+						<button label="ออก" onClick="goHome();" />
+					</x:td>
+				</x:tr>
+			</x:table>				
+			</row>
+		</rows>
+	</grid>
+	<jasperreport id="rptfall" height="85%"/>
+	
+<zscript>
+<![CDATA[
+
+import java.sql.*;
+import java.io.*;
+import java.lang.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Date;
+//import javax.servlet.http.Cookie;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse; 
+import net.sf.jasperreports.engine.DefaultJasperReportsContext;
+import net.sf.jasperreports.extensions.ExtensionsEnvironment;
+import net.sf.jasperreports.engine.JasperReportsContext;
+import net.sf.jasperreports.engine.JRRuntimeException;
+import net.sf.jasperreports.engine.JRDataset;
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
+
+import org.zkoss.util.media.AMedia;
+import org.zkoss.zul.*;
+import condb.Database;
+import java.text.SimpleDateFormat;
+
+Connection con=null;
+SimpleDateFormat dtfm = new SimpleDateFormat("dd/MM/yyyy");
+
+public void showRPds101(){
+	String vgetStartdate;
+	String vgetEnddate;
+	String strStartdate;
+	String strEnddate;
+	String vStartdate;
+	String vEnddate;
+	
+	String rpStartDate;
+	String rpEndDate;
+	
+	ResultSet rs = null;
+	PreparedStatement st=null;
+	try{
+		vgetStartdate = dtstartdate.getText();
+		vgetEnddate = dtenddate.getText();
+		strStartdate = dtnormal(vgetStartdate);
+		strEnddate = dtnormal(vgetEnddate);	
+		
+		
+		
+				Map params = new HashMap();
+				rpStartDate =dtfm.format(dtstartdate.getValue());
+				rpEndDate = dtfm.format(dtenddate.getValue());
+				params.put("begindate", rpStartDate);
+				params.put("enddate", rpEndDate);
+			
+		
+					
+				con = Database.getConnection();
+				//st = con.prepareStatement("SET datestyle = \"ISO, DMY\";");
+				System.out.println("start="+strStartdate+" end="+strEnddate);
+				String strQry;
+				//strQry="";
+				st = con.prepareStatement("select * from( SELECT * FROM sm_do.ft_transportation_report('"+strStartdate+"','"+strEnddate+"', 's01')" +
+								" union SELECT * FROM sm_do.ft_transportation_report('"+strStartdate+"','"+strEnddate+"','s02')) as a order by a.empcode,a.datesend,a.docno;");
+				rs = st.executeQuery();	
+				
+				rptfall.setParameters(params);		
+				
+				rptfall.setSrc(session.getWebApp().getRealPath("/rp/transportation_all.jasper"));
+				rptfall.setDatasource(new JRResultSetDataSource(rs));	
+				// transportreport.setDataConnection(Database.getConnection());
+				rptfall.setType("pdf");		
+		
+		} catch(SQLException ex){
+			ex.printStackTrace();
+	}
+	
+}
+
+public String dtnormal(String vgetdate){	
+	
+	String vrsDate;
+	String vDate;
+	String vYear;
+	String vMonth;
+	String strResultYear;
+	String strgetDate;
+	
+	strgetDate = vgetdate;
+	vYear = strgetDate.substring(6);
+	vMonth = strgetDate.substring(3,5);	
+	vDate = strgetDate.substring(0,2);
+	Integer xInt1 = Integer.parseInt(vYear);
+	System.out.println("xY="+xInt1);
+   		if (xInt1 > 2500){
+   			Integer bInt= xInt1-543;
+   			strResultYear= Integer.toString(bInt);
+   		}else {
+   			strResultYear= Integer.toString(xInt1);
+   		}
+			vrsDate=strResultYear.concat("/".concat(vMonth.concat("/".concat(vDate)))); 
+		return (vrsDate); 
+	}
+
+		void goHome(){
+			Executions.sendRedirect("home.zul");
+		}
+
+]]>
+</zscript>
+	
+	
+	
+</div>
+</zk>

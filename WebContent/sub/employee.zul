@@ -1,0 +1,135 @@
+<?page title="Bus Employee" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<style>
+	.tbl{
+		font-size:10pt;
+		color:#005A88;		
+	}
+</style>
+<window title="Bus Employee" border="normal">
+<button label="เลือกพนักงาน" onClick="" />
+			<x:table class="tbl">
+				<x:tr>
+					<x:td>รหัสพนักงาน</x:td>
+					<x:td><textbox id="txtcode"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>ชื่อพนักงาน</x:td>
+					<x:td><textbox id="txtname1"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>ชื่ออังกฤษ</x:td>
+					<x:td><textbox id="txtname2"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>ตำแหน่ง</x:td>
+					<x:td><textbox id="txtposition"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>เลขที่ใบขับขี่</x:td>
+					<x:td><textbox id="txtlicenseno"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>ใบขับขี่หมดอายุวันที่</x:td>
+					<x:td><datebox id="dbxlicenseexpire" format="dd/MM/yyyy" style="font-size:11px;"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>สถานะภาพพนักงาน</x:td>
+					<x:td><checkbox id="lblstatus" label="ลาออก"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>หมายเหตุ</x:td>
+					<x:td><textbox id="txtdesc" width="300px"/></x:td>
+				</x:tr>
+			</x:table>
+			<hbox>
+				<button label="บันทึก" onClick="" />
+				<button label="ค้นหา" onClick="" />
+				<button label="ออก" onClick="" />
+			</hbox>
+			<separator onCreate="viewEmp()"/>
+	<listbox id="lsemp" mold="paging" pageSize="5" onSelect="vselectEmp()">
+	<listhead >
+		<listheader label="รหัสพนักงาน" />
+		<listheader label="ชื่อ-สกุล" />
+		<listheader label="Eng Name" />
+		<listheader label="ตำแหน่ง" />
+		<listheader label="เลขที่ใบขับขี่" />
+		<listheader label="วันหมดอายุ" />
+		<listheader label="เพิ่มเติม" />
+		<listheader label="status" visible="false" />		
+	</listhead>	
+	</listbox>
+<zscript>
+<![CDATA[
+import java.io.*;
+import java.lang.*;
+import java.sql.*;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.CreateEvent;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.ForwardEvent;
+import org.zkoss.zk.ui.Executions;
+import condb.Database;
+import condb.Mssqldb;
+Connection con=null;
+Statement st=null;  
+
+public void viewEmp(){
+	String strempQry;
+	Integer iposition;
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		strempQry="select * from sm_do.tb_do_empbplus;";
+		st.executeQuery(strempQry);
+		ResultSet rs = st.getResultSet();
+		while(lsemp.getItemCount()>0){
+			lsemp.removeItemAt(0);
+		}
+		while(rs.next()){
+			Listitem li = new Listitem();
+			li.appendChild(new Listcell(rs.getString("code")));
+			li.appendChild(new Listcell(rs.getString("name1")));
+			li.appendChild(new Listcell(rs.getString("name2")));
+			iposition=rs.getInt("position");
+			if(iposition==0){
+				li.appendChild(new Listcell("พนักงานติดตามรถ"));
+			}else{
+				li.appendChild(new Listcell("ขับรถ"));
+			}
+			
+			li.appendChild(new Listcell(rs.getString("licencenumber")));
+			li.appendChild(new Listcell(rs.getString("licenceexpired")));
+			li.appendChild(new Listcell(rs.getString("mydescription")));
+			li.appendChild(new Listcell(rs.getString("activestatus")));
+			lsemp.appendChild(li);
+		}
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}
+public void vselectEmp(){
+	Listitem eli = new Listitem();
+	eli = lsemp.getSelectedItem();
+	Listcell ei0 = (Listcell) eli.getChildren().get(0);
+	Listcell ei1 = (Listcell) eli.getChildren().get(1);
+	Listcell ei2 = (Listcell) eli.getChildren().get(2);
+	Listcell ei3 = (Listcell) eli.getChildren().get(3);
+	Listcell ei4 = (Listcell) eli.getChildren().get(4);
+	Listcell ei5 = (Listcell) eli.getChildren().get(5);
+	Listcell ei6 = (Listcell) eli.getChildren().get(6);
+	Listcell ei7 = (Listcell) eli.getChildren().get(7);
+	txtcode.setValue(ei0.getLabel());
+	txtname1.setValue(ei1.getLabel());
+	txtname2.setValue(ei2.getLabel());
+	txtposition.setValue(ei3.getLabel());
+	txtlicenseno.setValue(ei4.getLabel());
+	dbxlicenseexpire.setText(ei5.getLabel());
+	txtdesc.setValue(ei6.getLabel());	
+}
+
+         ]]>
+</zscript>
+</window>
+</zk>

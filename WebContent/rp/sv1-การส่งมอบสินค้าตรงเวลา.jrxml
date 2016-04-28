@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sv1-การส่งมอบสินค้าตรงเวลา" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e279fab-89db-4b1a-b590-9bfe027e5fb9">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<subDataset name="s01_g" uuid="629cb1a0-cdd7-4ad4-bb41-929be43c9ff2">
+		<parameter name="over_s01" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="begindate_s01" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="enddate_s01" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select a.*,cast( cast(countduestatus *100.00/count_all as decimal(10,2)) as varchar(10))||'%' as countpercent
+from
+	(select queuebranch,duestatus,count(*) as countduestatus
+		,(select count(*) from sm_do.ft_dotime_analyze($P{begindate_s01},$P{enddate_s01},$P{over_s01}) where overduedate>0 and upper(queuebranch)='S01') as count_all
+	from sm_do.ft_dotime_analyze($P{begindate_s01},$P{enddate_s01},$P{over_s01})
+	where overduedate>0 and upper(queuebranch)='S01'
+	group by queuebranch,duestatus) as a;]]>
+		</queryString>
+		<field name="queuebranch" class="java.lang.String"/>
+		<field name="duestatus" class="java.lang.String"/>
+		<field name="countduestatus" class="java.lang.Long"/>
+		<field name="count_all" class="java.lang.Long"/>
+		<field name="countpercent" class="java.lang.String"/>
+		<group name="queuebranch">
+			<groupExpression><![CDATA[$F{queuebranch}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="s02_g" uuid="0ede3e43-1eea-4a45-955d-eecc92a40b73">
+		<parameter name="over_s02" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="begindate_s02" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="enddate_s02" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select a.*,cast( cast(countduestatus *100.00/count_all as decimal(10,2)) as varchar(10))||'%' as countpercent
+from
+	(select queuebranch,duestatus,count(*) as countduestatus
+		,(select count(*) from sm_do.ft_dotime_analyze($P{begindate_s02}, $P{enddate_s02},$P{over_s02}) where overduedate>0 and upper(queuebranch)='S02') as count_all
+	from sm_do.ft_dotime_analyze($P{begindate_s02}, $P{enddate_s02},$P{over_s02})
+	where overduedate>0 and upper(queuebranch)='S02'
+	group by queuebranch,duestatus) as a;]]>
+		</queryString>
+		<field name="queuebranch" class="java.lang.String"/>
+		<field name="duestatus" class="java.lang.String"/>
+		<field name="countduestatus" class="java.lang.Long"/>
+		<field name="count_all" class="java.lang.Long"/>
+		<field name="countpercent" class="java.lang.String"/>
+		<group name="queuebranch">
+			<groupExpression><![CDATA[$F{queuebranch}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="overminute" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[30]]></defaultValueExpression>
+	</parameter>
+	<parameter name="begindate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="enddate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select a.*,cast( cast(countduestatus *100.00/count_all as decimal(10,2)) as varchar(10))||'%' as countpercent
+from
+	(select queuebranch,duestatus,count(*) as countduestatus
+		,(select count(*) from sm_do.ft_dotime_analyze($P{begindate}, $P{enddate},$P{overminute}) where overduedate>0 and upper(queuebranch)='S01') as count_all
+	from sm_do.ft_dotime_analyze($P{begindate}, $P{enddate},$P{overminute})
+	where overduedate>0 and upper(queuebranch)='S01'
+	group by queuebranch,duestatus) as a
+
+union
+select a.*,cast( cast(countduestatus *100.00/count_all as decimal(10,2)) as varchar(10))||'%' as countpercent
+from
+	(select queuebranch,duestatus,count(*) as countduestatus
+		,(select count(*) from sm_do.ft_dotime_analyze($P{begindate}, $P{enddate},$P{overminute}) where overduedate>0 and upper(queuebranch)='S02') as count_all
+	from sm_do.ft_dotime_analyze($P{begindate}, $P{enddate},$P{overminute})
+	where overduedate>0 and upper(queuebranch)='S02'
+	group by queuebranch,duestatus) as a;]]>
+	</queryString>
+	<field name="queuebranch" class="java.lang.String"/>
+	<field name="duestatus" class="java.lang.String"/>
+	<field name="countduestatus" class="java.lang.Long"/>
+	<field name="count_all" class="java.lang.Long"/>
+	<field name="countpercent" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="12" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="67" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement uuid="50497c9d-09c0-4d94-9d4c-f49a39df52e2" x="515" y="0" width="40" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b87dbd20-19ab-43c5-a523-a2c45192781b" x="435" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5ca7898a-7f3f-4afc-a30b-c58ae3fdb79f" x="0" y="14" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SV1-การส่งมอบสินค้าตรงเวลา(ตามวันนัดส่ง)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="05b9864f-2cc2-4a87-80b5-dfb2baea65c0" x="0" y="47" width="53" height="13"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ตั้งแต่วันที่ :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="ea579e3d-56fe-4cdc-998b-37ff2042e029" x="292" y="46" width="100" height="13"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{overminute}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="d9f5fcd9-5276-4d35-9649-9e3e6c70ff8b" x="214" y="46" width="74" height="15"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ส่งภายใน(นาที)]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="867e6b38-e18c-49c4-8d31-e6b01af4092e" x="140" y="47" width="67" height="13"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{enddate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b18ab01e-6e21-4dc8-8272-1d8001829e24" x="116" y="47" width="16" height="15"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ถึง]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9502f9d5-9805-41b8-b4bf-1bc9d271817a" x="53" y="47" width="60" height="13"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{begindate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<summary>
+		<band height="593" splitType="Stretch">
+			<crosstab>
+				<reportElement uuid="81541083-d256-4011-a809-17385843c982" x="0" y="449" width="555" height="129"/>
+				<rowGroup name="duestatus" width="70" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{duestatus}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement uuid="387c9362-579a-42e9-95b4-32affda2094b" style="Crosstab Data Text" x="0" y="1" width="70" height="25"/>
+								<textElement>
+									<font fontName="Tahoma" size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{duestatus}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement uuid="1aab37f8-0b95-4d23-a9ae-bdd16757f5c4" x="0" y="2" width="70" height="25"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="10" isBold="true"/>
+								</textElement>
+								<text><![CDATA[รวม]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="queuebranch" height="30" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{queuebranch}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement uuid="1e6ceb73-b2da-4151-8026-a1c1f845a22a" style="Crosstab Data Text" x="49" y="9" width="31" height="21"/>
+								<textElement>
+									<font fontName="Tahoma" size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{queuebranch}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement uuid="01f0d863-1689-4176-b0d4-7a4b12fc0004" x="0" y="0" width="50" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="10" isBold="true"/>
+								</textElement>
+								<text><![CDATA[รวม]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="countduestatusMeasure" class="java.lang.Long" calculation="Sum">
+					<measureExpression><![CDATA[$F{countduestatus}]]></measureExpression>
+				</measure>
+				<crosstabCell width="83" height="27">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement uuid="3c724828-e2e0-475d-ab94-a41271eb4796" style="Crosstab Data Text" x="0" y="1" width="73" height="25"/>
+							<textElement>
+								<font fontName="Tahoma" size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{countduestatusMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="83" height="32" rowTotalGroup="duestatus">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement uuid="4889cb73-7e9c-4161-87e9-ad49da5e191b" style="Crosstab Data Text" x="0" y="2" width="73" height="25"/>
+							<textElement>
+								<font fontName="Tahoma" size="10" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{countduestatusMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="54" height="27" columnTotalGroup="queuebranch">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement uuid="3c48945c-eb4d-4cbb-a709-908003abeb81" style="Crosstab Data Text" x="0" y="1" width="50" height="25"/>
+							<textElement>
+								<font fontName="Tahoma" size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{countduestatusMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="54" height="32" rowTotalGroup="duestatus" columnTotalGroup="queuebranch">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement uuid="829f7c0f-c1d7-445c-9cd5-871271b54ec1" style="Crosstab Data Text" x="0" y="2" width="50" height="25"/>
+							<textElement>
+								<font fontName="Tahoma" size="10" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{countduestatusMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+			<staticText>
+				<reportElement uuid="3f9f1c26-e5a7-472f-a5b8-7f5755a6e3de" x="4" y="7" width="100" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[สาขา S01]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c8feb949-a22d-4738-9d01-d7c63a1e5e71" x="4" y="223" width="100" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[สาขา S02]]></text>
+			</staticText>
+			<pie3DChart>
+				<chart theme="aegean">
+					<reportElement uuid="53ee90d5-8dd2-4f6d-8a70-4c59553a8f33" x="1" y="5" width="554" height="209"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="s01_g" uuid="17ae3df8-3073-4a32-87eb-fbb33f195fe0">
+							<datasetParameter name="over_s01">
+								<datasetParameterExpression><![CDATA[$P{overminute}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="begindate_s01">
+								<datasetParameterExpression><![CDATA[$P{begindate}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="enddate_s01">
+								<datasetParameterExpression><![CDATA[$P{enddate}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<keyExpression><![CDATA[$F{duestatus}]]></keyExpression>
+					<valueExpression><![CDATA[$F{countduestatus}]]></valueExpression>
+					<labelExpression><![CDATA[$F{countpercent}.toString()]]></labelExpression>
+				</pieDataset>
+				<pie3DPlot>
+					<plot/>
+					<itemLabel/>
+				</pie3DPlot>
+			</pie3DChart>
+			<pie3DChart>
+				<chart theme="aegean">
+					<reportElement uuid="735ed1af-32ed-46fb-b564-f4ec671b0bd9" x="1" y="220" width="554" height="222"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="s02_g" uuid="6ebf4777-d32b-4382-bfb1-da8865ffea03">
+							<datasetParameter name="over_s02">
+								<datasetParameterExpression><![CDATA[$P{overminute}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="begindate_s02">
+								<datasetParameterExpression><![CDATA[$P{begindate}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="enddate_s02">
+								<datasetParameterExpression><![CDATA[$P{enddate}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<keyExpression><![CDATA[$F{duestatus}]]></keyExpression>
+					<valueExpression><![CDATA[$F{countduestatus}]]></valueExpression>
+					<labelExpression><![CDATA[$F{countpercent}.toString()]]></labelExpression>
+				</pieDataset>
+				<pie3DPlot>
+					<plot/>
+					<itemLabel/>
+				</pie3DPlot>
+			</pie3DChart>
+		</band>
+	</summary>
+</jasperReport>

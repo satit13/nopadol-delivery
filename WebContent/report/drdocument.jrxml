@@ -1,0 +1,695 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="drdocument" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="371a7e86-e69f-48aa-8e09-b549420ac1e3">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="432"/>
+	<queryString>
+		<![CDATA[select * from sm_do.ft_queueview('w01-scv5606-0418');]]>
+	</queryString>
+	<field name="branch" class="java.lang.String"/>
+	<field name="sono" class="java.lang.String"/>
+	<field name="duedate" class="java.sql.Date"/>
+	<field name="duetime" class="java.lang.String"/>
+	<field name="confirmdate" class="java.sql.Date"/>
+	<field name="isconfirm" class="java.lang.String"/>
+	<field name="confirmstatus" class="java.lang.String"/>
+	<field name="confirmtime" class="java.lang.String"/>
+	<field name="iscancel" class="java.lang.String"/>
+	<field name="iscancelstatus" class="java.lang.String"/>
+	<field name="itemgroup" class="java.lang.String"/>
+	<field name="itemamount" class="java.math.BigDecimal"/>
+	<field name="transportlocation" class="java.lang.String"/>
+	<field name="mappart" class="java.lang.String"/>
+	<field name="placecode" class="java.lang.String"/>
+	<field name="placedetail" class="java.lang.String"/>
+	<field name="routecode" class="java.lang.String"/>
+	<field name="routedetail" class="java.lang.String"/>
+	<field name="priority" class="java.lang.Integer"/>
+	<field name="prioritydetail" class="java.lang.String"/>
+	<field name="receivename" class="java.lang.String"/>
+	<field name="receivetel" class="java.lang.String"/>
+	<field name="carlicence" class="java.lang.String"/>
+	<field name="mydescription" class="java.lang.String"/>
+	<field name="salecode" class="java.lang.String"/>
+	<field name="salename" class="java.lang.String"/>
+	<field name="docdate" class="java.sql.Timestamp"/>
+	<field name="arcode" class="java.lang.String"/>
+	<field name="arname" class="java.lang.String"/>
+	<field name="routename" class="java.lang.String"/>
+	<group name="branch">
+		<groupExpression><![CDATA[$F{branch}]]></groupExpression>
+	</group>
+	<group name="sono">
+		<groupExpression><![CDATA[$F{sono}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ca96f044-2d55-4925-b2d3-40bbb90126e7" x="455" y="1" width="100" height="17"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
+				<text><![CDATA[F-DS-101]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9a0a5083-6efb-4d8a-bdc9-c954814a864b" x="343" y="19" width="212" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ใบเข้าคิวขนส่ง (QR-Queue)]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="914448a3-c8c0-4a7f-afa9-2ea1de106988" x="316" y="18" width="239" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="7e5edd85-a38d-42ed-9182-9b1d46b13a10" x="316" y="38" width="239" height="1"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="88" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="a0784583-db8e-4894-a661-64bfd2f69ecc" x="0" y="68" width="554" height="14"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement uuid="4299d487-4a25-49f4-97e2-6122eeb30861" x="239" y="2" width="315" height="61"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement uuid="a7565866-b0f9-4f47-b61b-79e70d7f4a25" x="1" y="2" width="233" height="61"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="2c8d1318-7a3b-4e87-b0ba-24950ab5a4c2" x="7" y="3" width="91" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[เลขที่อ้างอิง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c323fd49-e8cf-489c-a4ac-cb459c5d8eae" x="7" y="23" width="91" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ระดับความสำคัญ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1ab1cdfc-4bcc-419a-b848-a8e41b6189ca" x="7" y="43" width="91" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[จำนวนเงินที่ต้องเก็บ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="dc8e93b9-b541-4de8-981b-921d174a5e61" x="108" y="3" width="126" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f2d0ff19-4a2e-4e52-9cb6-21638917ba2b" x="108" y="23" width="126" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{prioritydetail}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="aef13335-04f6-48c1-9205-b05d7688d20a" x="108" y="43" width="126" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemamount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e68bcefd-392b-498b-bd58-bc5b10c22e74" x="246" y="3" width="68" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[สาขา]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="181fcea7-4f28-4028-9190-949b5602faf6" x="246" y="23" width="68" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[วันที่เอกสาร]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="21625fd6-3957-49c8-8eab-b59c5f6aa61d" x="246" y="43" width="68" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[วันนัดรับสินค้า]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="0cce8981-988d-4542-96ec-a49fc1a3c8e3" x="319" y="3" width="174" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branch}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="57b79f21-2a29-41c9-af32-0f9050788353" x="412" y="43" width="81" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[เวลานัดรับสินค้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8699f771-7369-4bde-b78a-88cb69e0aba5" x="8" y="68" width="90" height="14"/>
+				<textElement>
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[พนักงานขาย :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="4cc17381-c91f-42e9-855b-5309f295b5a9" x="108" y="68" width="45" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{salecode}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="4ac19b06-cb6c-44d8-b0c3-255982155cb5" x="155" y="68" width="6" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="8d28ed34-a9bc-47d2-82fe-b5858e90c026" x="162" y="68" width="244" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{salename}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="b1633ee3-37d4-40a5-ace8-be0d40930000" x="319" y="43" width="87" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{duedate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7c662a81-23bc-49b7-bc96-6aba1f6dd51f" x="475" y="43" width="68" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{duetime}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="a698c538-03ef-4b41-b4ae-de25516b35d1" x="319" y="23" width="172" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="311" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="2e61fced-07ab-40a0-9d12-855154043b3b" x="1" y="-2" width="554" height="57"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="782fe33d-8323-4b0e-98e4-c71753b9f059" x="0" y="81" width="554" height="22"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a1366852-38f8-4551-adbe-ee49dc5597af" x="0" y="156" width="554" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="2e729442-1af3-446b-9d63-9a7976a46e85" x="0" y="104" width="554" height="52"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="782fe33d-8323-4b0e-98e4-c71753b9f059" x="0" y="58" width="554" height="22"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="abadc2aa-9529-4bf7-9af2-9ef2268d1d2d" x="8" y="84" width="90" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[สถานที่ขนส่ง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="58323b73-9697-4391-998f-471960f3fe03" x="8" y="61" width="90" height="19"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[เส้นทาง]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="b737c61c-20d4-4025-842b-7c49eb916efd" x="108" y="84" width="437" height="18"/>
+				<textElement>
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{placedetail}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5f19678e-e0c1-40a8-ae92-873d7d1d0976" x="7" y="104" width="91" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[จุดสังเกตที่สำคัญ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="96715022-cd60-4da2-b190-03a84ad16b7d" x="108" y="104" width="437" height="52"/>
+				<textElement>
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{transportlocation}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5005cf29-86d4-419d-81e8-1d8fcf000228" x="8" y="156" width="90" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[หมายเหตุ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="68bca27d-dac6-4fc0-a11b-379d2293fb03" x="416" y="161" width="34" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<text><![CDATA[แผนที่ :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6622ca1c-0fdc-4197-bac1-c044d3aab58c" x="463" y="161" width="24" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<text><![CDATA[แนบ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a9192183-a013-4448-bdac-df943530aa4a" x="504" y="161" width="50" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<text><![CDATA[เคยส่งแล้ว]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="491" y="163" width="10" height="10"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="451" y="163" width="10" height="10"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement uuid="b2eeb998-97a0-463c-ab29-9ba9bc2c5531" x="108" y="158" width="304" height="23"/>
+				<textElement>
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mydescription}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1870275f-5a19-43ea-98fb-c082fe9da09c" x="108" y="61" width="435" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{routename}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="89c270b0-2512-4594-8518-982cf896962a" x="8" y="2" width="100" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<text><![CDATA[ลูกค้า/ผู้สั่งซื้อ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="f09a384b-27b0-4277-8206-b9cc65584054" x="115" y="2" width="439" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{arcode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0c63073d-aad2-48e3-8bb4-bf53e94fe74d" x="115" y="22" width="439" height="36"/>
+				<textElement>
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{arname}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="455b15ae-6cf4-4b4d-80b0-97da40f89e71" x="5" y="-133" width="150" height="42"/>
+				<imageExpression><![CDATA["/var/lib/tomcat7/webapps/npdo/rp/logonp.gif"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="329" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="e32e607c-5fd9-4d65-bb65-76368c41a0fe" x="181" y="37" width="373" height="185"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="e564477b-919c-4cad-a58e-a3b3b5e42a42" x="0" y="37" width="181" height="185"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="6e096ac3-7d71-41d8-89ca-31f51117240e" x="368" y="226" width="186" height="87"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="0884a413-74ec-410b-8b95-31aa0317f69a" x="181" y="226" width="187" height="87"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="018e5d6c-7e53-4df1-876d-fccba1774c53" x="1" y="226" width="180" height="87"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="e39fad9e-2fd1-458b-8f8d-c78ae8b37a33" x="7" y="4" width="312" height="13"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[ผู้รับสินค้าหน้างาน : .........................................................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="19d72be5-cffc-482a-91fd-82f3ed397c5e" x="327" y="4" width="216" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[หมายเลขโทรศัพท์ : .......................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7364bde4-f550-4ae4-979b-fb55b3b31434" x="30" y="21" width="513" height="14"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[ส่งปกติ * สินค้าทุกชนิดที่วางชั้นล่างของบ้าน, อาคารพานิชย์คอนโด จะขนลงหน้างานต้องขนไม่ไกลเกิน 10 เมตร]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="13" y="20" width="10" height="10"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="24b88613-71c5-4088-aada-57712243f14b" x="50" y="44" width="83" height="12"/>
+				<textElement>
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[หน้างาน/พนักงานขาย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9a361e6b-9149-4932-bf68-c56020cf163f" x="330" y="44" width="100" height="12"/>
+				<textElement>
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[รายละเอียดสถานที่จัดเก็บ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="827e95e5-622c-46f5-a459-44a06f9b1a08" x="30" y="67" width="54" height="11"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[มีคนช่วยลง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="827e95e5-622c-46f5-a459-44a06f9b1a08" x="30" y="84" width="54" height="11"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[มีสิ่งกีดขวาง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="827e95e5-622c-46f5-a459-44a06f9b1a08" x="108" y="67" width="54" height="11"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[ไม่มีคนช่วยลง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="827e95e5-622c-46f5-a459-44a06f9b1a08" x="108" y="84" width="54" height="11"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[ไม่มีสิ่งกีดขวาง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8881af65-43ef-408a-8508-7cc4f9aa5557" x="39" y="106" width="100" height="12"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[อุปกรณ์เสริมที่ลูกค้าขอเพิ่ม]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="817645b2-bf63-488e-b6dc-8cd1a91d4cea" x="12" y="131" width="150" height="12"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[1.....................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="817645b2-bf63-488e-b6dc-8cd1a91d4cea" x="12" y="152" width="150" height="12"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[2.....................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="817645b2-bf63-488e-b6dc-8cd1a91d4cea" x="12" y="173" width="150" height="12"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[3.....................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="817645b2-bf63-488e-b6dc-8cd1a91d4cea" x="12" y="194" width="150" height="12"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[4.....................................................]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="13" y="67" width="10" height="10"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="13" y="83" width="10" height="10"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="93" y="68" width="10" height="10"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="df2ebbb2-188e-459e-a57e-ddd424a4e3ec" x="93" y="84" width="10" height="10"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="351684c0-b9dd-4463-bd87-cfdb593783d9" x="208" y="67" width="335" height="11"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[ขนขึ้นชั้น 2-7 จอดรถใกล้จุดลำเรียงสินค้าเข้าลิฟท์ได้ง่าย มีลิฟท์ขนของให้]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0b69572d-80ef-4077-9669-bca0cad78112" x="208" y="84" width="335" height="11"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[สินค้า   1...........................................................คิดราคา/ชิ้น......................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0b69572d-80ef-4077-9669-bca0cad78112" x="208" y="104" width="335" height="11"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[สินค้า   2...........................................................คิดราคา/ชิ้น......................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0b69572d-80ef-4077-9669-bca0cad78112" x="208" y="122" width="335" height="11"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[สินค้า   3...........................................................คิดราคา/ชิ้น......................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="23d9342a-bd7c-439d-9adc-9b272df78640" x="208" y="142" width="100" height="12"/>
+				<textElement>
+					<font fontName="Tahoma" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ขนขึ้นชั้น 2 (เดินขึ้นบันได)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0b69572d-80ef-4077-9669-bca0cad78112" x="210" y="158" width="335" height="11"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[สินค้า   1...........................................................คิดราคา/ชิ้น......................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0b69572d-80ef-4077-9669-bca0cad78112" x="210" y="178" width="335" height="11"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[สินค้า   2...........................................................คิดราคา/ชิ้น......................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0b69572d-80ef-4077-9669-bca0cad78112" x="210" y="196" width="335" height="11"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[สินค้า   3...........................................................คิดราคา/ชิ้น......................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="abebf072-c3a2-4311-956f-60d170ee3a0d" x="28" y="274" width="112" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[ผู้ทำรายการ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e757d292-e6cc-423a-bb9d-ed8d42fcd5fd" x="13" y="256" width="149" height="18"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[----------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e757d292-e6cc-423a-bb9d-ed8d42fcd5fd" x="194" y="256" width="149" height="18"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[----------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e757d292-e6cc-423a-bb9d-ed8d42fcd5fd" x="396" y="256" width="149" height="18"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[----------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="abebf072-c3a2-4311-956f-60d170ee3a0d" x="215" y="274" width="112" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[ธุรการจัดส่ง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="abebf072-c3a2-4311-956f-60d170ee3a0d" x="416" y="274" width="112" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[พนักงานจัดส่ง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="abebf072-c3a2-4311-956f-60d170ee3a0d" x="194" y="288" width="149" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[(                                                )]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="abebf072-c3a2-4311-956f-60d170ee3a0d" x="396" y="288" width="149" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[(                                                )]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="46d03e5a-5dac-43c8-9685-976202eddd5d" x="84" y="-6" width="224" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{receivename}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="52b2b166-a8b5-4c3f-873a-34c32b94c7d9" x="402" y="-6" width="141" height="23"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{receivetel}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c25da03b-22e8-4de3-886a-6b1219b79921" x="4" y="2" width="136" height="14"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[../report/drdocument.jrxml]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f58a0ef3-3e80-461b-b5f0-ee8bb79c3185" x="330" y="1" width="33" height="14"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[วันที่พิมพ์]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="f3efda8e-4eb9-43aa-8037-e98309944b5c" x="368" y="1" width="67" height="14"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0d23b342-5a64-47c3-8ba4-465b0d186cc7" x="463" y="1" width="51" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="8eee4048-c535-468b-bb7e-dbdefb1f1ac3" x="521" y="1" width="33" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="4" splitType="Stretch"/>
+	</summary>
+</jasperReport>

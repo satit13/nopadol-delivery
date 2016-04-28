@@ -1,0 +1,107 @@
+<?page title="Place" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<style>
+	.tbl{
+		font-size:10pt;
+		color:#005A88;		
+	}
+</style>
+<window title="Place" border="normal">
+<x:table class="tbl">
+				<x:tr>
+					<x:td>Code</x:td>
+					<x:td><textbox id="txtcode"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>ตำบล</x:td>
+					<x:td><textbox id="txttambol"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>อำเภอ</x:td>
+					<x:td><textbox id="txtamphur"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>จังหวัด</x:td>
+					<x:td><textbox id="txtprovince"/></x:td>
+				</x:tr>
+				<x:tr>
+					<x:td>หมายเหตุ</x:td>
+					<x:td><textbox id="txtdesc"/></x:td>
+				</x:tr>
+			</x:table>
+			<hbox>
+			<button label="ล้างหน้าจอ" onClick="" />
+			<button label="บันทึก" onClick="" />
+			<button label="ลบ" onClick="" />
+			<button label="ออก" onClick="" />
+		</hbox>
+		<separator onCreate="viewPlace();"/>
+		<listbox id="lsplace" mold="paging" pageSize="10" onSelect="vSelect();">
+			<listhead>
+				<listheader label="Code" width="100px"/>
+				<listheader label="แขวง/ตำบล" />
+				<listheader label="เขต/อำเภอ" />
+				<listheader label="จังหวัด" />
+				<listheader label="Description" />
+			</listhead>			
+		</listbox>
+<zscript>
+<![CDATA[
+         
+import java.io.*;
+import java.lang.*;
+import java.sql.*;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.CreateEvent;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.ForwardEvent;
+import org.zkoss.zk.ui.Executions;
+import condb.Database;
+import condb.Mssqldb;
+Connection con=null;
+Statement st=null;
+
+public void viewPlace(){
+	String strpQry;
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		strpQry="select placecode, district, amphur, province, mydescription from sm_do.tb_do_place;";
+		st.executeQuery(strpQry);
+		ResultSet prs = st.getResultSet();
+		while(lsplace.getItemCount()>0){
+			lsplace.removeItemAt(0);
+		}
+		while(prs.next()){
+			Listitem pli = new Listitem();
+			pli.appendChild(new Listcell(prs.getString("placecode")));
+			pli.appendChild(new Listcell(prs.getString("district")));
+			pli.appendChild(new Listcell(prs.getString("amphur")));
+			pli.appendChild(new Listcell(prs.getString("province")));
+			pli.appendChild(new Listcell(prs.getString("mydescription")));
+			lsplace.appendChild(pli);
+		}
+	}catch(SQLException ex){
+		ex.printStackTrace();
+	}
+}	
+
+public void vSelect(){
+	Listitem pli = new Listitem();
+	pli = lsplace.getSelectedItem();
+	Listcell lc0 = (Listcell) pli.getChildren().get(0);
+	Listcell lc1 = (Listcell) pli.getChildren().get(1);
+	Listcell lc2 = (Listcell) pli.getChildren().get(2);
+	Listcell lc3 = (Listcell) pli.getChildren().get(3);
+	Listcell lc4 = (Listcell) pli.getChildren().get(4);
+	txtcode.setValue(lc0.getLabel());
+	txttambol.setValue(lc1.getLabel());
+	txtamphur.setValue(lc2.getLabel());
+	txtprovince.setValue(lc3.getLabel());
+	txtdesc.setValue(lc4.getLabel());
+	
+}
+]]>
+</zscript>
+</window>
+</zk>

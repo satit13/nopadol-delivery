@@ -1,0 +1,78 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" border="normal" onCreate="viewDOComplete();">
+<listbox id="lscfdo" mold="paging" pageSize="10" height="500px">
+	<listhead >
+		<listheader label="เลขที่เอกสาร" />
+		<listheader label="ทะเบียนรถขนส่ง" />
+		<listheader label="วันที่ส่ง" />
+		<listheader label="เวลาส่ง" />
+		<listheader label="วันที่กลับ" />
+		<listheader label="เวลาที่กลับ" />
+		<listheader label="ผลการส่ง" />
+	</listhead>
+</listbox>
+<zscript>
+<![CDATA[
+	import java.io.*;
+	import java.lang.*;
+	import java.sql.*;
+	import org.zkoss.zk.ui.Component;
+	import org.zkoss.zk.ui.event.CreateEvent;
+	import org.zkoss.zk.ui.event.Event;
+	import org.zkoss.zk.ui.event.ForwardEvent;
+	import org.zkoss.zk.ui.Executions;
+	import java.text.SimpleDateFormat;
+	import java.text.DecimalFormat;
+	import java.util.Date;
+	import org.zkoss.zk.ui.event.EventListener;
+	import condb.Database;
+	import condb.Mssqldb;
+	
+	Connection con=null;
+	Statement st=null;
+	
+	public void viewDOComplete(){
+		String vQry;
+		try{
+			con=Database.getConnection();
+			st=con.createStatement();
+			vQry="select * from sm_do.ft_doview('') where isreturn='1'";
+			st.executeQuery(vQry);
+			ResultSet rs=st.getResultSet();
+			while(lscfdo.getItemCount()>0){
+				lscfdo.removeItemAt(0);
+			}
+			while(rs.next()){
+				Listitem oli=new Listitem();
+				oli.appendChild(new Listcell(rs.getString("docno")));
+				oli.appendChild(new Listcell(rs.getString("datesend")));
+				oli.appendChild(new Listcell(rs.getString("timesend")));
+				oli.appendChild(new Listcell(rs.getString("datereturn")));
+				oli.appendChild(new Listcell(rs.getString("timereturn")));
+				oli.appendChild(new Listcell(rs.getString("carlicence")));
+				oli.appendChild(new Listcell(rs.getString("sendresultstatus")));
+				lscfdo.appendChild(oli);
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	public void vselectDO(){
+		String vdodocno;
+		try{
+			Listitem sli = new Listitem();
+			sli=lscfdo.getSelectedItem();
+			Listcell lc0= (Listcell) sli.getChildren().get(0);
+			vdodocno=lc0.getLabel();
+			application.setAttribute("dodocno", vdodocno);
+			Executions.createComponents("domanage.zul",null,null);
+			lscfdo.setSelectedIndex(-1);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	]]>
+</zscript>
+</window>
+</zk>

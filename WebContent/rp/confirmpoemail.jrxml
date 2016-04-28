@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="confirmpoemail" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8a6e7348-2b1b-494c-b37f-8cf774916f86">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="paramtype" class="java.lang.String"/>
+	<parameter name="parambegindate" class="java.lang.String"/>
+	<parameter name="paramenddate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[exec USP_PR_ConfirmSendItemFromPO $P{paramtype},$P{parambegindate},$P{paramenddate}]]>
+	</queryString>
+	<field name="docno" class="java.lang.String"/>
+	<field name="docdate" class="java.sql.Timestamp"/>
+	<field name="senddate" class="java.sql.Timestamp"/>
+	<field name="acceptdate" class="java.sql.Timestamp"/>
+	<field name="catcode" class="java.lang.String"/>
+	<field name="vendorcode" class="java.lang.String"/>
+	<field name="confirmdate" class="java.sql.Timestamp"/>
+	<field name="mailsenddesc" class="java.lang.String"/>
+	<field name="vendoremail" class="java.lang.String"/>
+	<field name="vendorcontact" class="java.lang.String"/>
+	<field name="mydescription" class="java.lang.String"/>
+	<field name="leaddate" class="java.sql.Timestamp"/>
+	<field name="itemcode" class="java.lang.String"/>
+	<field name="itemname" class="java.lang.String"/>
+	<field name="whcode" class="java.lang.String"/>
+	<field name="shelfcode" class="java.lang.String"/>
+	<field name="qty" class="java.math.BigDecimal"/>
+	<field name="remainqty" class="java.math.BigDecimal"/>
+	<field name="unitcode" class="java.lang.String"/>
+	<field name="apname" class="java.lang.String"/>
+	<group name="docno">
+		<groupExpression><![CDATA[$F{docno}]]></groupExpression>
+		<groupHeader>
+			<band height="23">
+				<textField>
+					<reportElement uuid="78d353ed-498f-42b0-8542-fe0b1ede5dd4" x="5" y="1" width="72" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{docno}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="a816e704-8564-45d5-96bd-57caf8ac9313" x="4" y="20" width="791" height="1"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="CatGroup">
+		<groupExpression><![CDATA[$F{catcode}]]></groupExpression>
+		<groupHeader>
+			<band height="14"/>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="39" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="21" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement uuid="8f642b88-c1de-48a9-ad8e-f37ccadd0161" x="102" y="2" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemcode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1d8b1032-fe44-4c5b-b3cb-688652a2de20" x="209" y="2" width="252" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="c2233948-3b34-4923-bfed-fc4a6cbc120f" x="471" y="2" width="46" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="931445ee-4281-4075-9fb4-8d7693ed1eba" x="521" y="3" width="53" height="19"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{remainqty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0003512c-a5cc-4050-a7f2-ed4251e35cdf" x="578" y="2" width="75" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unitcode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a6bd838f-3948-4767-a659-a2fc3cf2566d" x="661" y="2" width="63" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{whcode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f9e7f960-8267-4e1c-9b10-584884784ccd" x="730" y="3" width="62" height="19"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{shelfcode}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

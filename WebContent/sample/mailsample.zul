@@ -1,0 +1,176 @@
+<?page title="Mail" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Mail" border="normal">
+<zscript>
+<![CDATA[
+         
+import java.util.*;
+import java.io.*;
+import java.lang.*;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.activation.*;
+
+/*
+String emailMsgTxt = "Online Order Confirmation Message. Also include the Tracking Number.";
+String emailSubjectTxt  = "Order Confirmation Subject";
+String emailFromAddress = "panukom@gmail.com";
+
+// Add List of Email address to who email needs to be sent to
+String[] emailList = {"panuvich@nopadol.com", "it@nopadol.com"};
+*/
+
+public void postMail(String[] recipients, String subject, String message , String from) throws MessagingException
+{
+	System.out.println("Sucessfully Sent mail to All Users");
+	System.out.println("rcv = "+recipients);
+	System.out.println("ss = "+subject);
+	System.out.println("msg = "+message);
+	System.out.println("from = "+from);
+	boolean debug = false;
+	
+     //Set the host smtp address
+     Properties props = new Properties();
+     
+     props.put("mail.transport.protocol", "smtp");
+     
+     props.put("mail.smtp.host", "report1.nopadol.com");
+     props.put("mail.smtp.port", "25");
+    
+    // create some properties and get the default Session
+    Session session = Session.getDefaultInstance(props, null);
+    session.setDebug(debug);
+
+    // create a message
+    MimeMessage msg = new MimeMessage(session);
+	try{
+    // set the from and to address
+    InternetAddress addressFrom = new InternetAddress(from);
+    msg.setFrom(addressFrom);
+
+    System.out.println("Mail From = "+from);
+    
+    System.out.println("Receiv Mail := "+recipients);
+    
+    InternetAddress[] addressTo = new InternetAddress[recipients.length]; 
+    
+    System.out.println("To 0:= "+recipients[0]);
+    
+    for (int i = 0; i < recipients.length; i++)
+    {
+        addressTo[i] = new InternetAddress(recipients[i]);
+        System.out.println("add-i : "+addressTo[i]);
+    }
+
+  //  InternetAddress addressTo = new InternetAddress("it@nopadol.com"); 
+  
+  	msg.setRecipients(Message.RecipientType.TO, addressTo);
+    
+    System.out.println("To 01:= "+recipients[1]);
+
+    // Optional : You can also set your custom headers in the Email if you Want
+    
+    msg.addHeader("MyHeaderName", "myHeaderValue");
+    
+    // Setting the Subject and Content Type
+    
+    msg.setSubject(subject);
+    
+    msg.setContent("<h1>ทดสอบการส่ง E-Mail by Kom.</h1>", "text/html" );
+    //msg.setContent(message, "text/plain");
+    
+    System.out.println("To 1 := "+recipients[1]);
+    
+    System.out.println(msg);
+    
+    Transport.send(msg);
+    
+    
+    System.out.println("To 2 := "+recipients[1]);
+    System.out.println("Sucessfully Sent mail to All Users");
+	}catch(MessagingException ex){
+      System.err.println("Cannot send email. " + ex);
+    }
+    /*
+To Send a Email, from your Program, just call the above method, With the following parameters,
+
+String to -- Email Address of the Recipient
+
+String subject  -- Email Subject
+
+String message -- Content or Body of the Message
+
+String from -- Your (Senders) Email Address
+
+smtp.jcom.net -- Replace this with your ISP's SMTP address.
+
+That's it, you are all set to send a Email.
+
+constraint="no empty:you have to place the email here"
+*/
+  //  postMail(emailList, emailSubjectTxt, emailMsgTxt, emailFromAddress);
+    
+}
+public void sendmailnow(){
+	String[] to ={"siravich@smartworks.in.th","it@nopadol.com"};
+	String subject ="Test java email";
+	String message ="My content E-mail";
+	String from ="it@nopadol.com";
+	System.out.println("mailto : "+to);
+	try{	
+	postMail( to, subject, message, from);
+	}catch(Exception e){}
+	
+}
+
+public void ttsmail(){
+	// Recipient's email ID needs to be mentioned.
+    String to = "siravich@smartworks.in.th";
+
+    // Sender's email ID needs to be mentioned
+    String from = "it@nopadol.com";
+
+    // Assuming you are sending email from localhost
+    String host = "report1.nopadol.com";
+
+    // Get system properties
+    Properties properties = System.getProperties();
+
+    // Setup mail server
+    properties.setProperty("mail.smtp.host", host);
+
+    // Get the default Session object.
+    Session session = Session.getDefaultInstance(properties);
+
+    try{
+       // Create a default MimeMessage object.
+       MimeMessage message = new MimeMessage(session);
+
+       // Set From: header field of the header.
+       message.setFrom(new InternetAddress(from));
+
+       // Set To: header field of the header.
+       message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+       // Set Subject: header field
+       message.setSubject("This is the Subject Line!");
+
+       // Send the actual HTML message, as big as you like
+       message.setContent("<h1>This is actual message</h1>",
+                          "text/html" );
+       System.out.println("Sent message successfully....");
+       // Send message
+       Transport.send(message);
+       System.out.println("Sent message successfully....");
+    }catch (MessagingException mex) {
+       mex.printStackTrace();
+    }
+}
+
+]]>
+</zscript>
+<button label="Send1" onClick="sendmailnow()" /><button label="Send2" onClick="ttsmail()" />
+</window>
+</zk>

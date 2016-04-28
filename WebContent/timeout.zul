@@ -1,0 +1,21 @@
+<window width="80%" title="DO-Session Timeout" border="normal">
+	<vbox>
+	<label value="คุณหยุดใช้งานหน้านี้เลยเวลาที่กำหนด กรุณาคลิกปุ่ม Refresh เพื่อเข้าสู่ระบบอีกครั้ง" 
+		style="font-size:15px; font-weigth:bold; color:#D70028;"
+	/>
+	<button label="Refresh" onClick="fnreturn2DO();" image="/img/refresh.png"/>
+	</vbox>
+	<zscript>
+		<![CDATA[
+		import java.lang.*;
+		import org.zkoss.zk.ui.Executions;
+		
+		void fnreturn2DO(){
+			Executions.sendRedirect("home.zul");
+		}
+		
+		
+		]]>
+				
+	</zscript>
+</window>

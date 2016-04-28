@@ -1,0 +1,16 @@
+<?page title="Main DR" contentType="text/html;charset=UTF-8"?>
+<zk>
+<borderlayout>
+<west>
+<button label="สำหรับพนักงานขาย" >
+		<attribute name="onClick">
+			indr.setSrc("drmanage.zul");
+		</attribute>
+</button>
+<button label="Confirm DR" onClick="" />
+</west>
+
+	<include id="indr" />
+
+</borderlayout>
+</zk>

@@ -1,0 +1,71 @@
+<?page  contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="drwin" mode="modal" title="DR-ใบขอเข้าคิวส่งสินค้า"  border="normal" onCreate="showDR()" height="100%" width="800px" maximizable="true" closable="true">
+<button id="count" onClick="drwin.detach();" mold="trendy" />
+<timer id="timer" delay="1000" repeats="true">
+        <attribute name="onTimer">
+   // now.setValue("Time ：" + new Date().toString());
+    if (countNum == 0) {
+        timer.stop();        
+        exitwindr();   
+        return;     
+    }
+    count.setLabel("คลิก ปิดหน้าจอนี้ หรือ หน้าจอนี้จะปิดอัตโนมัติในเวลา : " + --countNum + "");
+    count.setStyle("color:#D70028;");
+    
+</attribute>
+    </timer>
+<label id="lblscvno" value="${applicationScope['scvdocno']}" visible="false" />
+<jasperreport id="reportdr" height="100%"/>
+<zscript>
+<![CDATA[
+
+import java.sql.*;
+import java.io.*;
+import java.lang.*;
+//import javax.servlet.http.Cookie;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse; 
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
+import java.util.*;
+import org.zkoss.util.media.AMedia;
+import org.zkoss.zul.*;
+import condb.Database;
+
+Connection con=null;
+PreparedStatement st=null;
+Integer countNum = 20;
+
+void exitwindr(){
+	drwin.detach();
+}
+
+void showDR() {
+	String vDocno;
+	String vQry;
+	
+	ResultSet rs = null;
+	JRResultSetDataSource jrds = null;
+
+		try{
+				vDocno=lblscvno.getValue();
+				con = Database.getConnection();
+				st = con.prepareStatement("select * from sm_do.ft_queueview('"+vDocno+"');");
+				rs = st.executeQuery();
+				reportdr.setSrc(session.getWebApp().getRealPath("/report/drdocument.jasper"));
+				reportdr.setDatasource(new JRResultSetDataSource(rs));			
+				reportdr.setType("pdf");	
+				
+			}			
+			catch(SQLException e){
+					System.out.println(e);
+				}				 
+		 
+		} 	
+]]>
+</zscript>
+</window>
+</zk>

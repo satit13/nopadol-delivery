@@ -1,0 +1,180 @@
+<?page title="System Data Configuration" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="native">
+<window title="System Data Configuration" border="normal">
+<style>
+	.tbl{
+		font-size:10pt;
+		color:#005A88;		
+	}
+</style>
+<tabbox>
+	<tabs>
+		<tab label="เส้นทางขนส่ง" onCreate="veiwRoute()"/>
+		<tab label="สถานที่ขนส่ง" onCreate="viewPlace()"/>
+		<tab label="รถขนส่ง" onCreate="viewCar()"/>
+		<tab label="พนักงานขนส่ง" onCreate="viewEmp()"/>		
+	</tabs>
+	<tabpanels>
+		<!-- เส้นทาง-->
+		<tabpanel>
+			<listbox id="lsroute" mold="paging" pageSize="10">
+			<listhead>
+				<listheader label="Code" width="100px" />
+				<listheader label="Detail"/>
+			</listhead>	
+			</listbox>
+
+		</tabpanel>
+		<!-- สถานที่ขนส่ง -->
+		<tabpanel>
+		<listbox id="lsplace" mold="paging" pageSize="10">
+			<listhead>
+				<listheader label="Code" width="100px"/>
+				<listheader label="Detail" />
+			</listhead>			
+		</listbox>
+
+		</tabpanel>
+		<!-- รถขนส่ง -->
+		<tabpanel>
+			<listbox id="lscar" mold="paging" pageSize="10">
+			<listhead>
+				<listheader label="เลขทะเบียน" width="15%" />
+				<listheader label="Name Description" width="50%"/>
+				<listheader label="Standard" width="35%"/>
+			</listhead>	
+			</listbox>
+
+		</tabpanel>
+		<!-- พนักงาน -->
+		<tabpanel>
+			<listbox id="lsemp" mold="paging" pageSize="10">
+				<listhead>
+					<listheader label="รหัสพนักงาน" width="20%"/>
+					<listheader label="ชื่อพนักงาน"  width="30%"/>
+					<listheader label="Eng Name" width="30%"/>
+					<listheader label="ตำแหน่ง"  width="20%"/>					
+				</listhead>				
+			</listbox>
+
+		</tabpanel>
+	</tabpanels>
+</tabbox>
+<zscript>
+	<![CDATA[ 
+import java.io.*;
+import java.lang.*;
+import java.sql.*;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.CreateEvent;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.ForwardEvent;
+import org.zkoss.zk.ui.Executions;
+import condb.Database;
+
+Connection con = null;
+Statement st = null;
+public void veiwRoute(){
+	String strQry;
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		strQry = "select * from sm_do.ft_routeview();";
+		st.executeQuery(strQry);
+		ResultSet rs = st.getResultSet();
+		while(lsroute.getItemCount()>0){
+			lsroute.removeItemAt(0);
+		}
+		while(rs.next()){
+			Listitem li = new Listitem();
+			li.appendChild(new Listcell(rs.getString("routecode")));
+			li.appendChild(new Listcell(rs.getString("routedetail")));
+			lsroute.appendChild(li);
+		}
+	}catch(SQLException e){
+		e.getMessage();
+	}
+}
+	 
+public void viewPlace(){
+	String strpQry;
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		strpQry="select * from sm_do.ft_placeview('');";
+		st.executeQuery(strpQry);
+		ResultSet prs = st.getResultSet();
+		while(lsplace.getItemCount()>0){
+			lsplace.removeItemAt(0);
+		}
+		while(prs.next()){
+			Listitem pli = new Listitem();
+			pli.appendChild(new Listcell(prs.getString("placecode")));
+			pli.appendChild(new Listcell(prs.getString("placedetail")));
+			lsplace.appendChild(pli);
+		}
+	}catch(SQLException ex){
+		ex.getMessage();
+	}
+}
+public void viewCar(){
+	String strcQry;
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		strcQry="select carlicence, name1, standardtype from sm_do.tb_do_vehical;";
+		st.execute(strcQry);
+		ResultSet crs = st.getResultSet();
+		while(lscar.getItemCount()>0){
+			lscar.removeItemAt(0);
+		}
+		while(crs.next()){
+			Listitem cli = new Listitem();
+			cli.appendChild(new Listcell(crs.getString("carlicence")));
+			cli.appendChild(new Listcell(crs.getString("name1")));
+			cli.appendChild(new Listcell(crs.getString("standardtype")));
+			lscar.appendChild(cli);
+		}
+	}catch(SQLException ex){
+		ex.getMessage();
+	}
+}
+// select carlicence, name1, standardtype from sm_do.tb_do_vehical;
+public void viewEmp(){
+	String streQry;
+	Integer i;
+	try{
+		con = Database.getConnection();
+		st = con.createStatement();
+		streQry="select code, name1, name2, emp_position  from sm_do.tb_do_empbplus;";
+		st.executeQuery(streQry);
+		ResultSet ers = st.getResultSet();
+		while(lsemp.getItemCount()>0){
+			lsemp.removeItemAt(0);
+		}
+		while(ers.next()){
+			Listitem eli = new Listitem();
+			eli.appendChild(new Listcell(ers.getString("code")));
+			eli.appendChild(new Listcell(ers.getString("name1")));
+			eli.appendChild(new Listcell(ers.getString("name2")));
+			i=ers.getInt("position");
+			if(i==0){
+				Listcell lc=new Listcell();
+				lc.setLabel("พนักงานติดตามรถ");
+				eli.appendChild(lc);
+			}else{
+				Listcell lc=new Listcell();
+				lc.setLabel("ขับรถ");
+				eli.appendChild(lc);
+			}
+			lsemp.appendChild(eli);
+		}
+	}catch(SQLException ex){
+		ex.getMessage();
+	}
+}
+	          ]]>
+			
+</zscript>
+</window>
+</zk>
