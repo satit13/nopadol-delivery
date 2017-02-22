@@ -7,7 +7,9 @@ public class Database {
 		public static Connection getConnection() {
 	        try  {
 	        	Class.forName("org.postgresql.Driver");
-	        	Connection con = DriverManager.getConnection("jdbc:postgresql://192.168.0.161:5432/npdb", "dsa","password");
+	        	//Connection con = DriverManager.getConnection("jdbc:postgresql://192.168.0.161:5432/npdb", "dsa","password");
+	        	Connection con = DriverManager.getConnection("jdbc:postgresql://192.168.0.163:5432/backup", "postgres","postgres");
+	      	  
 	        	//Connection con = DriverManager.getConnection("jdbc:postgresql://192.168.0.195:5432/npdb", "postgres","postgres");
 	        	
 	        	/*

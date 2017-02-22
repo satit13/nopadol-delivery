@@ -36,7 +36,7 @@
 					</x:tr>
 					<x:tr>
 						<x:td></x:td>
-						<x:td><label value="v.20130508" /> </x:td>
+						<x:td><label value="v.20170220" /> </x:td>
 					</x:tr>
 				</x:table>
 
@@ -69,9 +69,28 @@ public void checkLogin(){
 	String vQry;
 	String vulevel;
 	String vcode;
+	System.out.println("CheckLogin Starting");
 	try{
 		vuser= txuser.getValue();
 		vpass = txpass.getValue();
+
+		
+		// satit - add for admin user
+		if(vuser.equals("admin") && vpass.equals("admin")){
+			Executions.sendRedirect("home.zul");
+			HttpServletResponse response = (HttpServletResponse)Executions.getCurrent().getNativeResponse();
+	    	Cookie userCookie = new Cookie("ckuser", vuser);	    	
+	    	Cookie levelCookie = new Cookie("ckulevel", "1");
+	    	Cookie ucodeCookie = new Cookie("ckucode","admin");
+	    	response.addCookie(userCookie); 
+	    	response.addCookie(levelCookie);
+	    	response.addCookie(ucodeCookie);	    
+			return ;		
+		}
+		
+		// -- end of add new 
+		
+		
 		con = Database.getConnection();
 		st = con.createStatement();
 		vQry="SELECT code, \"user\", userlevel FROM sm_do.tb_do_user where \"user\"='"+vuser+"' and password='"+vpass+"';";
