@@ -1632,16 +1632,16 @@ public String dtnormal(String vgetdate){
 				strQry="select * from sm_do.ft_queueview('') where isconfirm='0' and iscancel='0';";
 			}else
 				if(inft==1){
-					strQry="select * from sm_do.ft_queueview('') where isconfirm='1' and iscancel='0'limit 20;";	
+					strQry="select * from sm_do.ft_queueview('') where isconfirm='1' and iscancel='0'limit 50;";	
 				}else
 					if(inft==2){
-						strQry="select * from sm_do.ft_queueview('') where iscancel='1' limit 20;";
+						strQry="select * from sm_do.ft_queueview('') where iscancel='1' limit 50;";
 					}else
 						if(inft==3){
-							strQry="select * from sm_do.ft_queueview('') limit 20;";
+							strQry="select * from sm_do.ft_queueview('') limit 50;";
 						}else
 						{
-							strQry="select * from sm_do.ft_confirmview('0') limit 20;";
+							strQry="select * from sm_do.ft_confirmview('0') limit 50;";
 						}
 				
 			
@@ -1705,6 +1705,9 @@ public String dtnormal(String vgetdate){
 					li.appendChild(lcst);
 				}
 				li.appendChild(new Listcell(rs.getString("isconfirm")));
+				li.appendChild(new Listcell(rs.getString("docdate")));
+				li.appendChild(new Listcell(rs.getString("salecode")));
+					
 				drls.appendChild(li);
 			}
 				st.close();
