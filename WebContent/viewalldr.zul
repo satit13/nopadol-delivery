@@ -32,14 +32,14 @@
 		<listheader label="เลขที่เอกสาร" width="120px"/>
 		<listheader label="วันนัดรับ" width="80px"/>
 		<listheader label="เวลาที่นัดรับ" width="75px"/>
-		<listheader label="ลูกค้า" width="220px"/>
+		<listheader label="ลูกค้า" width="200px"/>
 		<listheader label="เส้นทาง" />
 		<listheader label="สถานที่" />
-		<listheader label="ผู้รับสินค้า" />
+		<listheader label="ผู้รับสินค้า"  width="75px"/>
 		<listheader label="ความสำคัญ" width="75px"/>
 		<listheader label="สถานะ" width="75px"/>	
 		<listheader label="isConfirm" visible="false"/>	
-		<listheader label="วันที่เอกสาร" width="75px"/>
+		<listheader label="วันที่เอกสาร" width="100px"/>
 		<listheader label="รหัสพนักงานขาย" width="75px"/>
 		
 	</listhead>
@@ -292,6 +292,12 @@
 		<x:td>
 			<checkbox id="cbcconfirm" label="ยืนยันเอกสาร วันเวลาจัดส่ง" disabled="true" onCheck="chbConfirm();"/>
 		</x:td>
+	<x:tr>
+		<x:td align="right">การพิมพ์เอกสารให้จัดส่ง-></x:td>
+		<x:td> 
+			<checkbox id="cbAccepted" label="ได้รับเอกสาร" onCheck="cbAcceptedDoc();"/>
+		</x:td>	
+	</x:tr>	
 	</x:tr>
 	<x:tr>
 	<x:td></x:td>
@@ -1768,6 +1774,12 @@ public String dtnormal(String vgetdate){
 			}
 		}else{
 			btnSave.setDisabled(true);
+		}
+	}
+	
+	public void cbAcceptedDoc(){
+		if (cbAccepted.isChecked()==true){
+		alert("ได้รับเอกสารแล้ว แม่นก่อ");
 		}
 	}
 	void showMap(){
